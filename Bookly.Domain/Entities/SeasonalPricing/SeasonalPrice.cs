@@ -1,4 +1,6 @@
 ﻿using Bookly.Domain.Entities.Base;
+using System.Net.Http.Headers;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Bookly.Domain.Entities.SeasonalPricing;
 
@@ -39,4 +41,8 @@ public class SeasonalPrice : BaseEntity
         PricePerNight = pricePerNight;
     }
 
+    public bool Covers(DateOnly night)
+    {
+        return StartDate <= night && night <= EndDate;
+    }
 }

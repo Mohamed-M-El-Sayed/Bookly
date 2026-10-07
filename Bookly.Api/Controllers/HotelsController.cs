@@ -31,7 +31,9 @@ public class HotelsController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(command, cancellationToken);
         return result.ToResponse();
     }
-
+    /// <summary>
+    /// Searches for hotels based on the provided criteria.
+    /// </summary>
     [HttpGet("search")]
     public async Task<IActionResult> Search([FromQuery] SearchHotelsQuery query, CancellationToken cancellationToken = default)
     {

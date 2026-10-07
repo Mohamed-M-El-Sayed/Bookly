@@ -80,5 +80,6 @@ public class RoomType : BaseEntity
 
         _boardOptions.Add(new BoardOption(Id, type, extraPricePerNight));
     }
-
+    public decimal PriceForNight(DateOnly night)
+        => _seasonalPrices.FirstOrDefault(s => s.Covers(night))?.PricePerNight ?? BasePricePerNight;
 }
