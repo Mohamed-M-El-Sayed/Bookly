@@ -2,5 +2,6 @@
 
 public record CreateRoomTypeResponse(
      int Id,
-     string Name
+     string Name,
+     string NameAr
 );

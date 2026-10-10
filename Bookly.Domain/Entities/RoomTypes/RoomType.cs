@@ -30,38 +30,120 @@ public class RoomType : BaseEntity
     {
 
     }
-    public static RoomType Create(int hotelId, string name, decimal price, int maxOccupancy, string description, string view)
+    public static RoomType Create(
+        int hotelId,
+        string name,
+        string nameAr,
+        decimal basePricePerNight,
+        int maxOccupancy,
+        string description,
+        string descriptionAr,
+        string view,
+        string viewAr,
+        int bedCount,
+        decimal sizeSqm)
     {
-        if (price <= 0)
-            throw new ArgumentException("Price must be greater than zero.");
+        if (hotelId <= 0)
+            throw new ArgumentOutOfRangeException(nameof(hotelId), "Hotel ID must be greater than zero.");
+
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Room type name is required.", nameof(name));
+
+        if (string.IsNullOrWhiteSpace(nameAr))
+            throw new ArgumentException("Arabic room type name is required.", nameof(nameAr));
+
+        if (basePricePerNight <= 0)
+            throw new ArgumentOutOfRangeException(nameof(basePricePerNight), "Price must be greater than zero.");
+
         if (maxOccupancy <= 0)
-            throw new ArgumentException("Max occupancy must be at least 1.");
+            throw new ArgumentOutOfRangeException(nameof(maxOccupancy), "Max occupancy must be at least 1.");
+
+        if (string.IsNullOrWhiteSpace(description))
+            throw new ArgumentException("Description is required.", nameof(description));
+
+        if (string.IsNullOrWhiteSpace(descriptionAr))
+            throw new ArgumentException("Arabic description is required.", nameof(descriptionAr));
+
+        if (string.IsNullOrWhiteSpace(view))
+            throw new ArgumentException("Room view is required.", nameof(view));
+
+        if (string.IsNullOrWhiteSpace(viewAr))
+            throw new ArgumentException("Arabic room view is required.", nameof(viewAr));
+
+        if (bedCount <= 0)
+            throw new ArgumentOutOfRangeException(nameof(bedCount), "Bed count must be greater than zero.");
+
+        if (sizeSqm <= 0)
+            throw new ArgumentOutOfRangeException(nameof(sizeSqm), "Room size must be greater than zero.");
+
         return new RoomType
         {
             HotelId = hotelId,
             Name = name,
-            Description = description,
-            BasePricePerNight = price,
+            NameAr = nameAr,
+            BasePricePerNight = basePricePerNight,
             MaxOccupancy = maxOccupancy,
-            View = view
+            Description = description,
+            DescriptionAr = descriptionAr,
+            View = view,
+            ViewAr = viewAr,
+            BedCount = bedCount,
+            SizeSqm = sizeSqm
         };
     }
-    public void Update(string name, string description, decimal basePricePerNight, int maxOccupancy, string view)
+
+    public void Update(
+        string name,
+        string nameAr,
+        string description,
+        string descriptionAr,
+        decimal basePricePerNight,
+        int maxOccupancy,
+        string view,
+        string viewAr,
+        int bedCount,
+        decimal sizeSqm)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Room type name is required.", nameof(name));
 
+        if (string.IsNullOrWhiteSpace(nameAr))
+            throw new ArgumentException("Arabic room type name is required.", nameof(nameAr));
+
+        if (string.IsNullOrWhiteSpace(description))
+            throw new ArgumentException("Description is required.", nameof(description));
+
+        if (string.IsNullOrWhiteSpace(descriptionAr))
+            throw new ArgumentException("Arabic description is required.", nameof(descriptionAr));
+
         if (basePricePerNight <= 0)
-            throw new ArgumentOutOfRangeException(nameof(basePricePerNight), basePricePerNight, "Price must be greater than zero.");
+            throw new ArgumentOutOfRangeException(nameof(basePricePerNight), "Price must be greater than zero.");
 
         if (maxOccupancy <= 0)
-            throw new ArgumentOutOfRangeException(nameof(maxOccupancy), maxOccupancy, "Max occupancy must be at least 1.");
+            throw new ArgumentOutOfRangeException(nameof(maxOccupancy), "Max occupancy must be at least 1.");
+
+        if (string.IsNullOrWhiteSpace(view))
+            throw new ArgumentException("Room view is required.", nameof(view));
+
+        if (string.IsNullOrWhiteSpace(viewAr))
+            throw new ArgumentException("Arabic room view is required.", nameof(viewAr));
+
+        if (bedCount <= 0)
+            throw new ArgumentOutOfRangeException(nameof(bedCount), "Bed count must be greater than zero.");
+
+        if (sizeSqm <= 0)
+            throw new ArgumentOutOfRangeException(nameof(sizeSqm), "Room size must be greater than zero.");
 
         Name = name;
+        NameAr = nameAr;
         Description = description;
+        DescriptionAr = descriptionAr;
         BasePricePerNight = basePricePerNight;
         MaxOccupancy = maxOccupancy;
         View = view;
+        ViewAr = viewAr;
+        BedCount = bedCount;
+        SizeSqm = sizeSqm;
     }
     public void AddSeasonalPrice(SeasonalPrice seasonalPrice)
     {

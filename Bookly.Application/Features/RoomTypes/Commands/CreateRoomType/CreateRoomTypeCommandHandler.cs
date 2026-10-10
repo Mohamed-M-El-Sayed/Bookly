@@ -16,13 +16,18 @@ public class CreateRoomTypeCommandHandler(IUnitOfWork unitOfWork) : IRequestHand
         var roomType = RoomType.Create(
             request.HotelId,
             request.Name,
+            request.NameAr,
             request.BasePricePerNight,
             request.MaxOccupancy,
             request.Description,
-            request.View);
+            request.DescriptionAr,
+            request.View,
+            request.ViewAr,
+            request.BedCount,
+            request.SizeSqm);
         await unitOfWork.Repository<RoomType>().AddAsync(roomType, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
-        var response = new CreateRoomTypeResponse(roomType.Id, roomType.Name);
+        var response = new CreateRoomTypeResponse(roomType.Id, roomType.Name, roomType.NameAr);
         return Result<CreateRoomTypeResponse>.Success(response);
     }
 }
