@@ -16,7 +16,7 @@ public class UpdateHotelCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler
         var address = new Address(request.Street, request.City, request.State, request.Country);
         var contactInfo = new ContactInfo(request.Phone, request.Email, request.Website);
 
-        hotel.Update(request.Name, request.Description, "gg", request.StarRating, address, contactInfo);
+        hotel.Update(request.Name, request.Description, request.DescriptionAr, request.StarRating, address, contactInfo);
 
         unitOfWork.Repository<Hotel>().Update(hotel);
         await unitOfWork.SaveChangesAsync(cancellationToken);

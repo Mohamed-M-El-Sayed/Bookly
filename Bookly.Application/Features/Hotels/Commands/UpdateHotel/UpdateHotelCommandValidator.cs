@@ -12,11 +12,12 @@ public class UpdateHotelCommandValidator : AbstractValidator<UpdateHotelCommand>
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Hotel name is required.")
             .MaximumLength(200).WithMessage("Hotel name must not exceed 200 characters.");
-
         RuleFor(x => x.Description)
             .NotEmpty().WithMessage("Description is required.")
             .MaximumLength(2000).WithMessage("Description must not exceed 2000 characters.");
-
+        RuleFor(x => x.DescriptionAr)
+            .NotEmpty().WithMessage("Arabic description is required.")
+            .MaximumLength(2000).WithMessage("Arabic description must not exceed 2000 characters.");
         RuleFor(x => x.StarRating)
             .InclusiveBetween(1, 5).WithMessage("Star rating must be between 1 and 5.")
             .When(x => x.StarRating.HasValue);
