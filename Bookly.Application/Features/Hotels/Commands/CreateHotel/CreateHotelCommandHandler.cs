@@ -15,6 +15,7 @@ public class CreateHotelCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler
         var hotel = Hotel.Create(
             request.Name,
             request.Description,
+            "gg",
             request.StarRating,
             address,
             contactInfo);

@@ -104,6 +104,10 @@ namespace Bookly.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DescriptionAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -378,10 +382,17 @@ namespace Bookly.Infrastructure.Migrations
                     b.Property<decimal>("BasePricePerNight")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("BedCount")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DescriptionAr")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -395,7 +406,18 @@ namespace Bookly.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("SizeSqm")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("View")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ViewAr")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

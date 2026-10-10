@@ -7,24 +7,29 @@ public class Hotel : BaseEntity
 {
     public string Name { get; private set; } = null!;
     public string Description { get; private set; } = null!;
+    public string DescriptionAr { get; private set; } = null!;
     public int? StarRating { get; private set; }
     public Address Address { get; private set; } = null!;
     public ContactInfo ContactInfo { get; private set; } = null!;
     private readonly List<RoomType> _roomTypes = new();
     public IReadOnlyCollection<RoomType> RoomTypes => _roomTypes.AsReadOnly();
+
     private readonly List<HotelImage> _images = new();
     public IReadOnlyCollection<HotelImage> Images => _images.AsReadOnly();
 
     private Hotel() { }
+
     private Hotel(
-     string name,
-     string description,
-     int? starRating,
-     Address address,
-     ContactInfo contactInfo)
+        string name,
+        string description,
+        string descriptionAr,
+        int? starRating,
+        Address address,
+        ContactInfo contactInfo)
     {
         Name = name;
         Description = description;
+        DescriptionAr = descriptionAr;
         StarRating = starRating;
         Address = address;
         ContactInfo = contactInfo;
@@ -33,77 +38,89 @@ public class Hotel : BaseEntity
     public static Hotel Create(
         string name,
         string description,
+        string descriptionAr,
         int? starRating,
         Address address,
         ContactInfo contactInfo)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Hotel name is required.", nameof(name));
+            throw new ArgumentException(
+                "Hotel name is required.", nameof(name));
 
         if (string.IsNullOrWhiteSpace(description))
-            throw new ArgumentException("Description is required.", nameof(description));
+            throw new ArgumentException(
+                "Description is required.", nameof(description));
+
+        if (string.IsNullOrWhiteSpace(descriptionAr))
+            throw new ArgumentException(
+                "Arabic description is required.", nameof(descriptionAr));
 
         if (starRating is < 1 or > 5)
-            throw new ArgumentOutOfRangeException(nameof(starRating), starRating, "Star rating must be between 1 and 5.");
+            throw new ArgumentOutOfRangeException(
+                nameof(starRating), starRating,
+                "Star rating must be between 1 and 5.");
 
-        if (address is null)
-            throw new ArgumentNullException(nameof(address));
+        ArgumentNullException.ThrowIfNull(address);
+        ArgumentNullException.ThrowIfNull(contactInfo);
 
-        if (contactInfo is null)
-            throw new ArgumentNullException(nameof(contactInfo));
-
-        return new Hotel(name, description, starRating, address, contactInfo);
+        return new Hotel(
+            name,
+            description,
+            descriptionAr,
+            starRating,
+            address,
+            contactInfo);
     }
 
     public void Update(
         string name,
         string description,
+        string descriptionAr,
         int? starRating,
         Address address,
         ContactInfo contactInfo)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Hotel name is required.", nameof(name));
+            throw new ArgumentException(
+                "Hotel name is required.", nameof(name));
 
         if (string.IsNullOrWhiteSpace(description))
-            throw new ArgumentException("Description is required.", nameof(description));
+            throw new ArgumentException(
+                "Description is required.", nameof(description));
+
+        if (string.IsNullOrWhiteSpace(descriptionAr))
+            throw new ArgumentException(
+                "Arabic description is required.", nameof(descriptionAr));
 
         if (starRating is < 1 or > 5)
-            throw new ArgumentOutOfRangeException(nameof(starRating), starRating, "Star rating must be between 1 and 5.");
+            throw new ArgumentOutOfRangeException(
+                nameof(starRating), starRating,
+                "Star rating must be between 1 and 5.");
 
-        if (address is null)
-            throw new ArgumentNullException(nameof(address));
-
-        if (contactInfo is null)
-            throw new ArgumentNullException(nameof(contactInfo));
+        ArgumentNullException.ThrowIfNull(address);
+        ArgumentNullException.ThrowIfNull(contactInfo);
 
         Name = name;
         Description = description;
+        DescriptionAr = descriptionAr;
         StarRating = starRating;
         Address = address;
         ContactInfo = contactInfo;
     }
+
     public void AddImage(HotelImage image)
     {
+        ArgumentNullException.ThrowIfNull(image);
+
         if (image.IsPrimary)
+        {
             foreach (var existing in _images)
                 existing.UnsetPrimary();
+        }
+
         _images.Add(image);
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 public class Address
 {
@@ -111,15 +128,14 @@ public class Address
     public string City { get; private set; } = null!;
     public string State { get; private set; } = null!;
     public string Country { get; private set; } = null!;
-    private Address()
-    {
 
-    }
+    private Address() { }
+
     public Address(
-       string street,
-       string city,
-       string state,
-       string country)
+        string street,
+        string city,
+        string state,
+        string country)
     {
         Street = street;
         City = city;
@@ -146,3 +162,4 @@ public class ContactInfo
         Website = website;
     }
 }
+

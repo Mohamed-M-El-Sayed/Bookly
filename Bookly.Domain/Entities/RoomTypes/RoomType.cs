@@ -10,11 +10,16 @@ public class RoomType : BaseEntity
 {
     public int HotelId { get; private set; }
     public string Name { get; private set; } = null!;
+    public string NameAr { get; private set; } = null!;
     public decimal BasePricePerNight { get; private set; }
     public int MaxOccupancy { get; private set; }
     public string Description { get; private set; } = null!;
+    public string DescriptionAr { get; private set; } = null!;
     public string View { get; private set; } = null!;
-    public Hotel Hotel { get; private set; }
+    public string ViewAr { get; private set; } = null!;
+    public int BedCount { get; private set; }
+    public decimal SizeSqm { get; private set; }
+    public Hotel Hotel { get; private set; } = null!;
     private readonly List<SeasonalPrice> _seasonalPrices = new();
     public IReadOnlyCollection<SeasonalPrice> SeasonalPrices => _seasonalPrices.AsReadOnly();
     private readonly List<BoardOption> _boardOptions = new();
@@ -25,7 +30,6 @@ public class RoomType : BaseEntity
     {
 
     }
-
     public static RoomType Create(int hotelId, string name, decimal price, int maxOccupancy, string description, string view)
     {
         if (price <= 0)
@@ -80,6 +84,5 @@ public class RoomType : BaseEntity
 
         _boardOptions.Add(new BoardOption(Id, type, extraPricePerNight));
     }
-    public decimal PriceForNight(DateOnly night)
-        => _seasonalPrices.FirstOrDefault(s => s.Covers(night))?.PricePerNight ?? BasePricePerNight;
+
 }
