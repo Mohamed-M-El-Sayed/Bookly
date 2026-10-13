@@ -1,6 +1,7 @@
 ﻿using Bookly.Application.Common.Results;
 using Bookly.Application.Contracts.Services.Authentication;
 using Bookly.Application.Contracts.Services.Security;
+using Bookly.Application.Features.Auth.Messages;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -31,9 +32,7 @@ public class ResetPasswordCommandHandler(
                 "Password reset failed for user {UserId}. New password is compromised.",
                 request.UserId);
 
-            return Result.Failure(
-                Errors.Validation(
-                    "The provided password is compromised."));
+            return Result.Failure(AuthErrors.PasswordCompromised());
         }
 
         var result = await authService.ResetPasswordAsync(
