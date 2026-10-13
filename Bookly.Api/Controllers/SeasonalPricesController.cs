@@ -5,7 +5,7 @@ namespace Bookly.Api.Controllers;
 
 [Route("api/room-types/{roomTypeId:int}/seasonal-prices")]
 [ApiController]
-public class SeasonalPricesController(IMediator mediator) : ControllerBase
+public class SeasonalPricesController(IMediator mediator) : ApiControllerBase
 {
     [HttpGet]
     public IActionResult get()

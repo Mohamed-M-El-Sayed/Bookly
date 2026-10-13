@@ -1,5 +1,4 @@
-﻿using Bookly.Api.Extensions;
-using Bookly.Application.Features.Users.Commands.AssignRole;
+﻿using Bookly.Application.Features.Users.Commands.AssignRole;
 using Bookly.Application.Features.Users.Commands.UnAssignRole;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +7,7 @@ namespace Bookly.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UsersController(IMediator mediator) : ControllerBase
+public class UsersController(IMediator mediator) : ApiControllerBase
 {
     /// <summary>
     /// Assigns a role to a user (Admin only).
@@ -16,9 +15,9 @@ public class UsersController(IMediator mediator) : ControllerBase
     [HttpPost("{userId}/roles")]
     public async Task<IActionResult> AssignRole(string userId, [FromBody] AssignRoleCommand command, CancellationToken cancellationToken)
     {
-       command.UserId = userId;
-       var result = await mediator.Send(command, cancellationToken);
-       return result.ToResponse();
+        command.UserId = userId;
+        var result = await mediator.Send(command, cancellationToken);
+        return Respond(result);
     }
 
     /// <summary>
@@ -27,8 +26,8 @@ public class UsersController(IMediator mediator) : ControllerBase
     [HttpDelete("{userId}/roles")]
     public async Task<IActionResult> UnAssignRole(string userId, [FromBody] UnAssignRoleCommand command, CancellationToken cancellationToken)
     {
-       command.UserId = userId;
-       var result = await mediator.Send(command, cancellationToken);
-       return result.ToResponse();
+        command.UserId = userId;
+        var result = await mediator.Send(command, cancellationToken);
+        return Respond(result);
     }
 }
