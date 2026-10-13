@@ -1,5 +1,6 @@
 ﻿using Bookly.Application.Common.Results;
 using Bookly.Application.Contracts.Presistence;
+using Bookly.Application.Features.RoomTypes.Errors;
 using Bookly.Domain.Entities.RoomTypes;
 using MediatR;
 namespace Bookly.Application.Features.RoomTypes.Commands.UpdateRoomType;
@@ -10,7 +11,7 @@ public class UpdateRoomTypeCommandHandler(IUnitOfWork unitOfWork) : IRequestHand
     {
         var roomType = await unitOfWork.Repository<RoomType>().GetByIdAsync(request.Id, cancellationToken);
         if (roomType is null)
-            return Result<UpdateRoomTypeResponse>.Failure(Errors.NotFound("Room Type not found"));
+            return Result<UpdateRoomTypeResponse>.Failure(RoomTypeErrors.NotFound());
         roomType.Update(
             request.Name,
             request.NameAr,
