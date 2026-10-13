@@ -1,99 +1,100 @@
-﻿using Bookly.Api.Responses;
+﻿using Bookly.Api.Resources;
+using Bookly.Api.Responses;
 using Bookly.Application.Common.Results;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace Bookly.Api.Extensions;
 
 public static class ResultExtensions
 {
-    public static IActionResult ToResponse<T>(this Result<T> result, int statusCode = StatusCodes.Status200OK)
+    public static IActionResult ToResponse<T>(
+        this Result<T> result,
+        int statusCode = StatusCodes.Status200OK,
+        IStringLocalizer<SharedResource>? localizer = null)
     {
-        if (result.IsSuccess)
+        if (result.IsFailure)
         {
-            return new ObjectResult(
-                new ApiResponse<T>(
-                    statusCode,
-                    true,
-                    result.Value,
-                    null))
-            {
-                StatusCode = statusCode
-            };
+            var errorStatus = GetStatusCode(result.Error!);
+
+            return ToObjectResult(errorStatus,
+                new ApiResponse<T>(errorStatus, false, default, ToApiErrors(result.Error!, localizer)));
         }
 
-        var errorStatusCode = GetStatusCode(result.Error!);
-
-        return new ObjectResult(
-            new ApiResponse<T>(
-                errorStatusCode,
-                false,
-                default,
-                new[]
-                {
-                    new ApiError(
-                        result.Error!.Code,
-                        result.Error.Message)
-                }))
+        // Handlers return a message key; the text is translated here
+        if (result.Value is MessageResponse message)
         {
-            StatusCode = errorStatusCode
-        };
-    }
+            var text = Localize(message.Key, message.DefaultMessage, message.Args, localizer);
 
-    public static IActionResult ToResponse(this Result result, int statusCode = StatusCodes.Status204NoContent)
-    {
-        if (result.IsSuccess)
-        {
-            return new ObjectResult(
-                new ApiResponse(
-                    statusCode,
-                    true,
-                    null))
-            {
-                StatusCode = statusCode
-            };
+            return ToObjectResult(statusCode,
+                new ApiResponse<MessageDto>(statusCode, true, new MessageDto(text), null));
         }
 
-        var errorStatusCode = GetStatusCode(result.Error!);
-
-        return new ObjectResult(
-            new ApiResponse(
-                errorStatusCode,
-                false,
-                new[]
-                {
-                    new ApiError(
-                        result.Error!.Code,
-                        result.Error.Message)
-                }))
-        {
-            StatusCode = errorStatusCode
-        };
+        return ToObjectResult(statusCode,
+            new ApiResponse<T>(statusCode, true, result.Value, null));
     }
 
-    private static int GetStatusCode(Error error)
+    public static IActionResult ToResponse(
+        this Result result,
+        int statusCode = StatusCodes.Status204NoContent,
+        IStringLocalizer<SharedResource>? localizer = null)
     {
-        return error.Code switch
+        if (result.IsFailure)
         {
-            "NotFound" =>
-                StatusCodes.Status404NotFound,
+            var errorStatus = GetStatusCode(result.Error!);
 
-            "Conflict" =>
-                StatusCodes.Status409Conflict,
+            return ToObjectResult(errorStatus,
+                new ApiResponse(errorStatus, false, ToApiErrors(result.Error!, localizer)));
+        }
 
-            "Validation" =>
-                StatusCodes.Status400BadRequest,
+        // A 204 response must not have a body
+        if (statusCode == StatusCodes.Status204NoContent)
+            return new NoContentResult();
 
-            "Unauthorized" =>
-                StatusCodes.Status401Unauthorized,
+        return ToObjectResult(statusCode, new ApiResponse(statusCode, true, null));
+    }
 
-            "Forbidden" =>
-                StatusCodes.Status403Forbidden,
+    private static ObjectResult ToObjectResult(int statusCode, object body)
+        => new(body) { StatusCode = statusCode };
 
-            "InternalServer" =>
-                StatusCodes.Status500InternalServerError,
+    private static int GetStatusCode(Error error) => error.Type switch
+    {
+        ErrorType.NotFound => StatusCodes.Status404NotFound,
+        ErrorType.Conflict => StatusCodes.Status409Conflict,
+        ErrorType.Validation => StatusCodes.Status400BadRequest,
+        ErrorType.Unauthorized => StatusCodes.Status401Unauthorized,
+        ErrorType.Forbidden => StatusCodes.Status403Forbidden,
+        ErrorType.Internal => StatusCodes.Status500InternalServerError,
+        _ => StatusCodes.Status400BadRequest
+    };
 
-            _ =>
-                StatusCodes.Status400BadRequest
-        };
+    // A validation error carries one entry per failed rule in Details
+    private static ApiError[] ToApiErrors(Error error, IStringLocalizer<SharedResource>? localizer)
+    {
+        IReadOnlyList<Error> errors = error.Details is { Count: > 0 } ? error.Details : [error];
+
+        return errors
+            .Select(e => new ApiError(e.Code, Localize(e.Code, e.Message, e.Args, localizer)))
+            .ToArray();
+    }
+
+    // One place for translating both errors and messages
+    private static string Localize(
+        string key,
+        string defaultMessage,
+        object[]? args,
+        IStringLocalizer<SharedResource>? localizer)
+    {
+        var hasArgs = args is { Length: > 0 };
+
+        // The English fallback also gets its placeholders filled in
+        var fallback = hasArgs ? string.Format(defaultMessage, args!) : defaultMessage;
+
+        if (localizer is null)
+            return fallback;
+
+        var entry = hasArgs ? localizer[key, args!] : localizer[key];
+
+        return entry.ResourceNotFound ? fallback : entry.Value;
     }
 }
