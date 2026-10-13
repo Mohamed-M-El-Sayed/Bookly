@@ -14,7 +14,7 @@ public class AddHotelImageCommandHandler(IUnitOfWork unitOfWork) : IRequestHandl
             .GetEntityWithSpecAsync(
             new HotelByIdWithImagesSpecification(request.HotelId), cancellationToken);
         if (hotel is null)
-            return Result<AddHotelImageResponse>.Failure(Errors.NotFound("Hotel not found"));
+            return Result<AddHotelImageResponse>.Failure(HotelErrors.NotFound());
         hotel.AddImage(new HotelImage(request.HotelId, request.Url, request.IsPrimary));
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return Result<AddHotelImageResponse>.Success(new AddHotelImageResponse(request.HotelId, request.Url, request.IsPrimary));

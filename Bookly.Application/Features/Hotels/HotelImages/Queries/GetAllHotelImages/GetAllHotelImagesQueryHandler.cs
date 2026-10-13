@@ -16,7 +16,7 @@ public class GetAllHotelImagesQueryHandler(IUnitOfWork unitOfWork) : IRequestHan
 
         if (hotel is null)
             return Result<List<GetAllHotelImagesResponse>>
-                .Failure(Errors.NotFound("Hotel not found"));
+                .Failure(HotelErrors.NotFound());
 
 
         var images = await unitOfWork.Repository<HotelImage>()
