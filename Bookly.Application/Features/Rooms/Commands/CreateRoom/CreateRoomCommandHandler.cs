@@ -1,5 +1,6 @@
 using Bookly.Application.Common.Results;
 using Bookly.Application.Contracts.Presistence;
+using Bookly.Application.Features.RoomTypes.Errors;
 using Bookly.Domain.Entities.RoomTypes;
 using MediatR;
 
@@ -11,7 +12,7 @@ public class CreateRoomCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<
     {
         var roomType = await unitOfWork.Repository<RoomType>().GetByIdAsync(request.RoomTypeId, cancellationToken);
         if (roomType is null)
-            return Result<CreateRoomResponse>.Failure(Errors.NotFound("Room type not found"));
+            return Result<CreateRoomResponse>.Failure(RoomTypeErrors.NotFound());
 
         var room = Room.Create(request.RoomTypeId, request.RoomNumber);
 
