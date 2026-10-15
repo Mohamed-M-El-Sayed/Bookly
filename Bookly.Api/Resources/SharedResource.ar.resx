@@ -210,4 +210,61 @@
   <data name="Validation.BoardOption.ExtraPricePerNight.Negative" xml:space="preserve">
     <value>لا يمكن أن يكون السعر الإضافي لليلة الواحدة سالبًا.</value>
   </data>
+  <data name="Validation.Hotel.Name.Required" xml:space="preserve">
+    <value>اسم الفندق مطلوب.</value>
+  </data>
+  <data name="Validation.Hotel.Name.TooLong" xml:space="preserve">
+    <value>يجب ألا يتجاوز اسم الفندق 200 حرف.</value>
+  </data>
+  <data name="Validation.Hotel.Description.Required" xml:space="preserve">
+    <value>الوصف مطلوب.</value>
+  </data>
+  <data name="Validation.Hotel.Description.TooLong" xml:space="preserve">
+    <value>يجب ألا يتجاوز الوصف 2000 حرف.</value>
+  </data>
+  <data name="Validation.Hotel.DescriptionAr.TooLong" xml:space="preserve">
+    <value>يجب ألا يتجاوز الوصف العربي 2000 حرف.</value>
+  </data>
+  <data name="Validation.Hotel.StarRating.Invalid" xml:space="preserve">
+    <value>يجب أن يكون تقييم النجوم بين 1 و5.</value>
+  </data>
+  <data name="Validation.Hotel.Street.Required" xml:space="preserve">
+    <value>اسم الشارع مطلوب.</value>
+  </data>
+  <data name="Validation.Hotel.Street.TooLong" xml:space="preserve">
+    <value>يجب ألا يتجاوز اسم الشارع 200 حرف.</value>
+  </data>
+  <data name="Validation.Hotel.City.TooLong" xml:space="preserve">
+    <value>يجب ألا يتجاوز اسم المدينة 100 حرف.</value>
+  </data>
+  <data name="Validation.Hotel.State.Required" xml:space="preserve">
+    <value>يجب ألا يتجاوز اسم المحافظة 100 حرف.</value>
+  </data>
+<data name="Validation.Hotel.DescriptionAr.Required" xml:space="preserve">
+  <value>الوصف باللغة العربية مطلوب.</value>
+</data>
+	<data name="Validation.Hotel.City.Required" xml:space="preserve">
+  <value>المدينة مطلوبة.</value>
+</data>
+	<data name="Validation.Hotel.State.TooLong" xml:space="preserve">
+  <value>يجب ألا يتجاوز اسم المحافظة 100 حرف.</value>
+</data>
+	<data name="Validation.Hotel.Country.Required" xml:space="preserve">
+  <value>الدولة مطلوبة.</value>
+</data>
+	<data name="Validation.Hotel.Country.TooLong" xml:space="preserve">
+  <value>يجب ألا يتجاوز اسم الدولة 100 حرف.</value>
+</data>
+	<data name="Validation.Hotel.Phone.Required" xml:space="preserve">
+  <value>رقم الهاتف مطلوب.</value>
+</data>
+	<data name="Validation.Hotel.Phone.Invalid" xml:space="preserve">
+  <value>صيغة رقم الهاتف غير صحيحة.</value>
+</data>
+	<data name="Validation.Hotel.Email.Invalid" xml:space="preserve">
+  <value>صيغة البريد الإلكتروني غير صحيحة.</value>
+</data>
+	<data name="Validation.Hotel.Website.Invalid" xml:space="preserve">
+  <value>يجب إدخال رابط موقع إلكتروني صحيح.</value>
+</data>
 </root>
