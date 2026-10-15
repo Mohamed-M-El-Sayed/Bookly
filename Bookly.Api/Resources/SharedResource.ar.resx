@@ -204,5 +204,10 @@
   <data name="Validation.ConfirmPassword.Mismatch" xml:space="preserve">
     <value>كلمتا المرور غير متطابقتين.</value>
   </data>
-
+  <data name="Validation.BoardOption.Type.Invalid" xml:space="preserve">
+    <value>يجب اختيار نوع إقامة صالح.</value>
+  </data>
+  <data name="Validation.BoardOption.ExtraPricePerNight.Negative" xml:space="preserve">
+    <value>لا يمكن أن يكون السعر الإضافي لليلة الواحدة سالبًا.</value>
+  </data>
 </root>
