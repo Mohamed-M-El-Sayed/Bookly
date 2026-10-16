@@ -59,4 +59,12 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
     {
         return _dbSet.FirstOrDefaultAsync(predicate, cancellationToken);
     }
+    public void Remove(TEntity entity)
+    {
+        _dbSet.Remove(entity);
+    }
+    public void RemoveRange(IEnumerable<TEntity> entities)
+    {
+        _dbSet.RemoveRange(entities);
+    }
 }

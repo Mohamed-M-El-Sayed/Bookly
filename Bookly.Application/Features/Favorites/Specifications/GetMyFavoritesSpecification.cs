@@ -8,8 +8,6 @@ public class GetMyFavoritesSpecification : BaseSpecification<Favorite>
     public GetMyFavoritesSpecification(Guid userId)
     {
         Criteria = f => f.UserId == userId;
-
-        AddInclude(f => f.Hotel);
-        AddInclude(f => f.Hotel!.Images.Where(i => i.IsPrimary));
     }
 }
+

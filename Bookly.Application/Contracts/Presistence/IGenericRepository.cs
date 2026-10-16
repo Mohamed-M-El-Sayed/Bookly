@@ -13,4 +13,6 @@ public interface IGenericRepository<TEntity> where TEntity : BaseEntity
     Task<(IReadOnlyList<TEntity> Items, int TotalCount)> GetPagedAsync(ISpecification<TEntity> spec, CancellationToken cancellationToken = default);
     Task AddAsync(TEntity entity, CancellationToken cancellationToken = default);
     void Update(TEntity entity);
+    void Remove(TEntity entity);
+    void RemoveRange(IEnumerable<TEntity> entities);
 }

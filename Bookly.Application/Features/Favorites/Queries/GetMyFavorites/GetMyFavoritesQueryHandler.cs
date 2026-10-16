@@ -26,7 +26,7 @@ public class GetMyFavoritesQueryHandler(
             return Result<IReadOnlyList<FavoriteResponse>>.Failure(AuthErrors.Unauthorized());
         }
         var favorites = await unitOfWork.Repository<Favorite>()
-            .GetAllWithSpecAsync(new GetMyFavoritesSpecification(userId.Value));
+            .GetAllWithSpecAsync(new GetMyFavoritesWithHotelSpecification(userId.Value));
         var response = favorites.Adapt<IReadOnlyList<FavoriteResponse>>();
         logger.LogInformation(
             "Retrieved {Count} favorites for user {UserId}",
