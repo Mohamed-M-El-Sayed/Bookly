@@ -1,5 +1,6 @@
 using Bookly.Application.Common.Results;
 using Bookly.Application.Contracts.Presistence;
+using Bookly.Application.Features.Hotels.Errors;
 using Bookly.Domain.Entities.Hotels;
 using MediatR;
 

@@ -4,6 +4,7 @@ using Bookly.Domain.Entities.Base;
 using Bookly.Infrastructure.Persistence.Context;
 using Bookly.Infrastructure.Persistence.Specifications;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Bookly.Infrastructure.Persistence.Repositories;
 
@@ -52,5 +53,10 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
             .Take(spec.Take)
             .ToListAsync(cancellationToken);
         return (items, totalCount);
+    }
+
+    public Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+    {
+        return _dbSet.FirstOrDefaultAsync(predicate, cancellationToken);
     }
 }

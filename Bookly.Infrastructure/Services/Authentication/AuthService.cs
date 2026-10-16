@@ -82,7 +82,7 @@ public class AuthService(
                 return Result.Success();
 
             return Result.Failure(
-                Errors.Validation("code", string.Join(", ", result.Errors.Select(e => e.Description))));
+                ErrorFactory.Validation("code", string.Join(", ", result.Errors.Select(e => e.Description))));
         }
 
         var roleResult = await userManager.AddToRoleAsync(user, Roles.Customer);
@@ -251,7 +251,7 @@ public class AuthService(
                 return Result.Failure(AuthErrors.InvalidResetLink());
 
             return Result.Failure(
-                Errors.Validation("code", string.Join(", ", result.Errors.Select(e => e.Description))));
+                ErrorFactory.Validation("code", string.Join(", ", result.Errors.Select(e => e.Description))));
         }
 
         if (!string.IsNullOrEmpty(oldPasswordHash))

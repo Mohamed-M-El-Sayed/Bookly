@@ -32,8 +32,8 @@ public sealed class ValidationBehavior<TRequest, TResponse>(
         if (!typeof(Result).IsAssignableFrom(typeof(TResponse)))
             throw new ValidationException(failures);
 
-        var error = Errors.ValidationFailed(
-            failures.Select(f => Errors.Validation(f.ErrorCode, f.ErrorMessage)));
+        var error = ErrorFactory.ValidationFailed(
+            failures.Select(f => ErrorFactory.Validation(f.ErrorCode, f.ErrorMessage)));
 
         return CreateFailure(error);
     }

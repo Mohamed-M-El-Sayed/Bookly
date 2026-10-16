@@ -1,6 +1,6 @@
 ﻿namespace Bookly.Application.Common.Results;
 
-public static class Errors
+public static class ErrorFactory
 {
     public static Error NotFound(string code, string message, params object[] args)
         => new(code, message, ErrorType.NotFound, args);

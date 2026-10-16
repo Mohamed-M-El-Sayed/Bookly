@@ -240,31 +240,37 @@
   <data name="Validation.Hotel.State.Required" xml:space="preserve">
     <value>يجب ألا يتجاوز اسم المحافظة 100 حرف.</value>
   </data>
-<data name="Validation.Hotel.DescriptionAr.Required" xml:space="preserve">
-  <value>الوصف باللغة العربية مطلوب.</value>
-</data>
-	<data name="Validation.Hotel.City.Required" xml:space="preserve">
-  <value>المدينة مطلوبة.</value>
-</data>
-	<data name="Validation.Hotel.State.TooLong" xml:space="preserve">
-  <value>يجب ألا يتجاوز اسم المحافظة 100 حرف.</value>
-</data>
-	<data name="Validation.Hotel.Country.Required" xml:space="preserve">
-  <value>الدولة مطلوبة.</value>
-</data>
-	<data name="Validation.Hotel.Country.TooLong" xml:space="preserve">
-  <value>يجب ألا يتجاوز اسم الدولة 100 حرف.</value>
-</data>
-	<data name="Validation.Hotel.Phone.Required" xml:space="preserve">
-  <value>رقم الهاتف مطلوب.</value>
-</data>
-	<data name="Validation.Hotel.Phone.Invalid" xml:space="preserve">
-  <value>صيغة رقم الهاتف غير صحيحة.</value>
-</data>
-	<data name="Validation.Hotel.Email.Invalid" xml:space="preserve">
-  <value>صيغة البريد الإلكتروني غير صحيحة.</value>
-</data>
-	<data name="Validation.Hotel.Website.Invalid" xml:space="preserve">
-  <value>يجب إدخال رابط موقع إلكتروني صحيح.</value>
-</data>
+  <data name="Validation.Hotel.DescriptionAr.Required" xml:space="preserve">
+    <value>الوصف باللغة العربية مطلوب.</value>
+  </data>
+  <data name="Validation.Hotel.City.Required" xml:space="preserve">
+    <value>المدينة مطلوبة.</value>
+  </data>
+  <data name="Validation.Hotel.State.TooLong" xml:space="preserve">
+    <value>يجب ألا يتجاوز اسم المحافظة 100 حرف.</value>
+  </data>
+  <data name="Validation.Hotel.Country.Required" xml:space="preserve">
+    <value>الدولة مطلوبة.</value>
+  </data>
+  <data name="Validation.Hotel.Country.TooLong" xml:space="preserve">
+    <value>يجب ألا يتجاوز اسم الدولة 100 حرف.</value>
+  </data>
+  <data name="Validation.Hotel.Phone.Required" xml:space="preserve">
+    <value>رقم الهاتف مطلوب.</value>
+  </data>
+  <data name="Validation.Hotel.Phone.Invalid" xml:space="preserve">
+    <value>صيغة رقم الهاتف غير صحيحة.</value>
+  </data>
+  <data name="Validation.Hotel.Email.Invalid" xml:space="preserve">
+    <value>صيغة البريد الإلكتروني غير صحيحة.</value>
+  </data>
+  <data name="Validation.Hotel.Website.Invalid" xml:space="preserve">
+    <value>يجب إدخال رابط موقع إلكتروني صحيح.</value>
+  </data>
+  <data name="Auth.Unauthorized" xml:space="preserve">
+    <value>غير مصرح لك بتنفيذ هذا الإجراء.</value>
+  </data>
+  <data name="Favorite.AlreadyExists" xml:space="preserve">
+    <value>هذا الفندق موجود بالفعل في قائمة مفضلاتك.</value>
+  </data>
 </root>

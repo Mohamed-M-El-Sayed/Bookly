@@ -1,0 +1,24 @@
+﻿using Bookly.Application.Contracts.Services.Users;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+
+namespace Bookly.Infrastructure.Services.Authentication;
+
+public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICurrentUserService
+{
+    public Guid? UserId
+    {
+        get
+        {
+            var user = httpContextAccessor.HttpContext?.User;
+
+            var userId = user?.FindFirstValue(
+                ClaimTypes.NameIdentifier)
+                ?? user?.FindFirstValue("sub");
+
+            return Guid.TryParse(userId, out var id)
+                ? id
+                : null;
+        }
+    }
+}

@@ -25,7 +25,7 @@ public class UserService(UserManager<ApplicationUser> userManager,
             return Result.Success();
         var result = await userManager.AddToRoleAsync(user, role);
         if (!result.Succeeded)
-            return Result.Failure(Errors.Validation(
+            return Result.Failure(ErrorFactory.Validation(
                 "code", string.Join(", ", result.Errors.Select(e => e.Description))));
 
         await ForceReauthenticationAsync(user, cancellationToken);
@@ -47,7 +47,7 @@ public class UserService(UserManager<ApplicationUser> userManager,
 
         var result = await userManager.RemoveFromRoleAsync(user, role);
         if (!result.Succeeded)
-            return Result.Failure(Errors.Validation(
+            return Result.Failure(ErrorFactory.Validation(
                 "code", string.Join(", ", result.Errors.Select(e => e.Description))));
 
         if (!await userManager.IsInRoleAsync(user, Roles.Customer))

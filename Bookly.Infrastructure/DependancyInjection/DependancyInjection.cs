@@ -2,7 +2,7 @@
 using Bookly.Application.Contracts.Services.Authentication;
 using Bookly.Application.Contracts.Services.Email;
 using Bookly.Application.Contracts.Services.Files;
-using Microsoft.Extensions.Http;
+using Bookly.Application.Contracts.Services.Security;
 using Bookly.Application.Contracts.Services.Users;
 using Bookly.Domain.Entities.Identity;
 using Bookly.Infrastructure.Persistence.Context;
@@ -15,13 +15,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Bookly.Application.Contracts.Services.Security;
 
 namespace Bookly.Infrastructure.DependancyInjection
 {
     public static class DependancyInjection
     {
-        public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration , string wwwRootPath)
+        public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration, string wwwRootPath)
         {
             services.AddDbContext<AppDbContext>(options =>
             {
@@ -35,7 +34,7 @@ namespace Bookly.Infrastructure.DependancyInjection
 
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<IUserService , UserService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IFileService>(_ => new FileService(wwwRootPath));
@@ -45,8 +44,8 @@ namespace Bookly.Infrastructure.DependancyInjection
                 {
                     client.BaseAddress = new Uri("https://api.pwnedpasswords.com/");
                 });
-
-
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddHttpContextAccessor();
 
 
 
