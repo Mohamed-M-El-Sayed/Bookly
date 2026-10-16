@@ -273,4 +273,7 @@
   <data name="Favorite.AlreadyExists" xml:space="preserve">
     <value>هذا الفندق موجود بالفعل في قائمة مفضلاتك.</value>
   </data>
+  <data name="Favorite.NotFound" xml:space="preserve">
+    <value>الفندق غير موجود في قائمة المفضلة.</value>
+  </data>
 </root>
