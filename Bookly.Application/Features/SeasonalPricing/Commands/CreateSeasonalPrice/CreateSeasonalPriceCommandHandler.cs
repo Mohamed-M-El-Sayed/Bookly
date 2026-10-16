@@ -1,5 +1,6 @@
 ﻿using Bookly.Application.Common.Results;
 using Bookly.Application.Contracts.Presistence;
+using Bookly.Application.Features.RoomTypes.Errors;
 using Bookly.Application.Features.SeasonalPricing.Specifications;
 using Bookly.Domain.Entities.RoomTypes;
 using Bookly.Domain.Entities.SeasonalPricing;
@@ -15,7 +16,7 @@ public class CreateSeasonalPriceCommandHandler(IUnitOfWork unitOfWork)
         var roomType = await unitOfWork.Repository<RoomType>()
             .GetEntityWithSpecAsync(new RoomTypeWithSeasonalPricesSpecification(request.RoomTypeId), cancellationToken);
         if (roomType is null)
-            return Result<CreateSeasonalPriceResponse>.Failure(Errors.NotFound("Room Type not found"));
+            return Result<CreateSeasonalPriceResponse>.Failure(RoomTypeErrors.NotFound());
         var seasonalPrice = new SeasonalPrice(
             request.RoomTypeId,
             request.Name,

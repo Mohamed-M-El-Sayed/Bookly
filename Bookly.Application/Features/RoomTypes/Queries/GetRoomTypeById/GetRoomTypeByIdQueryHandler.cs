@@ -1,5 +1,6 @@
 ﻿using Bookly.Application.Common.Results;
 using Bookly.Application.Contracts.Presistence;
+using Bookly.Application.Features.RoomTypes.Errors;
 using Bookly.Domain.Entities.RoomTypes;
 using Mapster;
 using MediatR;
@@ -11,7 +12,7 @@ public class GetRoomTypeByIdQueryHandler(IUnitOfWork unitOfWork) : IRequestHandl
     {
         var roomType = await unitOfWork.Repository<RoomType>().GetByIdAsync(request.Id, cancellationToken);
         if (roomType is null)
-            return Result<GetRoomTypeByIdResponse>.Failure(Errors.NotFound("Room Type not found"));
+            return Result<GetRoomTypeByIdResponse>.Failure(RoomTypeErrors.NotFound());
         var response = roomType.Adapt<GetRoomTypeByIdResponse>();
         return Result<GetRoomTypeByIdResponse>.Success(response);
     }

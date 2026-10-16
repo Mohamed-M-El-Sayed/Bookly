@@ -1,4 +1,5 @@
 ﻿namespace Bookly.Application.Common.Results;
+
 public class Result
 {
     public bool IsSuccess { get; }
@@ -6,6 +7,12 @@ public class Result
     public Error? Error { get; }
     protected Result(bool isSuccess, Error? error)
     {
+        if (isSuccess && error is not null)
+            throw new InvalidOperationException("A successful result cannot have an error.");
+
+        if (!isSuccess && error is null)
+            throw new InvalidOperationException("A failed result must have an error.");
+
         IsSuccess = isSuccess;
         Error = error;
     }
@@ -17,11 +24,14 @@ public class Result
 }
 public sealed class Result<T> : Result
 {
-    public T? Value { get; }
+    private T? _value { get; }
     private Result(bool isSuccess, T? value, Error? error) : base(isSuccess, error)
     {
-        Value = value;
+        _value = value;
     }
+    public T Value => IsSuccess
+        ? _value!
+        : throw new InvalidOperationException("Cannot read the value of a failed result.");
     public static Result<T> Success(T value)
     => new(true, value, null);
 

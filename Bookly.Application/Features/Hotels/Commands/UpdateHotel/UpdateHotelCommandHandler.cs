@@ -11,7 +11,7 @@ public class UpdateHotelCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler
     {
         var hotel = await unitOfWork.Repository<Hotel>().GetByIdAsync(request.Id, cancellationToken);
         if (hotel is null)
-            return Result<UpdateHotelResponse>.Failure(Errors.NotFound("Hotel not found"));
+            return Result<UpdateHotelResponse>.Failure(HotelErrors.NotFound());
 
         var address = new Address(request.Street, request.City, request.State, request.Country);
         var contactInfo = new ContactInfo(request.Phone, request.Email, request.Website);

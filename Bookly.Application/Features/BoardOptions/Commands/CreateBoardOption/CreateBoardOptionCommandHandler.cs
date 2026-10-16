@@ -1,6 +1,7 @@
 ﻿using Bookly.Application.Common.Results;
 using Bookly.Application.Contracts.Presistence;
 using Bookly.Application.Features.BoardOptions.Specifications;
+using Bookly.Application.Features.RoomTypes.Errors;
 using Bookly.Domain.Entities.RoomTypes;
 using MediatR;
 
@@ -13,7 +14,7 @@ public class CreateBoardOptionCommandHandler(IUnitOfWork unitOfWork) : IRequestH
         var roomType = await unitOfWork.Repository<RoomType>()
              .GetEntityWithSpecAsync(new RoomTypeWithBoardOptionsSpecification(request.RoomTypeId), cancellationToken);
         if (roomType is null)
-            return Result<CreateBoardOptionResponse>.Failure(Errors.NotFound("Room type not found"));
+            return Result<CreateBoardOptionResponse>.Failure(RoomTypeErrors.NotFound());
         roomType.AddBoardOption(request.Type, request.ExtraPricePerNight);
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return Result<CreateBoardOptionResponse>.Success(new CreateBoardOptionResponse(request.RoomTypeId, request.Type));

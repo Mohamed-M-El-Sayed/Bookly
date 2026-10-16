@@ -84,7 +84,24 @@ namespace Bookly.Api
                 });
             });
 
+
+            builder.Services.AddLocalization();
+
+            string[] supportedCultures = ["en", "ar"];
+
             var app = builder.Build();
+
+
+            // Localization: first in the pipeline, so everything after it sees the request's culture
+            app.UseRequestLocalization(options =>
+            {
+                options.SetDefaultCulture("en")
+                       .AddSupportedCultures(supportedCultures)
+                       .AddSupportedUICultures(supportedCultures);
+
+                options.ApplyCurrentCultureToResponseHeaders = true;   // adds a Content-Language header
+            });
+
 
             app.UseMiddleware<ErrorHandlingMiddleware>();
 

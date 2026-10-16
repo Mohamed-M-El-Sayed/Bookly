@@ -1,5 +1,4 @@
-﻿using Bookly.Api.Extensions;
-using Bookly.Application.Features.BoardOptions.Commands.CreateBoardOption;
+﻿using Bookly.Application.Features.BoardOptions.Commands.CreateBoardOption;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,7 +6,7 @@ namespace Bookly.Api.Controllers;
 
 [ApiController]
 [Route("api/room-types/{roomTypeId}/board-options")]
-public class BoardOptionsController(IMediator mediator) : ControllerBase
+public class BoardOptionsController(IMediator mediator) : ApiControllerBase
 {
     // admin 
     /// <summary>
@@ -18,7 +17,7 @@ public class BoardOptionsController(IMediator mediator) : ControllerBase
     {
         command.RoomTypeId = roomTypeId;
         var result = await mediator.Send(command, cancellationToken);
-        return result.ToResponse();
+        return Respond(result);
     }
 
 

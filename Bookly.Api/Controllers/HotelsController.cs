@@ -1,4 +1,3 @@
-using Bookly.Api.Extensions;
 using Bookly.Application.Features.Hotels.Commands.CreateHotel;
 using Bookly.Application.Features.Hotels.Commands.UpdateHotel;
 using Bookly.Application.Features.Hotels.Queries;
@@ -9,7 +8,7 @@ namespace Bookly.Api.Controllers;
 
 [Route("api/hotels")]
 [ApiController]
-public class HotelsController(IMediator mediator) : ControllerBase
+public class HotelsController(IMediator mediator) : ApiControllerBase
 {
     /// <summary>
     /// Creates a new hotel.
@@ -18,7 +17,7 @@ public class HotelsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateHotelCommand command, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(command, cancellationToken);
-        return result.ToResponse();
+        return Respond(result);
     }
 
     /// <summary>
@@ -29,7 +28,7 @@ public class HotelsController(IMediator mediator) : ControllerBase
     {
         command.Id = id;
         var result = await mediator.Send(command, cancellationToken);
-        return result.ToResponse();
+        return Respond(result);
     }
     /// <summary>
     /// Searches for hotels based on the provided criteria.
@@ -38,7 +37,7 @@ public class HotelsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> Search([FromQuery] SearchHotelsQuery query, CancellationToken cancellationToken = default)
     {
         var result = await mediator.Send(query, cancellationToken);
-        return result.ToResponse();
+        return Respond(result);
     }
 
 

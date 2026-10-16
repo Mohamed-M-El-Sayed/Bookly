@@ -1,6 +1,7 @@
 ﻿using Bookly.Application.Common.Results;
 using Bookly.Application.Contracts.Services.Authentication;
 using Bookly.Application.Contracts.Services.Security;
+using Bookly.Application.Features.Auth.Messages;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -10,9 +11,9 @@ public class RegisterCommandHandler(
     IAuthService authService,
     ILogger<RegisterCommandHandler> logger,
     ICompromisedPasswordService compromisedPasswordService)
-    : IRequestHandler<RegisterCommand, Result<RegisterResponse>>
+    : IRequestHandler<RegisterCommand, Result<MessageResponse>>
 {
-    public async Task<Result<RegisterResponse>> Handle(
+    public async Task<Result<MessageResponse>> Handle(
         RegisterCommand request,
         CancellationToken cancellationToken)
     {
@@ -31,9 +32,8 @@ public class RegisterCommandHandler(
                 "Registration failed for {Email}. Password is compromised.",
                 request.Email);
 
-            return Result<RegisterResponse>.Failure(
-                Errors.Validation(
-                    "The provided password is compromised."));
+            return Result<MessageResponse>.Failure(
+                AuthErrors.PasswordCompromised());
         }
 
         var result = await authService.RegisterAsync(
@@ -51,11 +51,9 @@ public class RegisterCommandHandler(
                 result.Error!.Code,
                 result.Error.Message);
 
-            return Result<RegisterResponse>.Failure(result.Error);
+            return Result<MessageResponse>.Failure(result.Error);
         }
 
-        return Result<RegisterResponse>.Success(
-            new RegisterResponse(
-                "Registration successful. Please check your email to verify your account."));
+        return Result<MessageResponse>.Success(AuthMessages.RegisterResponse());
     }
 }

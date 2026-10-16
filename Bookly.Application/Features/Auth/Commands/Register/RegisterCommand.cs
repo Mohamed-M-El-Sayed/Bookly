@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Bookly.Application.Features.Auth.Commands.Register;
 
-public class RegisterCommand : IRequest<Result<RegisterResponse>>
+public class RegisterCommand : IRequest<Result<MessageResponse>>
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;

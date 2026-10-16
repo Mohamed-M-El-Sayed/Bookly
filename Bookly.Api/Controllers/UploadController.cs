@@ -1,15 +1,18 @@
 ﻿using Bookly.Api.Extensions;
 using Bookly.Application.Common.Results;
 using Bookly.Application.Contracts.Services.Files;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookly.Api.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
-public class UploadController(IFileService fileService) : ControllerBase
+public class UploadController(IFileService fileService) : ApiControllerBase
 {
-    private const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
+    private const int MaxFileSizeMb = 5;
+    private const long MaxFileSize = MaxFileSizeMb * 1024 * 1024;
     private static readonly string[] AllowedExtensions = [".jpg", ".jpeg", ".png"];
 
     /// <summary>
@@ -17,13 +20,13 @@ public class UploadController(IFileService fileService) : ControllerBase
     /// </summary>
     [HttpPost]
     [RequestSizeLimit(6 * 1024 * 1024)]
-    public async Task<IActionResult> UploadFile(IFormFile file, CancellationToken cancellationToken)
+    public async Task<IActionResult> UploadFile(IFormFile? file, CancellationToken cancellationToken)
     {
         var validation = ValidateFile(file);
         if (validation.IsFailure)
             return validation.ToResponse();
 
-        await using var stream = file.OpenReadStream();
+        await using var stream = file!.OpenReadStream();
 
         var filePath = await fileService.UploadFileAsync(
             stream, file.FileName, "uploads", cancellationToken);
@@ -34,15 +37,14 @@ public class UploadController(IFileService fileService) : ControllerBase
     private static Result ValidateFile(IFormFile? file)
     {
         if (file is null || file.Length == 0)
-            return Result.Failure(Errors.Validation("File is required."));
+            return Result.Failure(FileErrors.Required());
 
         if (file.Length > MaxFileSize)
-            return Result.Failure(Errors.Validation("File size exceeds the maximum limit of 5 MB."));
+            return Result.Failure(FileErrors.TooLarge(MaxFileSizeMb));
 
         var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
         if (string.IsNullOrEmpty(extension) || !AllowedExtensions.Contains(extension))
-            return Result.Failure(Errors.Validation(
-                "Invalid file type. Only .jpg, .jpeg, and .png files are allowed."));
+            return Result.Failure(FileErrors.InvalidType(AllowedExtensions));
 
         return Result.Success();
     }

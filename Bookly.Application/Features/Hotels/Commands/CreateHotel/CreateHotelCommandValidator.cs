@@ -7,48 +7,101 @@ public class CreateHotelCommandValidator : AbstractValidator<CreateHotelCommand>
     public CreateHotelCommandValidator()
     {
         RuleFor(x => x.Name)
-            .NotEmpty().WithMessage("Hotel name is required.")
-            .MaximumLength(200).WithMessage("Hotel name must not exceed 200 characters.");
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty()
+                .WithErrorCode("Validation.Hotel.Name.Required")
+                .WithMessage("Hotel name is required.")
+            .MaximumLength(200)
+                .WithErrorCode("Validation.Hotel.Name.TooLong")
+                .WithMessage("Hotel name must not exceed 200 characters.");
 
         RuleFor(x => x.Description)
-            .NotEmpty().WithMessage("Description is required.")
-            .MaximumLength(2000).WithMessage("Description must not exceed 2000 characters.");
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty()
+                .WithErrorCode("Validation.Hotel.Description.Required")
+                .WithMessage("Description is required.")
+            .MaximumLength(2000)
+                .WithErrorCode("Validation.Hotel.Description.TooLong")
+                .WithMessage("Description must not exceed 2000 characters.");
+
         RuleFor(x => x.DescriptionAr)
-            .NotEmpty().WithMessage("Arabic description is required.")
-            .MaximumLength(2000).WithMessage("Arabic description must not exceed 2000 characters.");
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty()
+                .WithErrorCode("Validation.Hotel.DescriptionAr.Required")
+                .WithMessage("Arabic description is required.")
+            .MaximumLength(2000)
+                .WithErrorCode("Validation.Hotel.DescriptionAr.TooLong")
+                .WithMessage("Arabic description must not exceed 2000 characters.");
+
         RuleFor(x => x.StarRating)
-            .InclusiveBetween(1, 5).WithMessage("Star rating must be between 1 and 5.")
+            .InclusiveBetween(1, 5)
+                .WithErrorCode("Validation.Hotel.StarRating.Invalid")
+                .WithMessage("Star rating must be between 1 and 5.")
             .When(x => x.StarRating.HasValue);
 
         RuleFor(x => x.Street)
-            .NotEmpty().WithMessage("Street is required.")
-            .MaximumLength(200).WithMessage("Street must not exceed 200 characters.");
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty()
+                .WithErrorCode("Validation.Hotel.Street.Required")
+                .WithMessage("Street is required.")
+            .MaximumLength(200)
+                .WithErrorCode("Validation.Hotel.Street.TooLong")
+                .WithMessage("Street must not exceed 200 characters.");
 
         RuleFor(x => x.City)
-            .NotEmpty().WithMessage("City is required.")
-            .MaximumLength(100).WithMessage("City must not exceed 100 characters.");
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty()
+                .WithErrorCode("Validation.Hotel.City.Required")
+                .WithMessage("City is required.")
+            .MaximumLength(100)
+                .WithErrorCode("Validation.Hotel.City.TooLong")
+                .WithMessage("City must not exceed 100 characters.");
 
         RuleFor(x => x.State)
-            .NotEmpty().WithMessage("State is required.")
-            .MaximumLength(100).WithMessage("State must not exceed 100 characters.");
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty()
+                .WithErrorCode("Validation.Hotel.State.Required")
+                .WithMessage("State is required.")
+            .MaximumLength(100)
+                .WithErrorCode("Validation.Hotel.State.TooLong")
+                .WithMessage("State must not exceed 100 characters.");
 
         RuleFor(x => x.Country)
-            .NotEmpty().WithMessage("Country is required.")
-            .MaximumLength(100).WithMessage("Country must not exceed 100 characters.");
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty()
+                .WithErrorCode("Validation.Hotel.Country.Required")
+                .WithMessage("Country is required.")
+            .MaximumLength(100)
+                .WithErrorCode("Validation.Hotel.Country.TooLong")
+                .WithMessage("Country must not exceed 100 characters.");
 
         RuleFor(x => x.Phone)
-            .NotEmpty().WithMessage("Phone number is required.")
-            .Matches(@"^\+?[0-9\s\-()]{7,20}$").WithMessage("Phone number format is invalid.");
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty()
+                .WithErrorCode("Validation.Hotel.Phone.Required")
+                .WithMessage("Phone number is required.")
+            .Matches(@"^\+?[0-9\-()]{7,20}$")
+                .WithErrorCode("Validation.Hotel.Phone.Invalid")
+                .WithMessage("Phone number format is invalid.");
 
         RuleFor(x => x.Email)
-            .NotEmpty().WithMessage("Email is required.")
-            .EmailAddress().WithMessage("Email format is invalid.");
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty()
+                .WithErrorCode("Validation.Hotel.Email.Required")
+                .WithMessage("Email is required.")
+            .EmailAddress()
+                .WithErrorCode("Validation.Hotel.Email.Invalid")
+                .WithMessage("Email format is invalid.");
 
         RuleFor(x => x.Website)
-            .Must(BeAValidUrl).WithMessage("Website must be a valid URL.")
+            .Must(BeAValidUrl)
+                .WithErrorCode("Validation.Hotel.Website.Invalid")
+                .WithMessage("Website must be a valid URL.")
             .When(x => !string.IsNullOrWhiteSpace(x.Website));
     }
 
     private static bool BeAValidUrl(string? url) =>
-        Uri.TryCreate(url, UriKind.Absolute, out _);
+        Uri.TryCreate(url, UriKind.Absolute, out var uri) &&
+        (uri.Scheme == Uri.UriSchemeHttp ||
+         uri.Scheme == Uri.UriSchemeHttps);
 }

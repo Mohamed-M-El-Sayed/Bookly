@@ -1,5 +1,4 @@
-﻿using Bookly.Api.Extensions;
-using Bookly.Application.Features.Auth.Commands.ConfirmEmail;
+﻿using Bookly.Application.Features.Auth.Commands.ConfirmEmail;
 using Bookly.Application.Features.Auth.Commands.ForgetPassword;
 using Bookly.Application.Features.Auth.Commands.Login;
 using Bookly.Application.Features.Auth.Commands.RefreshToken;
@@ -14,7 +13,7 @@ namespace Bookly.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AuthController(IMediator mediator) : ControllerBase
+public class AuthController(IMediator mediator) : ApiControllerBase
 {
     /// <summary>
     /// Authenticates a user and returns authentication tokens.
@@ -25,7 +24,7 @@ public class AuthController(IMediator mediator) : ControllerBase
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(command, cancellationToken);
-        return result.ToResponse();
+        return Respond(result);
     }
 
     /// <summary>
@@ -37,17 +36,17 @@ public class AuthController(IMediator mediator) : ControllerBase
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(command, cancellationToken);
-        return result.ToResponse();
+        return Respond(result);
     }
 
     /// <summary>
     /// Confirms a user's email using the provided userId and token.
     /// </summary>
-    [HttpGet("confirm-email")]      
+    [HttpGet("confirm-email")]
     public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailCommand command, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(command, cancellationToken);
-        return result.ToResponse();
+        return Respond(result);
     }
     /// <summary>
     /// Gets a new access token and refresh token using the current pair.
@@ -58,7 +57,7 @@ public class AuthController(IMediator mediator) : ControllerBase
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(command, cancellationToken);
-        return result.ToResponse();
+        return Respond(result);
     }
     /// <summary>
     /// Sends a password reset link to the given email.
@@ -68,7 +67,7 @@ public class AuthController(IMediator mediator) : ControllerBase
         ForgetPasswordCommand command, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(command, cancellationToken);
-        return result.ToResponse(); 
+        return Respond(result);
     }
     /// <summary>
     /// Sets a new password using the token from the reset email.
@@ -81,9 +80,9 @@ public class AuthController(IMediator mediator) : ControllerBase
         CancellationToken cancellationToken)
     {
         command.UserId = userId;
-        command.Token  = token;
+        command.Token = token;
         var result = await mediator.Send(command, cancellationToken);
-        return result.ToResponse();
+        return Respond(result);
     }
     /// <summary>
     /// Sends a new confirmation email to an unconfirmed account.
@@ -94,6 +93,6 @@ public class AuthController(IMediator mediator) : ControllerBase
         ResendConfirmationCommand command, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(command, cancellationToken);
-        return result.ToResponse(); 
+        return Respond(result);
     }
 }
