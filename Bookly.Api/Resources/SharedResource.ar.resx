@@ -276,4 +276,22 @@
   <data name="Favorite.NotFound" xml:space="preserve">
     <value>الفندق غير موجود في قائمة المفضلة.</value>
   </data>
+  <data name="Validation.AmenityCategory.NameEn.Required" xml:space="preserve">
+    <value>الاسم بالإنجليزية مطلوب.</value>
+  </data>
+  <data name="Validation.AmenityCategory.NameEn.MaxLength" xml:space="preserve">
+    <value>يجب ألا يتجاوز الاسم بالإنجليزية 100 حرف.</value>
+  </data>
+  <data name="Validation.AmenityCategory.NameAr.Required" xml:space="preserve">
+    <value>الاسم بالعربية مطلوب.</value>
+  </data>
+  <data name="Validation.AmenityCategory.NameAr.MaxLength" xml:space="preserve">
+    <value>يجب ألا يتجاوز الاسم بالعربية 100 حرف.</value>
+  </data>
+  <data name="Validation.AmenityCategory.SortOrder.Invalid" xml:space="preserve">
+    <value>يجب أن يكون ترتيب التصنيف صفرًا أو أكبر.</value>
+  </data>
+  <data name="AmenityCategory.NotFound" xml:space="preserve">
+    <value>تصنيف المرافق غير موجود.</value>
+  </data>
 </root>
