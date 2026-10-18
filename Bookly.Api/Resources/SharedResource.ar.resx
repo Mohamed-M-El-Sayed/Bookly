@@ -300,4 +300,28 @@
   <data name="AmenityCategory.HasAmenities" xml:space="preserve">
     <value>لا يمكن حذف الفئة لأنها تحتوي على مرافق.</value>
   </data>
+  <data name="Amenity.NameAlreadyExists" xml:space="preserve">
+    <value>يوجد مرفق بهذا الاسم بالفعل.</value>
+  </data>
+	<data name="Validation.Amenity.NameEn.Required" xml:space="preserve">
+  <value>الاسم باللغة الإنجليزية مطلوب.</value>
+</data>
+	<data name="Validation.Amenity.NameEn.TooLong" xml:space="preserve">
+  <value>يجب ألا يتجاوز الاسم باللغة الإنجليزية 100 حرف.</value>
+</data>
+	<data name="Validation.Amenity.NameAr.Required" xml:space="preserve">
+  <value>الاسم باللغة العربية مطلوب.</value>
+</data>
+	<data name="Validation.Amenity.NameAr.TooLong" xml:space="preserve">
+  <value>يجب ألا يتجاوز الاسم باللغة العربية 100 حرف.</value>
+</data>
+	<data name="Validation.Amenity.CategoryId.Invalid" xml:space="preserve">
+  <value>معرّف فئة المرافق غير صالح.</value>
+</data>
+	<data name="Validation.Amenity.Icon.TooLong" xml:space="preserve">
+  <value>يجب ألا يتجاوز حقل الأيقونة 100 حرف.</value>
+</data>
+	<data name="Validation.Amenity.Scope.Invalid" xml:space="preserve">
+  <value>نطاق المرفق غير صالح.</value>
+</data>
 </root>

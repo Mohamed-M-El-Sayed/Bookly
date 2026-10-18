@@ -17,8 +17,4 @@
     <ProjectReference Include="..\Bookly.Domain\Bookly.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Amenities\" />
-  </ItemGroup>
-
 </Project>
