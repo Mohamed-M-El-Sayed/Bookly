@@ -9,7 +9,7 @@ namespace Bookly.Domain.Entities.RoomTypes;
 public class RoomType : BaseEntity
 {
     public int HotelId { get; private set; }
-    public string Name { get; private set; } = null!;
+    public string NameEn { get; private set; } = null!;
     public string NameAr { get; private set; } = null!;
     public decimal BasePricePerNight { get; private set; }
     public int MaxOccupancy { get; private set; }
@@ -32,7 +32,7 @@ public class RoomType : BaseEntity
     }
     public static RoomType Create(
         int hotelId,
-        string name,
+        string nameEn,
         string nameAr,
         decimal basePricePerNight,
         int maxOccupancy,
@@ -46,8 +46,8 @@ public class RoomType : BaseEntity
         if (hotelId <= 0)
             throw new ArgumentOutOfRangeException(nameof(hotelId), "Hotel ID must be greater than zero.");
 
-        if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Room type name is required.", nameof(name));
+        if (string.IsNullOrWhiteSpace(nameEn))
+            throw new ArgumentException("Room type name is required.", nameof(nameEn));
 
         if (string.IsNullOrWhiteSpace(nameAr))
             throw new ArgumentException("Arabic room type name is required.", nameof(nameAr));
@@ -79,7 +79,7 @@ public class RoomType : BaseEntity
         return new RoomType
         {
             HotelId = hotelId,
-            Name = name,
+            NameEn = nameEn,
             NameAr = nameAr,
             BasePricePerNight = basePricePerNight,
             MaxOccupancy = maxOccupancy,
@@ -93,7 +93,7 @@ public class RoomType : BaseEntity
     }
 
     public void Update(
-        string name,
+        string nameEn,
         string nameAr,
         string description,
         string descriptionAr,
@@ -104,8 +104,8 @@ public class RoomType : BaseEntity
         int bedCount,
         decimal sizeSqm)
     {
-        if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Room type name is required.", nameof(name));
+        if (string.IsNullOrWhiteSpace(nameEn))
+            throw new ArgumentException("Room type name is required.", nameof(nameEn));
 
         if (string.IsNullOrWhiteSpace(nameAr))
             throw new ArgumentException("Arabic room type name is required.", nameof(nameAr));
@@ -134,7 +134,7 @@ public class RoomType : BaseEntity
         if (sizeSqm <= 0)
             throw new ArgumentOutOfRangeException(nameof(sizeSqm), "Room size must be greater than zero.");
 
-        Name = name;
+        NameEn = nameEn;
         NameAr = nameAr;
         Description = description;
         DescriptionAr = descriptionAr;
