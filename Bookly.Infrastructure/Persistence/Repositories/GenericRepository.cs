@@ -30,6 +30,10 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
     {
         return await ApplaySpecification(specification).ToListAsync(cancellationToken);
     }
+    public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+    {
+        return await _dbSet.AnyAsync(predicate, cancellationToken);
+    }
     public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         await _dbSet.AddAsync(entity, cancellationToken);

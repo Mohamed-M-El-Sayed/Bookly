@@ -294,4 +294,10 @@
   <data name="AmenityCategory.NotFound" xml:space="preserve">
     <value>تصنيف المرافق غير موجود.</value>
   </data>
+  <data name="AmenityCategory.NameAlreadyExists" xml:space="preserve">
+    <value>اسم فئة المرافق موجود بالفعل.</value>
+  </data>
+  <data name="AmenityCategory.HasAmenities" xml:space="preserve">
+    <value>لا يمكن حذف الفئة لأنها تحتوي على مرافق.</value>
+  </data>
 </root>

@@ -1,4 +1,5 @@
 ﻿using Bookly.Application.Features.Amenities.Commands.Categories.CreateCategory;
+using Bookly.Application.Features.Amenities.Commands.Categories.DeleteCategory;
 using Bookly.Application.Features.Amenities.Commands.Categories.UpdateAmenity;
 using Bookly.Application.Features.Amenities.Queries.GetCategories;
 using MediatR;
@@ -37,6 +38,15 @@ namespace Bookly.Api.Controllers
         {
             command.CategoryId = id;
             var result = await mediator.Send(command, cancellationToken);
+            return Respond(result);
+        }
+        /// <summary>
+        /// Deletes an amenity category that contains no amenities (Admin only).
+        /// </summary>
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteCategory([FromRoute] int id, CancellationToken cancellationToken)
+        {
+            var result = await mediator.Send(new DeleteCategoryCommand(id), cancellationToken);
             return Respond(result);
         }
 

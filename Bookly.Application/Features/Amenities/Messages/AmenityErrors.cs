@@ -9,4 +9,7 @@ public static class AmenityErrors
     public static Error CategoryNameAlreadyExists() =>
         ErrorFactory.Conflict("AmenityCategory.NameAlreadyExists",
             "An amenity category with the same name already exists.");
+    public static Error CategoryHasAmenities() =>
+        ErrorFactory.Conflict("AmenityCategory.HasAmenities",
+            "The amenity category cannot be deleted because it has associated amenities.");
 }
