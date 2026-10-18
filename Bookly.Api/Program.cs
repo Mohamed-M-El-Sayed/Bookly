@@ -5,6 +5,7 @@ using Bookly.Infrastructure.Services.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 namespace Bookly.Api
 {
@@ -19,7 +20,8 @@ namespace Bookly.Api
             builder.Services.AddInfrastructure(builder.Configuration, builder.Environment.WebRootPath);
             builder.Services.AddTransient<ErrorHandlingMiddleware>();
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddJsonOptions(options =>
+                   options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
             builder.Services.AddEndpointsApiExplorer();
 
             // Configure JWT Authentication.
