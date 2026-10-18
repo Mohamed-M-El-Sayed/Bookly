@@ -1,13 +1,13 @@
 ﻿using Bookly.Application.Common.Results;
 using Bookly.Application.Contracts.Presistence;
 using Bookly.Application.Contracts.Services.Users;
-using Bookly.Application.Features.Amenities.Specifications;
+using Bookly.Application.Features.AmenityCategories.Specifications;
 using Bookly.Domain.Entities.Amenities;
 using Mapster;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Bookly.Application.Features.Amenities.Queries.GetCategories;
+namespace Bookly.Application.Features.AmenityCategories.Queries.GetCategories;
 
 public class GetAmenityCategoriesQueryHandler(IUnitOfWork unitOfWork,
     ICurrentUserService currentUserService,

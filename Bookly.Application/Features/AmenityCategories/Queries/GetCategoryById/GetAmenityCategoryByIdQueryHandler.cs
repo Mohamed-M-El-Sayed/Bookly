@@ -1,14 +1,14 @@
 ﻿using Bookly.Application.Common.Results;
 using Bookly.Application.Contracts.Presistence;
-using Bookly.Application.Features.Amenities.Messages;
-using Bookly.Application.Features.Amenities.Queries.GetCategories;
-using Bookly.Application.Features.Amenities.Specifications;
+using Bookly.Application.Features.AmenityCategories.Messages;
+using Bookly.Application.Features.AmenityCategories.Queries.GetCategories;
+using Bookly.Application.Features.AmenityCategories.Specifications;
 using Bookly.Domain.Entities.Amenities;
 using Mapster;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Bookly.Application.Features.Amenities.Queries.GetCategoryById;
+namespace Bookly.Application.Features.AmenityCategories.Queries.GetCategoryById;
 
 public class GetAmenityCategoryByIdQueryHandler(IUnitOfWork unitOfWork,
     ILogger<GetAmenityCategoryByIdQueryHandler> logger) : IRequestHandler<GetAmenityCategoryByIdQuery, Result<AmenityCategoryResponse>>
@@ -21,7 +21,7 @@ public class GetAmenityCategoryByIdQueryHandler(IUnitOfWork unitOfWork,
         if (category is null)
         {
             logger.LogWarning("Amenity category not found");
-            return Result<AmenityCategoryResponse>.Failure(AmenityErrors.CategoryNotFound());
+            return Result<AmenityCategoryResponse>.Failure(AmenityCategoryErrors.CategoryNotFound());
         }
         var response = category.Adapt<AmenityCategoryResponse>();
         return Result<AmenityCategoryResponse>.Success(response);

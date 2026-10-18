@@ -1,8 +1,8 @@
-﻿using Bookly.Application.Features.Amenities.Commands.Categories.CreateCategory;
-using Bookly.Application.Features.Amenities.Commands.Categories.DeleteCategory;
-using Bookly.Application.Features.Amenities.Commands.Categories.UpdateAmenity;
-using Bookly.Application.Features.Amenities.Queries.GetCategories;
-using Bookly.Application.Features.Amenities.Queries.GetCategoryById;
+﻿using Bookly.Application.Features.AmenityCategories.Commands.CreateCategory;
+using Bookly.Application.Features.AmenityCategories.Commands.DeleteCategory;
+using Bookly.Application.Features.AmenityCategories.Commands.UpdateCategory;
+using Bookly.Application.Features.AmenityCategories.Queries.GetCategories;
+using Bookly.Application.Features.AmenityCategories.Queries.GetCategoryById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

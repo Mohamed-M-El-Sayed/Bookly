@@ -1,11 +1,11 @@
 ﻿using Bookly.Application.Common.Results;
 using Bookly.Application.Contracts.Presistence;
-using Bookly.Application.Features.Amenities.Messages;
+using Bookly.Application.Features.AmenityCategories.Messages;
 using Bookly.Domain.Entities.Amenities;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Bookly.Application.Features.Amenities.Commands.Categories.CreateCategory
+namespace Bookly.Application.Features.AmenityCategories.Commands.CreateCategory
 {
     public class CreateAmenityCategoryCommandHandler(IUnitOfWork unitOfWork,
         ILogger<CreateAmenityCategoryCommandHandler> logger) : IRequestHandler<CreateAmenityCategoryCommand, Result<CreateAmenityCategoryResponse>>
@@ -16,7 +16,7 @@ namespace Bookly.Application.Features.Amenities.Commands.Categories.CreateCatego
             var existingCategory = await unitOfWork.Repository<AmenityCategory>().FindAsync(c =>
             (c.NameEn == request.NameEn.Trim() || c.NameAr == request.NameAr.Trim()));
             if (existingCategory is not null)
-                return Result<CreateAmenityCategoryResponse>.Failure(AmenityErrors.CategoryNameAlreadyExists());
+                return Result<CreateAmenityCategoryResponse>.Failure(AmenityCategoryErrors.CategoryNameAlreadyExists());
             var category = new AmenityCategory(request.NameEn, request.NameEn, request.SortOrder);
             await unitOfWork.Repository<AmenityCategory>().AddAsync(category, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);

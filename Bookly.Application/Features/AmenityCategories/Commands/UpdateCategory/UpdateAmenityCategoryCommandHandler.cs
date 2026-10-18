@@ -1,11 +1,11 @@
 ﻿using Bookly.Application.Common.Results;
 using Bookly.Application.Contracts.Presistence;
-using Bookly.Application.Features.Amenities.Messages;
+using Bookly.Application.Features.AmenityCategories.Messages;
 using Bookly.Domain.Entities.Amenities;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Bookly.Application.Features.Amenities.Commands.Categories.UpdateAmenity;
+namespace Bookly.Application.Features.AmenityCategories.Commands.UpdateCategory;
 
 public class UpdateAmenityCategoryCommandHandler(
     IUnitOfWork unitOfWork,
@@ -25,7 +25,7 @@ public class UpdateAmenityCategoryCommandHandler(
             cancellationToken);
 
         if (category is null)
-            return Result.Failure(AmenityErrors.CategoryNotFound());
+            return Result.Failure(AmenityCategoryErrors.CategoryNotFound());
 
         var nameExists = await repository.FindAsync(
             c => c.Id != request.CategoryId &&
@@ -33,7 +33,7 @@ public class UpdateAmenityCategoryCommandHandler(
                   c.NameAr == request.NameAr.Trim()));
 
         if (nameExists is not null)
-            return Result.Failure(AmenityErrors.CategoryNameAlreadyExists());
+            return Result.Failure(AmenityCategoryErrors.CategoryNameAlreadyExists());
 
         category.Update(request.NameEn, request.NameAr, request.SortOrder);
         await unitOfWork.SaveChangesAsync(cancellationToken);

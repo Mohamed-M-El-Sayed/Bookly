@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Bookly.Application.Features.Amenities.Commands.Categories.CreateCategory;
+namespace Bookly.Application.Features.AmenityCategories.Commands.CreateCategory;
 
 public class CreateAmenityCategoryCommandValidator
     : AbstractValidator<CreateAmenityCategoryCommand>

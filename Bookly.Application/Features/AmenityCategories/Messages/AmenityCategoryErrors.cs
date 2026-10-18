@@ -1,8 +1,8 @@
 ﻿using Bookly.Application.Common.Results;
 
-namespace Bookly.Application.Features.Amenities.Messages;
+namespace Bookly.Application.Features.AmenityCategories.Messages;
 
-public static class AmenityErrors
+public static class AmenityCategoryErrors
 {
     public static Error CategoryNotFound() =>
         ErrorFactory.NotFound("AmenityCategory.NotFound", "The amenity category was not found.");

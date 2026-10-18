@@ -2,7 +2,7 @@
 using MediatR;
 using System.Text.Json.Serialization;
 
-namespace Bookly.Application.Features.Amenities.Commands.Categories.UpdateAmenity;
+namespace Bookly.Application.Features.AmenityCategories.Commands.UpdateCategory;
 
 public class UpdateAmenityCategoryCommand : IRequest<Result>
 {

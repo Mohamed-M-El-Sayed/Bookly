@@ -1,7 +1,7 @@
 ﻿using Bookly.Application.Common.Specifications;
 using Bookly.Domain.Entities.Amenities;
 
-namespace Bookly.Application.Features.Amenities.Specifications;
+namespace Bookly.Application.Features.AmenityCategories.Specifications;
 
 public class AmenityCategoriesSpecification : BaseSpecification<AmenityCategory>
 {
