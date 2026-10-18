@@ -2,6 +2,7 @@
 using Bookly.Application.Features.Amenities.Commands.Categories.DeleteCategory;
 using Bookly.Application.Features.Amenities.Commands.Categories.UpdateAmenity;
 using Bookly.Application.Features.Amenities.Queries.GetCategories;
+using Bookly.Application.Features.Amenities.Queries.GetCategoryById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,16 @@ namespace Bookly.Api.Controllers
         public async Task<IActionResult> GetCategories(CancellationToken cancellationToken)
         {
             var result = await mediator.Send(new GetAmenityCategoriesQuery(), cancellationToken);
+            return Respond(result);
+        }
+        /// <summary>
+        /// Gets an amenity category by ID (Admin only).
+        /// </summary>
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById([FromRoute] int id, CancellationToken cancellationToken)
+        {
+            var result = await mediator.Send(new GetAmenityCategoryByIdQuery(id),
+                cancellationToken);
             return Respond(result);
         }
         /// <summary>
@@ -49,6 +60,5 @@ namespace Bookly.Api.Controllers
             var result = await mediator.Send(new DeleteCategoryCommand(id), cancellationToken);
             return Respond(result);
         }
-
     }
 }
