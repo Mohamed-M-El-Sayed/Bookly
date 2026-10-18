@@ -28,7 +28,7 @@ public class CreateRoomTypeCommandHandler(IUnitOfWork unitOfWork) : IRequestHand
             request.SizeSqm);
         await unitOfWork.Repository<RoomType>().AddAsync(roomType, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
-        var response = new CreateRoomTypeResponse(roomType.Id, roomType.Name, roomType.NameAr);
+        var response = new CreateRoomTypeResponse(roomType.Id, roomType.NameEn, roomType.NameAr);
         return Result<CreateRoomTypeResponse>.Success(response);
     }
 }

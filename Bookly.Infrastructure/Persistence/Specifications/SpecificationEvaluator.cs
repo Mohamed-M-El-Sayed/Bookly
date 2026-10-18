@@ -29,6 +29,11 @@ public static class SpecificationEvaluator<TEntity> where TEntity : BaseEntity
                 .Skip(specification.Skip)
                 .Take(specification.Take);
         }
+        // Ordering
+        if (specification.OrderBy is not null)
+            query = query.OrderBy(specification.OrderBy);
+        else if (specification.OrderByDescending is not null)
+            query = query.OrderByDescending(specification.OrderByDescending);
         return query;
     }
 }
