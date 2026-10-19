@@ -1,4 +1,6 @@
-﻿using Bookly.Application.Features.AmenityCategories.Commands.CreateCategory;
+﻿using Bookly.Application.Features.AmenityCategories.Commands.ActivateCategory;
+using Bookly.Application.Features.AmenityCategories.Commands.CreateCategory;
+using Bookly.Application.Features.AmenityCategories.Commands.DeactivateCategory;
 using Bookly.Application.Features.AmenityCategories.Commands.DeleteCategory;
 using Bookly.Application.Features.AmenityCategories.Commands.UpdateCategory;
 using Bookly.Application.Features.AmenityCategories.Queries.GetCategories;
@@ -58,6 +60,24 @@ namespace Bookly.Api.Controllers
         public async Task<IActionResult> DeleteCategory([FromRoute] int id, CancellationToken cancellationToken)
         {
             var result = await mediator.Send(new DeleteCategoryCommand(id), cancellationToken);
+            return Respond(result);
+        }
+        /// <summary>
+        /// Activates an amenity category (Admin only).
+        /// </summary>
+        [HttpPatch("{id:int}/activate")]
+        public async Task<IActionResult> ActivateCategory([FromRoute] int id, CancellationToken cancellationToken)
+        {
+            var result = await mediator.Send(new ActivateAmenityCategoryCommand(id), cancellationToken);
+            return Respond(result);
+        }
+        /// <summary>
+        /// Deactivates an amenity category (Admin only).
+        /// </summary>
+        [HttpPatch("{id:int}/deactivate")]
+        public async Task<IActionResult> DeactivateCategory([FromRoute] int id, CancellationToken cancellationToken)
+        {
+            var result = await mediator.Send(new DeactivateAmenityCategoryCommand(id), cancellationToken);
             return Respond(result);
         }
     }

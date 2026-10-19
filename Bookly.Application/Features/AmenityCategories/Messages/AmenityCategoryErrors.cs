@@ -12,4 +12,7 @@ public static class AmenityCategoryErrors
     public static Error CategoryHasAmenities() =>
         ErrorFactory.Conflict("AmenityCategory.HasAmenities",
             "The amenity category cannot be deleted because it has associated amenities.");
+    public static Error CategoryInUse() =>
+        ErrorFactory.Conflict("AmenityCategory.CategoryInUse",
+        "Cannot deactivate a category that has active amenities.");
 }
