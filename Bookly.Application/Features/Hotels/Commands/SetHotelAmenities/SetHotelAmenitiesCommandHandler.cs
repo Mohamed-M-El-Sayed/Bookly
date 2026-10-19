@@ -7,6 +7,7 @@ using Bookly.Application.Features.Hotels.Errors;
 using Bookly.Application.Features.Hotels.Specifications;
 using Bookly.Domain.Entities.Amenities;
 using Bookly.Domain.Entities.Hotels;
+using Bookly.Domain.Enums;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -56,7 +57,7 @@ public class SetHotelAmenitiesCommandHandler(
         {
             var validCount = await unitOfWork.Repository<Amenity>()
                 .CountAsync(
-                    new AmenitiesForSelectionSpecification(addedIds),
+                    new AmenitiesForSelectionSpecification(addedIds, AmenityScope.Hotel),
                     cancellationToken);
 
             if (validCount != addedIds.Count)
