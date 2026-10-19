@@ -1,6 +1,6 @@
 ﻿using Bookly.Domain.Enums;
 
-namespace Bookly.Application.Features.Amenities.Queries.GetAmenities;
+namespace Bookly.Application.Features.Amenities.Shared;
 
 public record AmenityResponse(int Id,
     string NameEn,

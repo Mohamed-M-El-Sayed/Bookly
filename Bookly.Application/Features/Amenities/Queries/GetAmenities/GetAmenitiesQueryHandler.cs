@@ -1,6 +1,7 @@
 ﻿using Bookly.Application.Common.Results;
 using Bookly.Application.Contracts.Presistence;
 using Bookly.Application.Contracts.Services.Users;
+using Bookly.Application.Features.Amenities.Shared;
 using Bookly.Application.Features.Amenities.Specification;
 using Bookly.Domain.Entities.Amenities;
 using Mapster;

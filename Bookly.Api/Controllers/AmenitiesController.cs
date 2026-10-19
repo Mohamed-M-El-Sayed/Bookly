@@ -1,5 +1,6 @@
 ﻿using Bookly.Application.Features.Amenities.Commands.CreateAmenity;
 using Bookly.Application.Features.Amenities.Queries.GetAmenities;
+using Bookly.Application.Features.Amenities.Queries.GetAmenityById;
 using Bookly.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -20,7 +21,15 @@ public class AmenitiesController(IMediator mediator) : ApiControllerBase
         var result = await mediator.Send(new GetAmenitiesQuery(categoryId), cancellationToken);
         return Respond(result);
     }
-
+    /// <summary>
+    /// Get amenity by Id (Admin only).
+    /// </summary>
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(new GetAmenityByIdQuery(id), cancellationToken);
+        return Respond(result);
+    }
     /// <summary>
     /// Creates a new amenity (Admin only).
     /// </summary>

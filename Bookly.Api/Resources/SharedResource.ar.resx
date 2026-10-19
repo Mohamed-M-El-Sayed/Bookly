@@ -327,4 +327,7 @@
   <data name="AmenityCategory.CategoryInUse" xml:space="preserve">
     <value>لا يمكن حذف فئة المرافق لأنها مستخدمة حاليًا.</value>
   </data>
+  <data name="Amenity.NotFound" xml:space="preserve">
+    <value>لم يتم العثور علي المرفق المطلوب.</value>
+  </data>
 </root>
