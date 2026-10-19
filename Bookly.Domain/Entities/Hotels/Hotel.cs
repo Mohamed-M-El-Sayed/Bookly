@@ -13,7 +13,8 @@ public class Hotel : BaseEntity
     public ContactInfo ContactInfo { get; private set; } = null!;
     private readonly List<RoomType> _roomTypes = new();
     public IReadOnlyCollection<RoomType> RoomTypes => _roomTypes.AsReadOnly();
-
+    private readonly List<HotelAmenity> _hotelAmenities = new();
+    public IReadOnlyCollection<HotelAmenity> Amenities => _hotelAmenities.AsReadOnly();
     private readonly List<HotelImage> _images = new();
     public IReadOnlyCollection<HotelImage> Images => _images.AsReadOnly();
 
@@ -107,7 +108,14 @@ public class Hotel : BaseEntity
         Address = address;
         ContactInfo = contactInfo;
     }
-
+    public void SetAmenities(IReadOnlyCollection<int> amenityIds)
+    {
+        var wanted = amenityIds.ToHashSet();
+        _hotelAmenities.RemoveAll(h => !wanted.Contains(h.AmenityId));
+        var existing = _hotelAmenities.Select(h => h.AmenityId).ToList();
+        foreach (var id in wanted.Where(id => !existing.Contains(id)))
+            _hotelAmenities.Add(new HotelAmenity(Id, id));
+    }
     public void AddImage(HotelImage image)
     {
         ArgumentNullException.ThrowIfNull(image);

@@ -26,6 +26,8 @@ public class RoomType : BaseEntity
     public IReadOnlyCollection<BoardOption> BoardOptions => _boardOptions.AsReadOnly();
     public IReadOnlyCollection<RoomAvailability> RoomAvailabilities => _roomAvailabilities.AsReadOnly();
     private readonly List<RoomAvailability> _roomAvailabilities = new();
+    private readonly List<RoomTypeAmenity> _roomTypeAmenities = new();
+    public IReadOnlyCollection<RoomTypeAmenity> Amenities => _roomTypeAmenities.AsReadOnly();
     private RoomType()
     {
 
@@ -166,5 +168,12 @@ public class RoomType : BaseEntity
 
         _boardOptions.Add(new BoardOption(Id, type, extraPricePerNight));
     }
-
+    public void SetAmenities(IReadOnlyCollection<int> amenityIds)
+    {
+        var wanted = amenityIds.ToHashSet();
+        _roomTypeAmenities.RemoveAll(h => !wanted.Contains(h.AmenityId));
+        var existing = _roomTypeAmenities.Select(h => h.AmenityId).ToList();
+        foreach (var id in wanted.Where(id => !existing.Contains(id)))
+            _roomTypeAmenities.Add(new RoomTypeAmenity(Id, id));
+    }
 }

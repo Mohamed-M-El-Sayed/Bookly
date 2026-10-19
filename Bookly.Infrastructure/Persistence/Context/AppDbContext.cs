@@ -1,4 +1,5 @@
-﻿using Bookly.Domain.Entities.Bookings;
+﻿using Bookly.Domain.Entities.Amenities;
+using Bookly.Domain.Entities.Bookings;
 using Bookly.Domain.Entities.Hotels;
 using Bookly.Domain.Entities.Identity;
 using Bookly.Domain.Entities.RoomTypes;
@@ -19,6 +20,8 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid
     public DbSet<BookingRoom> BookingRooms => Set<BookingRoom>();
     public DbSet<RoomAvailability> RoomAvailabilities => Set<RoomAvailability>();
     public DbSet<PasswordHistory> PasswordHistories => Set<PasswordHistory>();
+    public DbSet<Amenity> Amenities => Set<Amenity>();
+    public DbSet<AmenityCategory> AmenityCategories => Set<AmenityCategory>();
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {

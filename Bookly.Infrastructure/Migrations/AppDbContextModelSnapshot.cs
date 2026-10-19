@@ -65,7 +65,7 @@ namespace Bookly.Infrastructure.Migrations
                     b.HasIndex("NameEn")
                         .IsUnique();
 
-                    b.ToTable("Amenity");
+                    b.ToTable("Amenities");
                 });
 
             modelBuilder.Entity("Bookly.Domain.Entities.Amenities.AmenityCategory", b =>
@@ -101,7 +101,7 @@ namespace Bookly.Infrastructure.Migrations
                     b.HasIndex("NameEn")
                         .IsUnique();
 
-                    b.ToTable("AmenityCategory");
+                    b.ToTable("AmenityCategories");
                 });
 
             modelBuilder.Entity("Bookly.Domain.Entities.Bookings.Booking", b =>
@@ -227,6 +227,21 @@ namespace Bookly.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Hotels");
+                });
+
+            modelBuilder.Entity("Bookly.Domain.Entities.Hotels.HotelAmenity", b =>
+                {
+                    b.Property<int>("HotelId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AmenityId")
+                        .HasColumnType("int");
+
+                    b.HasKey("HotelId", "AmenityId");
+
+                    b.HasIndex("AmenityId");
+
+                    b.ToTable("HotelAmenity");
                 });
 
             modelBuilder.Entity("Bookly.Domain.Entities.Hotels.HotelImage", b =>
@@ -537,6 +552,21 @@ namespace Bookly.Infrastructure.Migrations
                     b.ToTable("RoomTypes");
                 });
 
+            modelBuilder.Entity("Bookly.Domain.Entities.RoomTypes.RoomTypeAmenity", b =>
+                {
+                    b.Property<int>("RoomTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AmenityId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RoomTypeId", "AmenityId");
+
+                    b.HasIndex("AmenityId");
+
+                    b.ToTable("RoomTypeAmenity");
+                });
+
             modelBuilder.Entity("Bookly.Domain.Entities.SeasonalPricing.SeasonalPrice", b =>
                 {
                     b.Property<int>("Id")
@@ -808,6 +838,25 @@ namespace Bookly.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Bookly.Domain.Entities.Hotels.HotelAmenity", b =>
+                {
+                    b.HasOne("Bookly.Domain.Entities.Amenities.Amenity", "Amenity")
+                        .WithMany()
+                        .HasForeignKey("AmenityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Bookly.Domain.Entities.Hotels.Hotel", "Hotel")
+                        .WithMany("Amenities")
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Amenity");
+
+                    b.Navigation("Hotel");
+                });
+
             modelBuilder.Entity("Bookly.Domain.Entities.Hotels.HotelImage", b =>
                 {
                     b.HasOne("Bookly.Domain.Entities.Hotels.Hotel", null)
@@ -864,6 +913,25 @@ namespace Bookly.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Hotel");
+                });
+
+            modelBuilder.Entity("Bookly.Domain.Entities.RoomTypes.RoomTypeAmenity", b =>
+                {
+                    b.HasOne("Bookly.Domain.Entities.Amenities.Amenity", "Amenity")
+                        .WithMany()
+                        .HasForeignKey("AmenityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Bookly.Domain.Entities.RoomTypes.RoomType", "RoomType")
+                        .WithMany("Amenities")
+                        .HasForeignKey("RoomTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Amenity");
+
+                    b.Navigation("RoomType");
                 });
 
             modelBuilder.Entity("Bookly.Domain.Entities.SeasonalPricing.SeasonalPrice", b =>
@@ -938,6 +1006,8 @@ namespace Bookly.Infrastructure.Migrations
 
             modelBuilder.Entity("Bookly.Domain.Entities.Hotels.Hotel", b =>
                 {
+                    b.Navigation("Amenities");
+
                     b.Navigation("Images");
 
                     b.Navigation("RoomTypes");
@@ -952,6 +1022,8 @@ namespace Bookly.Infrastructure.Migrations
 
             modelBuilder.Entity("Bookly.Domain.Entities.RoomTypes.RoomType", b =>
                 {
+                    b.Navigation("Amenities");
+
                     b.Navigation("BoardOptions");
 
                     b.Navigation("RoomAvailabilities");
