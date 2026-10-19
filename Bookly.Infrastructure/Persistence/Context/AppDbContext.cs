@@ -22,6 +22,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid
     public DbSet<PasswordHistory> PasswordHistories => Set<PasswordHistory>();
     public DbSet<Amenity> Amenities => Set<Amenity>();
     public DbSet<AmenityCategory> AmenityCategories => Set<AmenityCategory>();
+    public DbSet<HotelManager> HotelManagers => Set<HotelManager>();
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {

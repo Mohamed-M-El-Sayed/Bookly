@@ -2,6 +2,7 @@
 using Bookly.Application.Contracts.Services.Authentication;
 using Bookly.Application.Contracts.Services.Email;
 using Bookly.Application.Contracts.Services.Files;
+using Bookly.Application.Contracts.Services.Hotels;
 using Bookly.Application.Contracts.Services.Security;
 using Bookly.Application.Contracts.Services.Users;
 using Bookly.Domain.Entities.Identity;
@@ -10,6 +11,7 @@ using Bookly.Infrastructure.Persistence.UnitOfWork;
 using Bookly.Infrastructure.Services.Authentication;
 using Bookly.Infrastructure.Services.Email;
 using Bookly.Infrastructure.Services.Files;
+using Bookly.Infrastructure.Services.Hotels;
 using Bookly.Infrastructure.Services.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -46,7 +48,7 @@ namespace Bookly.Infrastructure.DependancyInjection
                 });
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddHttpContextAccessor();
-
+            services.AddScoped<IHotelAccessService, HotelAccessService>();
 
 
 

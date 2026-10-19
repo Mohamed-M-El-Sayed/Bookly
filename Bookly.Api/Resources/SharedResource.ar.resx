@@ -330,4 +330,10 @@
   <data name="Amenity.NotFound" xml:space="preserve">
     <value>لم يتم العثور علي المرفق المطلوب.</value>
   </data>
+  <data name="Hotel.NotManger" xml:space="preserve">
+    <value>أنت غير مخوّل بإدارة هذا الفندق.</value>
+  </data>
+  <data name="Amenity.InvalidSelection" xml:space="preserve">
+    <value>واحدة أو أكثر من وسائل الراحة المحددة غير موجودة أو غير نشطة.</value>
+  </data>
 </root>
