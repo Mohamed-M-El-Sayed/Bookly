@@ -1,10 +1,9 @@
 ﻿using Bookly.Application.Contracts.Specifications;
-using Bookly.Domain.Entities.Base;
 using System.Linq.Expressions;
 
 namespace Bookly.Application.Contracts.Presistence;
 
-public interface IGenericRepository<TEntity> where TEntity : BaseEntity
+public interface IGenericRepository<TEntity> where TEntity : class
 {
     Task<TEntity?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
     Task<IEnumerable<TEntity>> GetAllWithSpecAsync(ISpecification<TEntity> specification, CancellationToken cancellationToken = default);

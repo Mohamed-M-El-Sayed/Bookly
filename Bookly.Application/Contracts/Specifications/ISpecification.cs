@@ -1,9 +1,8 @@
-﻿using Bookly.Domain.Entities.Base;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 namespace Bookly.Application.Contracts.Specifications
 {
-    public interface ISpecification<TEntity> where TEntity : BaseEntity
+    public interface ISpecification<TEntity> where TEntity : class
     {
         Expression<Func<TEntity, bool>>? Criteria { get; }
         List<Expression<Func<TEntity, object>>> Includes { get; }

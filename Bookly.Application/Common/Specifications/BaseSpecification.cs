@@ -1,11 +1,10 @@
 ﻿using Bookly.Application.Contracts.Specifications;
-using Bookly.Domain.Entities.Base;
 using System.Linq.Expressions;
 
 namespace Bookly.Application.Common.Specifications;
 
 public class BaseSpecification<TEntity> : ISpecification<TEntity>
-    where TEntity : BaseEntity
+    where TEntity : class
 {
     public Expression<Func<TEntity, bool>>? Criteria { get; set; }
 

@@ -1,5 +1,4 @@
 ﻿using Bookly.Application.Contracts.Presistence;
-using Bookly.Domain.Entities.Base;
 using Bookly.Infrastructure.Persistence.Context;
 using Bookly.Infrastructure.Persistence.Repositories;
 
@@ -14,7 +13,7 @@ namespace Bookly.Infrastructure.Persistence.UnitOfWork
             _appDbContext = appDbContext;
         }
         public IGenericRepository<TEntity> Repository<TEntity>()
-            where TEntity : BaseEntity
+            where TEntity : class
         {
             var type = typeof(TEntity);
             if (!_repositories.TryGetValue(type, out var repository))

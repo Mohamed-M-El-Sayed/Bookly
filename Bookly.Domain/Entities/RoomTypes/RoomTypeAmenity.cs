@@ -9,7 +9,7 @@ public class RoomTypeAmenity
     public Amenity Amenity { get; private set; } = default!;
     public RoomType RoomType { get; private set; } = default!;
     private RoomTypeAmenity() { }
-    public RoomTypeAmenity(int amenityId, int roomTypeId)
+    public RoomTypeAmenity(int roomTypeId, int amenityId)
     {
         AmenityId = amenityId;
         RoomTypeId = roomTypeId;

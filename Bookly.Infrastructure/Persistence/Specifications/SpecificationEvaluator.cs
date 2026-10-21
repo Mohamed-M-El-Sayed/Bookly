@@ -1,11 +1,10 @@
 ﻿using Bookly.Application.Contracts.Specifications;
-using Bookly.Domain.Entities.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bookly.Infrastructure.Persistence.Specifications;
 
 
-public static class SpecificationEvaluator<TEntity> where TEntity : BaseEntity
+public static class SpecificationEvaluator<TEntity> where TEntity : class
 {
     public static IQueryable<TEntity> GenerateQuery(IQueryable<TEntity> inputQuery, ISpecification<TEntity> specification)
     {

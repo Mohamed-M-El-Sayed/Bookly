@@ -1,11 +1,9 @@
-﻿using Bookly.Domain.Entities.Base;
-
-namespace Bookly.Application.Contracts.Presistence;
+﻿namespace Bookly.Application.Contracts.Presistence;
 
 public interface IUnitOfWork
 {
     public IGenericRepository<TEntity> Repository<TEntity>()
-           where TEntity : BaseEntity;
+           where TEntity : class;
 
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 

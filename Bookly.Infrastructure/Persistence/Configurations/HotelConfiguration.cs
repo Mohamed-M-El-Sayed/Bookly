@@ -37,5 +37,9 @@ public class HotelConfiguration : IEntityTypeConfiguration<Hotel>
         .WithOne(x => x.Hotel)
         .HasForeignKey(x => x.HotelId)
         .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Navigation(h => h.Amenities)
+            .HasField("_hotelAmenities")
+            .UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 }

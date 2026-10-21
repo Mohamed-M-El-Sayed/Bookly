@@ -111,10 +111,16 @@ public class Hotel : BaseEntity
     public void SetAmenities(IReadOnlyCollection<int> amenityIds)
     {
         var wanted = amenityIds.ToHashSet();
-        _hotelAmenities.RemoveAll(h => !wanted.Contains(h.AmenityId));
-        var existing = _hotelAmenities.Select(h => h.AmenityId).ToList();
-        foreach (var id in wanted.Where(id => !existing.Contains(id)))
-            _hotelAmenities.Add(new HotelAmenity(Id, id));
+        _hotelAmenities.RemoveAll(
+            h => !wanted.Contains(h.AmenityId));
+        var existing = _hotelAmenities
+            .Select(h => h.AmenityId)
+            .ToHashSet();
+        foreach (var id in wanted)
+        {
+            if (existing.Add(id))
+                _hotelAmenities.Add(new HotelAmenity(Id, id));
+        }
     }
     public void AddImage(HotelImage image)
     {

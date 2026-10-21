@@ -171,9 +171,15 @@ public class RoomType : BaseEntity
     public void SetAmenities(IReadOnlyCollection<int> amenityIds)
     {
         var wanted = amenityIds.ToHashSet();
-        _roomTypeAmenities.RemoveAll(h => !wanted.Contains(h.AmenityId));
-        var existing = _roomTypeAmenities.Select(h => h.AmenityId).ToList();
-        foreach (var id in wanted.Where(id => !existing.Contains(id)))
-            _roomTypeAmenities.Add(new RoomTypeAmenity(Id, id));
+        _roomTypeAmenities.RemoveAll(
+            a => !wanted.Contains(a.AmenityId));
+        var existing = _roomTypeAmenities
+            .Select(a => a.AmenityId)
+            .ToHashSet();
+        foreach (var id in wanted)
+        {
+            if (existing.Add(id))
+                _roomTypeAmenities.Add(new RoomTypeAmenity(Id, id));
+        }
     }
 }

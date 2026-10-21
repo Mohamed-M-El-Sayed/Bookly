@@ -1,6 +1,5 @@
 ﻿using Bookly.Application.Contracts.Presistence;
 using Bookly.Application.Contracts.Specifications;
-using Bookly.Domain.Entities.Base;
 using Bookly.Infrastructure.Persistence.Context;
 using Bookly.Infrastructure.Persistence.Specifications;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace Bookly.Infrastructure.Persistence.Repositories;
 
-public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
+public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
 {
     private readonly AppDbContext _appDbContext;
     private readonly DbSet<TEntity> _dbSet;
