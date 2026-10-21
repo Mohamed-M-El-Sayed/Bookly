@@ -4,6 +4,7 @@ using Bookly.Domain.Enums;
 
 namespace Bookly.Application.Features.Hotels.Specifications
 {
+    // shared
     public class AmenitiesForSelectionSpecification : BaseSpecification<Amenity>
     {
         public AmenitiesForSelectionSpecification(IEnumerable<int> amenityIds, AmenityScope scope)

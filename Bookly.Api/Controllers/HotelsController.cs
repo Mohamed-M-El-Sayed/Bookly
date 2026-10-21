@@ -2,6 +2,7 @@ using Bookly.Application.Features.Hotels.Commands.CreateHotel;
 using Bookly.Application.Features.Hotels.Commands.SetHotelAmenities;
 using Bookly.Application.Features.Hotels.Commands.UpdateHotel;
 using Bookly.Application.Features.Hotels.Queries;
+using Bookly.Application.Features.Hotels.Queries.GetHotelAmenities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +12,15 @@ namespace Bookly.Api.Controllers;
 [ApiController]
 public class HotelsController(IMediator mediator) : ApiControllerBase
 {
+    /// <summary>
+    /// Gets the active amenities assigned to a hotel.
+    /// </summary>
+    [HttpGet("{hotelId:int}/amenities")]
+    public async Task<IActionResult> GetHotelAmenities([FromRoute] int hotelId, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(new GetHotelAmenitiesQuery(hotelId), cancellationToken);
+        return Respond(result);
+    }
     /// <summary>
     /// Creates a new hotel.
     /// </summary>
