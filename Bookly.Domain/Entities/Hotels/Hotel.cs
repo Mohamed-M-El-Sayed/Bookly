@@ -122,6 +122,14 @@ public class Hotel : BaseEntity
                 _hotelAmenities.Add(new HotelAmenity(Id, id));
         }
     }
+    public bool RemoveAmenity(int amenityId)
+    {
+        var hotelAmenity = _hotelAmenities.FirstOrDefault(x => x.AmenityId == amenityId);
+        if (hotelAmenity is null)
+            return false;
+        _hotelAmenities.Remove(hotelAmenity);
+        return true;
+    }
     public void AddImage(HotelImage image)
     {
         ArgumentNullException.ThrowIfNull(image);

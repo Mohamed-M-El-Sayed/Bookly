@@ -1,4 +1,5 @@
 using Bookly.Application.Features.Hotels.Commands.CreateHotel;
+using Bookly.Application.Features.Hotels.Commands.RemoveHotelAmenity;
 using Bookly.Application.Features.Hotels.Commands.SetHotelAmenities;
 using Bookly.Application.Features.Hotels.Commands.UpdateHotel;
 using Bookly.Application.Features.Hotels.Queries;
@@ -51,7 +52,7 @@ public class HotelsController(IMediator mediator) : ApiControllerBase
         return Respond(result);
     }
     /// <summary>
-    ///  Sets the amenities for a hotel (Hotel Manager).
+    ///  Sets the amenities for a hotel (Hotel Manager only).
     /// </summary>
     [HttpPost("{id:int}/amenities")]
     public async Task<IActionResult> SetHotelAmenities(int id, [FromBody] SetHotelAmenitiesCommand command, CancellationToken cancellationToken)
@@ -60,5 +61,14 @@ public class HotelsController(IMediator mediator) : ApiControllerBase
         var result = await mediator.Send(command, cancellationToken);
         return Respond(result);
     }
-
+    /// <summary>
+    /// Removes one amenity from a hotel (Hotel manager only).
+    /// </summary>
+    [HttpDelete("{hotelId:int}/amenities/{amenityId:int}")]
+    public async Task<IActionResult> RemoveAmenity(
+        int hotelId, int amenityId, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(new RemoveHotelAmenityCommand(hotelId, amenityId), cancellationToken);
+        return Respond(result);
+    }
 }
