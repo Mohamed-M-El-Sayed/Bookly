@@ -1,4 +1,5 @@
 ﻿using Bookly.Application.Features.RoomTypes.Commands.CreateRoomType;
+using Bookly.Application.Features.RoomTypes.Commands.RemoveRoomTypeAmenity;
 using Bookly.Application.Features.RoomTypes.Commands.SetRoomTypesAmenities;
 using Bookly.Application.Features.RoomTypes.Queries.GetRoomTypeById;
 using MediatR;
@@ -29,7 +30,7 @@ public class RoomTypesController(IMediator mediator) : ApiControllerBase
         return Respond(result);
     }
     /// <summary>
-    /// Sets the amenities for a room types (Hotel Manager).
+    /// Sets the amenities for a room types (Hotel Manager only).
     /// </summary>
     [HttpPost("{id:int}/amenities")]
     public async Task<IActionResult> SetRoomTypeAmenities([FromRoute] int id, [FromBody] SetRoomTypesAmenitiesCommand command, CancellationToken cancellationToken)
@@ -38,5 +39,16 @@ public class RoomTypesController(IMediator mediator) : ApiControllerBase
         var result = await mediator.Send(command, cancellationToken);
         return Respond(result);
     }
+    /// <summary>
+    /// Removes one amenity from a room type (Hotel manager only).
+    /// </summary>
+    [HttpDelete("{id:int}/amenities/{amenityId:int}")]
+    public async Task<IActionResult> RemoveAmenity(
+        int id, int amenityId, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(new RemoveRoomTypeAmenityCommand(id, amenityId), cancellationToken);
+        return Respond(result);
+    }
+
 }
 

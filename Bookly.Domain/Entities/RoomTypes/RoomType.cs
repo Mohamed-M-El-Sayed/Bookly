@@ -182,4 +182,12 @@ public class RoomType : BaseEntity
                 _roomTypeAmenities.Add(new RoomTypeAmenity(Id, id));
         }
     }
+    public bool RemoveAmenity(int amenityId)
+    {
+        var roomTypeAmenity = _roomTypeAmenities.FirstOrDefault(x => x.AmenityId == amenityId);
+        if (roomTypeAmenity is null)
+            return false;
+        _roomTypeAmenities.Remove(roomTypeAmenity);
+        return true;
+    }
 }
