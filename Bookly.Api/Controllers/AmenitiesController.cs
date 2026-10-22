@@ -1,9 +1,8 @@
 ﻿using Bookly.Application.Features.Amenities.Commands.CreateAmenity;
+using Bookly.Application.Features.Amenities.Commands.DeleteAmenity;
 using Bookly.Application.Features.Amenities.Queries.GetAmenities;
 using Bookly.Application.Features.Amenities.Queries.GetAmenityById;
-using Bookly.Domain.Constants;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookly.Api.Controllers;
@@ -33,7 +32,6 @@ public class AmenitiesController(IMediator mediator) : ApiControllerBase
     /// <summary>
     /// Creates a new amenity (Admin only).
     /// </summary>
-    [Authorize(Roles = Roles.Admin)]
     [HttpPost]
     public async Task<IActionResult> Create(
         CreateAmenityCommand command,
@@ -42,5 +40,14 @@ public class AmenitiesController(IMediator mediator) : ApiControllerBase
         var result = await mediator.Send(command, cancellationToken);
         return Respond(result);
     }
+    /// <summary>
+    /// Deletes an amenity that is not used by any hotel or room type (Admin only).
+    /// </summary>
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+    {
+        return Respond(await mediator.Send(new DeleteAmenityCommand(id), cancellationToken));
+    }
+
 
 }

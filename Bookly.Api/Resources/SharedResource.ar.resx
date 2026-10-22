@@ -336,4 +336,7 @@
   <data name="Amenity.InvalidSelection" xml:space="preserve">
     <value>واحدة أو أكثر من وسائل الراحة المحددة غير موجودة أو غير نشطة.</value>
   </data>
+  <data name="Amenity.InUse" xml:space="preserve">
+    <value>لا يمكن حذف المرفق لأنه مستخدم في فندق أو نوع غرفة.</value>
+  </data>
 </root>

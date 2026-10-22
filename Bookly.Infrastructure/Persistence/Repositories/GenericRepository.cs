@@ -67,6 +67,11 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
     {
         return _dbSet.FirstOrDefaultAsync(predicate, cancellationToken);
     }
+    public async Task<bool> AnyAsync(
+        ISpecification<TEntity> specification, CancellationToken cancellationToken = default)
+    {
+        return await ApplaySpecification(specification).AnyAsync(cancellationToken);
+    }
     public void Remove(TEntity entity)
     {
         _dbSet.Remove(entity);

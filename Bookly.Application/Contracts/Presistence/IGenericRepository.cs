@@ -16,4 +16,5 @@ public interface IGenericRepository<TEntity> where TEntity : class
     void Update(TEntity entity);
     void Remove(TEntity entity);
     void RemoveRange(IEnumerable<TEntity> entities);
+    Task<bool> AnyAsync(ISpecification<TEntity> specification, CancellationToken cancellationToken = default);
 }
