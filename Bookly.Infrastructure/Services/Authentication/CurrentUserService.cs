@@ -27,4 +27,6 @@ public class CurrentUserService(IHttpContextAccessor httpContextAccessor)
 
     public bool IsAdmin =>
         CurrentUser?.IsInRole(Roles.Admin) ?? false;
+    public bool IsHotelManager =>
+        CurrentUser?.IsInRole(Roles.Manager) == true;
 }
