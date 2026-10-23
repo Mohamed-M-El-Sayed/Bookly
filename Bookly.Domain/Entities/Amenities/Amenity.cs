@@ -12,9 +12,6 @@ public class Amenity : BaseEntity
     public AmenityCategory Category { get; private set; } = null!;
     public AmenityScope Scope { get; private set; }
     public bool IsActive { get; private set; }
-
-    public bool AppliesToHotel => Scope is AmenityScope.Hotel or AmenityScope.Both;
-    public bool AppliesToRoom => Scope is AmenityScope.Room or AmenityScope.Both;
     private Amenity() { }
     public Amenity(
         string nameEn,
@@ -46,4 +43,14 @@ public class Amenity : BaseEntity
     }
     public void Deactivate() => IsActive = false;
     public void Activate() => IsActive = true;
+    public bool AppliesToHotel => Scope is AmenityScope.Hotel or AmenityScope.Both;
+    public bool AppliesToRoom => Scope is AmenityScope.Room or AmenityScope.Both;
+
+    // Returns true if the amenity currently applies to hotels
+    // but the new scope restricts it to rooms only.
+    public bool ExcludesHotel(AmenityScope newScope) =>
+        AppliesToHotel && newScope == AmenityScope.Room;
+    public bool ExcludesRoom(AmenityScope newScope) =>
+        AppliesToRoom && newScope == AmenityScope.Hotel;
+
 }

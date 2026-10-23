@@ -13,4 +13,7 @@ public static class AmenityErrors
     public static Error InUse() =>
         ErrorFactory.Conflict("Amenity.InUse",
         "The amenity cannot be deleted because it is used by a hotel or a room type.");
+    public static Error ScopeInUse() =>
+    ErrorFactory.Conflict("Amenity.ScopeInUse",
+        "The amenity scope cannot be changed because it is already used by a hotel or room type.");
 }
