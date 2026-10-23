@@ -7,7 +7,9 @@ public class HotelAmenitiesSpecifications : BaseSpecification<HotelAmenity>
 {
     public HotelAmenitiesSpecifications(int hotelId)
     {
-        Criteria = ha => ha.HotelId == hotelId && ha.Amenity.IsActive;
+        // Include inactive amenities already assigned to the hotel
+        // so the hotel manager can view and unassign them.
+        Criteria = ha => ha.HotelId == hotelId;
         AddInclude(ha => ha.Amenity.Category);
     }
 }
