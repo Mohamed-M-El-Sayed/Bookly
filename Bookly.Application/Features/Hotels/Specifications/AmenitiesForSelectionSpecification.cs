@@ -11,6 +11,7 @@ namespace Bookly.Application.Features.Hotels.Specifications
         {
             Criteria = a => amenityIds.Contains(a.Id)
             && a.IsActive
+            && a.Category.IsActive
             && (a.Scope == scope || a.Scope == AmenityScope.Both);
         }
     }
