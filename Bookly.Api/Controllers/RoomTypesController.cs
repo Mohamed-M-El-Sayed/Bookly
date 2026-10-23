@@ -1,6 +1,7 @@
 ﻿using Bookly.Application.Features.RoomTypes.Commands.CreateRoomType;
 using Bookly.Application.Features.RoomTypes.Commands.RemoveRoomTypeAmenity;
 using Bookly.Application.Features.RoomTypes.Commands.SetRoomTypesAmenities;
+using Bookly.Application.Features.RoomTypes.Queries.GetRoomTypeAmenities;
 using Bookly.Application.Features.RoomTypes.Queries.GetRoomTypeById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -49,6 +50,18 @@ public class RoomTypesController(IMediator mediator) : ApiControllerBase
         var result = await mediator.Send(new RemoveRoomTypeAmenityCommand(id, amenityId), cancellationToken);
         return Respond(result);
     }
-
+    /// <summary>
+    /// Gets the amenities assigned to a room type.
+    /// </summary>
+    [HttpGet("{roomTypeId:int}/amenities")]
+    public async Task<IActionResult> GetAmenities(
+        int roomTypeId,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetRoomTypeAmenitiesQuery(roomTypeId),
+            cancellationToken);
+        return Respond(result);
+    }
 }
 
