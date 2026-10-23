@@ -5,7 +5,9 @@ using Bookly.Application.Features.Amenities.Commands.DeleteAmenity;
 using Bookly.Application.Features.Amenities.Commands.UpdateAmenity;
 using Bookly.Application.Features.Amenities.Queries.GetAmenities;
 using Bookly.Application.Features.Amenities.Queries.GetAmenityById;
+using Bookly.Domain.Constants;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookly.Api.Controllers;
@@ -26,6 +28,7 @@ public class AmenitiesController(IMediator mediator) : ApiControllerBase
     /// <summary>
     /// Get amenity by Id (Admin only).
     /// </summary>
+    [Authorize(Roles = Roles.Admin)]
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
@@ -35,6 +38,7 @@ public class AmenitiesController(IMediator mediator) : ApiControllerBase
     /// <summary>
     /// Creates a new amenity (Admin only).
     /// </summary>
+    [Authorize(Roles = Roles.Admin)]
     [HttpPost]
     public async Task<IActionResult> Create(
         CreateAmenityCommand command,
@@ -46,6 +50,7 @@ public class AmenitiesController(IMediator mediator) : ApiControllerBase
     /// <summary>
     /// Updates an existing amenity (Admin only).
     /// </summary>
+    [Authorize(Roles = Roles.Admin)]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update([FromRoute] int id, UpdateAmenityCommand command,
         CancellationToken cancellationToken)
@@ -57,6 +62,7 @@ public class AmenitiesController(IMediator mediator) : ApiControllerBase
     /// <summary>
     /// Deletes an amenity that is not used by any hotel or room type (Admin only).
     /// </summary>
+    [Authorize(Roles = Roles.Admin)]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
@@ -65,6 +71,7 @@ public class AmenitiesController(IMediator mediator) : ApiControllerBase
     /// <summary>
     /// Activates an amenity (Admin only).
     /// </summary>
+    [Authorize(Roles = Roles.Admin)]
     [HttpPatch("{id:int}/activate")]
     public async Task<IActionResult> Activate(
         int id,
@@ -77,6 +84,7 @@ public class AmenitiesController(IMediator mediator) : ApiControllerBase
     /// <summary>
     /// Deactivates an amenity (Admin only).
     /// </summary>
+    [Authorize(Roles = Roles.Admin)]
     [HttpPatch("{id:int}/deactivate")]
     public async Task<IActionResult> Deactivate(
         int id,
