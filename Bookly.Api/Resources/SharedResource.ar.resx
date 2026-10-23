@@ -339,4 +339,7 @@
   <data name="Amenity.InUse" xml:space="preserve">
     <value>لا يمكن حذف المرفق لأنه مستخدم في فندق أو نوع غرفة.</value>
   </data>
+  <data name="Amenity.ScopeInUse" xml:space="preserve">
+    <value>لا يمكن تغيير نطاق هذه الميزة لأنها مستخدمة بالفعل بواسطة فندق أو نوع غرفة.</value>
+  </data>
 </root>

@@ -1,5 +1,8 @@
-﻿using Bookly.Application.Features.Amenities.Commands.CreateAmenity;
+﻿using Bookly.Application.Features.Amenities.Commands.ActivateAmenity;
+using Bookly.Application.Features.Amenities.Commands.CreateAmenity;
+using Bookly.Application.Features.Amenities.Commands.DeactivateAmenity;
 using Bookly.Application.Features.Amenities.Commands.DeleteAmenity;
+using Bookly.Application.Features.Amenities.Commands.UpdateAmenity;
 using Bookly.Application.Features.Amenities.Queries.GetAmenities;
 using Bookly.Application.Features.Amenities.Queries.GetAmenityById;
 using MediatR;
@@ -41,6 +44,17 @@ public class AmenitiesController(IMediator mediator) : ApiControllerBase
         return Respond(result);
     }
     /// <summary>
+    /// Updates an existing amenity (Admin only).
+    /// </summary>
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> Update([FromRoute] int id, UpdateAmenityCommand command,
+        CancellationToken cancellationToken)
+    {
+        command.Id = id;
+        var result = await mediator.Send(command, cancellationToken);
+        return Respond(result);
+    }
+    /// <summary>
     /// Deletes an amenity that is not used by any hotel or room type (Admin only).
     /// </summary>
     [HttpDelete("{id:int}")]
@@ -48,6 +62,29 @@ public class AmenitiesController(IMediator mediator) : ApiControllerBase
     {
         return Respond(await mediator.Send(new DeleteAmenityCommand(id), cancellationToken));
     }
-
+    /// <summary>
+    /// Activates an amenity (Admin only).
+    /// </summary>
+    [HttpPatch("{id:int}/activate")]
+    public async Task<IActionResult> Activate(
+        int id,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new ActivateAmenityCommand(id), cancellationToken);
+        return Respond(result);
+    }
+    /// <summary>
+    /// Deactivates an amenity (Admin only).
+    /// </summary>
+    [HttpPatch("{id:int}/deactivate")]
+    public async Task<IActionResult> Deactivate(
+        int id,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new DeactivateAmenityCommand(id), cancellationToken);
+        return Respond(result);
+    }
 
 }
