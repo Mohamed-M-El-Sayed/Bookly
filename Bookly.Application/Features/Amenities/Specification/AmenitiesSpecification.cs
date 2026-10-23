@@ -7,8 +7,11 @@ public class AmenitiesSpecification : BaseSpecification<Amenity>
 {
     public AmenitiesSpecification(int categoryId, bool includeInactive)
     {
-        // Hotel managers should only see active categories when viewing available categories.
-        Criteria = a => a.CategoryId == categoryId && (includeInactive || a.IsActive);
+        // Hotel managers can only see active amenities in active categories.
+        Criteria = a =>
+                   a.CategoryId == categoryId &&
+                   (includeInactive ||
+                    (a.IsActive && a.Category.IsActive));
         ApplyOrderByDescending(a => a.IsActive);
     }
 }
