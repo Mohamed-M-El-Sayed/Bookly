@@ -1,7 +1,10 @@
 using Bookly.Api.Middlewares;
+using Bookly.Application.Contracts.Services.BackgroundJobs;
 using Bookly.Application.DependancyInjection;
 using Bookly.Infrastructure.DependancyInjection;
 using Bookly.Infrastructure.Services.Authentication;
+using Bookly.Infrastructure.Services.BackgroundJobs.Jobs;
+using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
@@ -92,7 +95,16 @@ namespace Bookly.Api
             string[] supportedCultures = ["en", "ar"];
 
             var app = builder.Build();
+            using (var scope = app.Services.CreateScope())
+            {
+                var backgroundJobService =
+                    scope.ServiceProvider.GetRequiredService<IBackgroundJobService>();
 
+                backgroundJobService.AddOrUpdate<AvailabilityInitializationJob>(
+                    "initialize-room-availability",
+                    job => job.ExecuteAsync(CancellationToken.None),
+                    Cron.Daily());
+            }
 
             // Localization: first in the pipeline, so everything after it sees the request's culture
             app.UseRequestLocalization(options =>
@@ -104,7 +116,7 @@ namespace Bookly.Api
                 options.ApplyCurrentCultureToResponseHeaders = true;   // adds a Content-Language header
             });
 
-
+            app.UseHangfireDashboard();
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
             if (app.Environment.IsDevelopment())
