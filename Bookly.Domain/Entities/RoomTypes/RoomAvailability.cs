@@ -1,14 +1,13 @@
-﻿using Bookly.Domain.Entities.Base;
-using Bookly.Domain.Exceptions;
+﻿using Bookly.Domain.Exceptions;
 
 namespace Bookly.Domain.Entities.RoomTypes;
 
-public class RoomAvailability : BaseEntity
+public class RoomAvailability
 {
     public int RoomTypeId { get; private set; }
     public DateOnly Date { get; private set; }
     public int TotalRooms { get; private set; }
-    public int AvailableRooms { get; private set; }
+    public int AvailableRooms => TotalRooms - ReservedRooms;
     public int ReservedRooms { get; private set; }
     public RoomType RoomType { get; private set; } = null!;
     public RoomAvailability() { }
@@ -23,7 +22,6 @@ public class RoomAvailability : BaseEntity
         RoomTypeId = roomTypeId;
         Date = date;
         TotalRooms = totalRooms;
-        AvailableRooms = totalRooms;
         ReservedRooms = 0;
     }
 
@@ -32,7 +30,6 @@ public class RoomAvailability : BaseEntity
         if (AvailableRooms <= 0)
             throw new DomainException($"No available rooms for room type {RoomTypeId} on {Date:yyyy-MM-dd}.");
 
-        AvailableRooms--;
         ReservedRooms++;
     }
     public void Release()
@@ -40,7 +37,6 @@ public class RoomAvailability : BaseEntity
         if (ReservedRooms <= 0)
             throw new DomainException($"No reserved rooms to release for room type {RoomTypeId} on {Date:yyyy-MM-dd}.");
 
-        AvailableRooms++;
         ReservedRooms--;
     }
 

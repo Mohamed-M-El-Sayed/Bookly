@@ -10,11 +10,23 @@ public class RoomAvailabilityConfiguration : IEntityTypeConfiguration<RoomAvaila
     {
         builder.HasKey(x => new { x.RoomTypeId, x.Date });
 
+        builder.Ignore(x => x.AvailableRooms);
+
+        builder.Property(x => x.Date)
+            .HasColumnType("date");
+
         builder.Property<byte[]>("RowVersion")
             .IsRowVersion();
 
         builder.ToTable(t => t.HasCheckConstraint(
-           "CK_RoomAvailability_Balance",
-           "[TotalRooms] = [AvailableRooms] + [ReservedRooms]"));
+            "CK_RoomAvailability_Balance",
+            "[TotalRooms] >= 0 AND " +
+            "[ReservedRooms] >= 0 AND " +
+            "[ReservedRooms] <= [TotalRooms]"));
+
+        builder.HasOne(x => x.RoomType)
+          .WithMany(x => x.RoomAvailabilities)
+          .HasForeignKey(x => x.RoomTypeId)
+          .OnDelete(DeleteBehavior.Cascade);
     }
 }

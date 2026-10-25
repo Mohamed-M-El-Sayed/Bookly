@@ -20,6 +20,8 @@ public class RoomType : BaseEntity
     public int BedCount { get; private set; }
     public decimal SizeSqm { get; private set; }
     public Hotel Hotel { get; private set; } = null!;
+    private readonly List<Room> _rooms = new();
+    public IReadOnlyCollection<Room> Rooms => _rooms.AsReadOnly();
     private readonly List<SeasonalPrice> _seasonalPrices = new();
     public IReadOnlyCollection<SeasonalPrice> SeasonalPrices => _seasonalPrices.AsReadOnly();
     private readonly List<BoardOption> _boardOptions = new();

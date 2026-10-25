@@ -6,6 +6,7 @@ public class Room : BaseEntity
 {
     public int RoomTypeId { get; private set; }
     public string RoomNumber { get; private set; } = null!;
+    public bool IsActive { get; set; }
     private Room() { }
     private Room(
         int roomTypeId,

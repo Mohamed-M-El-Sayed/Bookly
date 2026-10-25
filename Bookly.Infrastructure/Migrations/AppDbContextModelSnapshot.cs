@@ -497,6 +497,9 @@ namespace Bookly.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("RoomNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -505,6 +508,8 @@ namespace Bookly.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RoomTypeId");
 
                     b.ToTable("Rooms");
                 });
@@ -516,15 +521,6 @@ namespace Bookly.Infrastructure.Migrations
 
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
-
-                    b.Property<int>("AvailableRooms")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
 
                     b.Property<int>("ReservedRooms")
                         .HasColumnType("int");
@@ -541,7 +537,7 @@ namespace Bookly.Infrastructure.Migrations
 
                     b.ToTable("RoomAvailabilities", t =>
                         {
-                            t.HasCheckConstraint("CK_RoomAvailability_Balance", "[TotalRooms] = [AvailableRooms] + [ReservedRooms]");
+                            t.HasCheckConstraint("CK_RoomAvailability_Balance", "[TotalRooms] >= 0 AND [ReservedRooms] >= 0 AND [ReservedRooms] <= [TotalRooms]");
                         });
                 });
 
@@ -969,6 +965,15 @@ namespace Bookly.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Bookly.Domain.Entities.RoomTypes.Room", b =>
+                {
+                    b.HasOne("Bookly.Domain.Entities.RoomTypes.RoomType", null)
+                        .WithMany("Rooms")
+                        .HasForeignKey("RoomTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Bookly.Domain.Entities.RoomTypes.RoomAvailability", b =>
                 {
                     b.HasOne("Bookly.Domain.Entities.RoomTypes.RoomType", "RoomType")
@@ -1103,6 +1108,8 @@ namespace Bookly.Infrastructure.Migrations
                     b.Navigation("BoardOptions");
 
                     b.Navigation("RoomAvailabilities");
+
+                    b.Navigation("Rooms");
 
                     b.Navigation("SeasonalPrices");
                 });
