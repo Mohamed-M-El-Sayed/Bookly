@@ -14,6 +14,7 @@ public class Booking : SoftDeletableEntity
     public DateOnly CheckOut { get; private set; }
     public BookingStatus Status { get; private set; }
     public decimal TotalPrice { get; private set; }
+    // not convert into C# computed property 
     public string PhoneNumber { get; private set; } = default!;
     public DateTime? ExpiresAt { get; private set; }
     private readonly List<BookingRoom> _bookingRooms = new();
@@ -43,5 +44,19 @@ public class Booking : SoftDeletableEntity
     private static string GenerateReference()
     {
         return $"BK-{Guid.NewGuid():N}"[..11].ToUpperInvariant();
+    }
+    public void AddRoom(
+    int roomTypeId,
+    int? boardOptionId,
+    int guests,
+    decimal priceAtBooking)
+    {
+        var bookingRoom = BookingRoom.Create(
+        roomTypeId,
+        boardOptionId,
+        guests,
+        priceAtBooking);
+
+        _bookingRooms.Add(bookingRoom);
     }
 }

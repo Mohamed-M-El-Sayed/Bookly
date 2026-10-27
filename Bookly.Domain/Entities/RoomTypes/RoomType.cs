@@ -192,4 +192,33 @@ public class RoomType : BaseEntity
         _roomTypeAmenities.Remove(roomTypeAmenity);
         return true;
     }
+    public bool TryReserve(DateOnly checkIn, DateOnly checkOut)
+    {
+        var nights = checkOut.DayNumber - checkIn.DayNumber;
+        var availability = _roomAvailabilities
+            .Where(x => x.Date >= checkIn && x.Date < checkOut)
+            .ToList();
+        if (nights <= 0 || availability.Count != nights)
+            return false;
+        if (availability.Any(x => x.AvailableRooms < 1))
+            return false;
+        foreach (var day in availability)
+            day.TryReserve();
+
+        return true;
+    }
+    public decimal TotalPriceForStay(DateOnly checkIn, DateOnly checkOut)
+    {
+        if (checkOut <= checkIn)
+            throw new ArgumentException("Check-out must be after check-in.");
+        decimal total = 0;
+        for (var date = checkIn; date < checkOut; date = date.AddDays(1))
+        {
+            var seasonalPrice = _seasonalPrices.FirstOrDefault(
+                x => x.StartDate <= date && x.EndDate >= date);
+            total += seasonalPrice?.PricePerNight ?? BasePricePerNight;
+        }
+        return Math.Round(total, 2, MidpointRounding.AwayFromZero);
+    }
+
 }
