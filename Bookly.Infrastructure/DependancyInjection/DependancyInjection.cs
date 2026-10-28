@@ -61,6 +61,8 @@ namespace Bookly.Infrastructure.DependancyInjection
             services.AddHttpContextAccessor();
             services.AddScoped<IHotelAccessService, HotelAccessService>();
             services.AddScoped<IBackgroundJobService, HangfireBackgroundJobService>();
+            services.AddScoped<IBookingExpiryScheduler, HangfireBookingExpiryScheduler>();
+            services.AddScoped<BookingExpirationJob>();
             services.AddScoped<AvailabilityInitializationJob>();
             services.AddScoped<IAvailabilityInitializer, AvailabilityInitializer>();
             services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));

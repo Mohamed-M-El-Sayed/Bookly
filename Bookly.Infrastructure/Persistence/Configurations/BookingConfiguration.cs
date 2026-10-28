@@ -42,10 +42,6 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
             .HasConversion<string>()
             .HasMaxLength(20);
 
-        builder.Property(b => b.TotalPrice)
-            .HasPrecision(18, 2)
-            .IsRequired();
-
         builder.HasQueryFilter(b => b.DeletedAt == null);
 
         builder.HasMany(b => b.BookingRooms)

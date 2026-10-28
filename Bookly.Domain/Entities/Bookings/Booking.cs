@@ -13,8 +13,7 @@ public class Booking : SoftDeletableEntity
     public DateOnly CheckIn { get; private set; }
     public DateOnly CheckOut { get; private set; }
     public BookingStatus Status { get; private set; }
-    public decimal TotalPrice { get; private set; }
-    // not convert into C# computed property 
+    public decimal TotalPrice => _bookingRooms.Sum(x => x.PriceAtBooking);
     public string PhoneNumber { get; private set; } = default!;
     public DateTime? ExpiresAt { get; private set; }
     private readonly List<BookingRoom> _bookingRooms = new();
@@ -58,5 +57,14 @@ public class Booking : SoftDeletableEntity
         priceAtBooking);
 
         _bookingRooms.Add(bookingRoom);
+    }
+    public bool TryExpire(DateTime utcNow)
+    {
+        if (Status != BookingStatus.Pending)
+            return false;
+        if (ExpiresAt is null || ExpiresAt.Value > utcNow)
+            return false;
+        Status = BookingStatus.Expired;
+        return true;
     }
 }

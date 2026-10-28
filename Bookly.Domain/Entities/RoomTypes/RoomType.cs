@@ -207,6 +207,20 @@ public class RoomType : BaseEntity
 
         return true;
     }
+    public bool TryRelease(DateOnly checkIn, DateOnly checkOut)
+    {
+        var nights = checkOut.DayNumber - checkIn.DayNumber;
+        var availability = _roomAvailabilities
+            .Where(x => x.Date >= checkIn && x.Date < checkOut)
+            .ToList();
+        if (nights <= 0 || availability.Count != nights)
+            return false;
+        if (availability.Any(x => x.ReservedRooms <= 0))
+            return false;
+        foreach (var day in availability)
+            day.TryRelease();
+        return true;
+    }
     public decimal TotalPriceForStay(DateOnly checkIn, DateOnly checkOut)
     {
         if (checkOut <= checkIn)

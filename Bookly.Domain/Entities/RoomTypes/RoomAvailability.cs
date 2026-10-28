@@ -30,19 +30,12 @@ public class RoomAvailability
         ReservedRooms++;
         return true;
     }
-    //public void Reserve()
-    //{
-    //    if (AvailableRooms <= 0)
-    //        throw new DomainException($"No available rooms for room type {RoomTypeId} on {Date:yyyy-MM-dd}.");
-
-    //    ReservedRooms++;
-    //}
-    //public void Release()
-    //{
-    //    if (ReservedRooms <= 0)
-    //        throw new DomainException($"No reserved rooms to release for room type {RoomTypeId} on {Date:yyyy-MM-dd}.");
-
-    //    ReservedRooms--;
-    //}
+    public bool TryRelease()
+    {
+        if (ReservedRooms <= 0)
+            return false;
+        ReservedRooms--;
+        return true;
+    }
 
 }
