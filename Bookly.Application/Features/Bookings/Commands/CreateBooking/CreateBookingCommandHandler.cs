@@ -1,5 +1,6 @@
 ﻿using Bookly.Application.Common.Results;
 using Bookly.Application.Contracts.Presistence;
+using Bookly.Application.Contracts.Services.BackgroundJobs;
 using Bookly.Application.Contracts.Services.Users;
 using Bookly.Application.Features.Auth.Messages;
 using Bookly.Application.Features.Bookings.Messages;
@@ -14,6 +15,7 @@ namespace Bookly.Application.Features.Bookings.Commands.CreateBooking;
 
 public class CreateBookingCommandHandler(IUnitOfWork unitOfWork,
     ICurrentUserService currentUserService,
+    IBookingExpiryScheduler bookingExpiryScheduler,
     ILogger<CreateBookingCommandHandler> logger) : IRequestHandler<CreateBookingCommand, Result<CreateBookingResponse>>
 {
     public async Task<Result<CreateBookingResponse>> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
@@ -43,6 +45,7 @@ public class CreateBookingCommandHandler(IUnitOfWork unitOfWork,
         booking.AddRoom(request.RoomTypeId, null, request.Guests, price);
         await unitOfWork.Repository<Booking>().AddAsync(booking, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
+        await bookingExpiryScheduler.ScheduleAsync(booking.Id, TimeSpan.FromMinutes(15), cancellationToken);
         return Result<CreateBookingResponse>.Success(new CreateBookingResponse(
           booking.Reference,
           booking.Status,
