@@ -59,8 +59,11 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
     }
     public async Task<int> CountAsync(ISpecification<TEntity> specification, CancellationToken cancellationToken = default)
     {
-        var query = ApplaySpecification(specification);
-        return await query.CountAsync();
+        var query = _dbSet.AsQueryable();
+        if (specification.Criteria is not null)
+            query = query.Where(specification.Criteria);
+
+        return await query.CountAsync(cancellationToken);
     }
 
     public Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
