@@ -1,5 +1,6 @@
 ﻿using Bookly.Domain.Entities.Base;
 using Bookly.Domain.Entities.Hotels;
+using Bookly.Domain.Entities.Payments;
 using Bookly.Domain.Enums;
 using Bookly.Domain.Exceptions;
 
@@ -22,6 +23,8 @@ public class Booking : SoftDeletableEntity
     private readonly List<BookingRoom> _bookingRooms = new();
     public IReadOnlyCollection<BookingRoom> BookingRooms => _bookingRooms.AsReadOnly();
     public Hotel Hotel { get; private set; } = default!;
+    private readonly List<Payment> _payments = [];
+    public IReadOnlyCollection<Payment> Payments => _payments.AsReadOnly();
     private Booking() { }
     public static Booking Create(
         Guid userId,
