@@ -4,6 +4,9 @@ namespace Bookly.Application.Features.Bookings.Messages;
 
 public static class BookingErrors
 {
+    public static Error NotFound() =>
+    ErrorFactory.NotFound("Booking.NotFound",
+        "The requested booking was not found.");
     public static Error ExceedsMaxOccupancy() =>
        ErrorFactory.Validation(
            "Booking.ExceedsMaxOccupancy",

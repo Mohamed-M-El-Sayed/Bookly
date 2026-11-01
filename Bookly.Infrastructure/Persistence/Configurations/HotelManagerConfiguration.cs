@@ -11,9 +11,9 @@ public class HotelManagerConfiguration : IEntityTypeConfiguration<HotelManager>
     {
         builder.HasKey(x => new { x.HotelId, x.UserId });
         builder.HasOne(x => x.Hotel)
-          .WithMany()
-          .HasForeignKey(x => x.HotelId)
-          .OnDelete(DeleteBehavior.Cascade);
+               .WithMany(h => h.Managers)
+               .HasForeignKey(x => x.HotelId)
+               .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne<ApplicationUser>()
             .WithMany()

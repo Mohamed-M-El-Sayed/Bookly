@@ -342,41 +342,43 @@
   <data name="Amenity.ScopeInUse" xml:space="preserve">
     <value>لا يمكن تغيير نطاق هذه الميزة لأنها مستخدمة بالفعل بواسطة فندق أو نوع غرفة.</value>
   </data>
-
-   <data name="Booking.InvalidHotelId" xml:space="preserve">
-     <value>رقم الفندق غير صالح.</value>
-   </data>
-   <data name="Booking.InvalidRoomTypeId" xml:space="preserve">
-     <value>رقم نوع الغرفة غير صالح.</value>
-   </data>
-   <data name="Booking.InvalidBoardOptionId" xml:space="preserve">
-     <value>خيار الإقامة غير صالح.</value>
-   </data>
-   <data name="Booking.CheckInInPast" xml:space="preserve">
-     <value>تاريخ تسجيل الوصول لا يمكن أن يكون في الماضي.</value>
-   </data>
-   <data name="Booking.InvalidCheckOut" xml:space="preserve">
-     <value>تاريخ تسجيل المغادرة يجب أن يكون بعد تاريخ الوصول.</value>
-   </data>
-   <data name="Booking.InvalidGuests" xml:space="preserve">
-     <value>يجب أن يكون عدد الضيوف شخصًا واحدًا على الأقل.</value>
-   </data>
-   <data name="Booking.GuestNameRequired" xml:space="preserve">
-     <value>اسم النزيل مطلوب.</value>
-   </data>
-   <data name="Booking.GuestNameTooLong" xml:space="preserve">
-     <value>اسم النزيل يجب ألا يتجاوز 100 حرف.</value>
-   </data>
-   <data name="Booking.PhoneNumberRequired" xml:space="preserve">
-     <value>رقم الهاتف مطلوب.</value>
-   </data>
-   <data name="Booking.PhoneNumberTooLong" xml:space="preserve">
-     <value>رقم الهاتف يجب ألا يتجاوز 20 حرفًا.</value>
-   </data>
-   <data name="Booking.ExceedsMaxOccupancy" xml:space="preserve">
-     <value>عدد الضيوف يتجاوز الحد الأقصى لاستيعاب الغرفة.</value>
-   </data>
-   <data name="Booking.RoomNotAvailable" xml:space="preserve">
-     <value>الغرفة غير متاحة في التواريخ المحددة.</value>
-   </data>
+  <data name="Booking.InvalidHotelId" xml:space="preserve">
+    <value>رقم الفندق غير صالح.</value>
+  </data>
+  <data name="Booking.InvalidRoomTypeId" xml:space="preserve">
+    <value>رقم نوع الغرفة غير صالح.</value>
+  </data>
+  <data name="Booking.InvalidBoardOptionId" xml:space="preserve">
+    <value>خيار الإقامة غير صالح.</value>
+  </data>
+  <data name="Booking.CheckInInPast" xml:space="preserve">
+    <value>تاريخ تسجيل الوصول لا يمكن أن يكون في الماضي.</value>
+  </data>
+  <data name="Booking.InvalidCheckOut" xml:space="preserve">
+    <value>تاريخ تسجيل المغادرة يجب أن يكون بعد تاريخ الوصول.</value>
+  </data>
+  <data name="Booking.InvalidGuests" xml:space="preserve">
+    <value>يجب أن يكون عدد الضيوف شخصًا واحدًا على الأقل.</value>
+  </data>
+  <data name="Booking.GuestNameRequired" xml:space="preserve">
+    <value>اسم النزيل مطلوب.</value>
+  </data>
+  <data name="Booking.GuestNameTooLong" xml:space="preserve">
+    <value>اسم النزيل يجب ألا يتجاوز 100 حرف.</value>
+  </data>
+  <data name="Booking.PhoneNumberRequired" xml:space="preserve">
+    <value>رقم الهاتف مطلوب.</value>
+  </data>
+  <data name="Booking.PhoneNumberTooLong" xml:space="preserve">
+    <value>رقم الهاتف يجب ألا يتجاوز 20 حرفًا.</value>
+  </data>
+  <data name="Booking.ExceedsMaxOccupancy" xml:space="preserve">
+    <value>عدد الضيوف يتجاوز الحد الأقصى لاستيعاب الغرفة.</value>
+  </data>
+  <data name="Booking.RoomNotAvailable" xml:space="preserve">
+    <value>الغرفة غير متاحة في التواريخ المحددة.</value>
+  </data>
+  <data name="Booking.NotFound" xml:space="preserve">
+    <value>الحجز المطلوب غير موجود.</value>
+  </data>
 </root>

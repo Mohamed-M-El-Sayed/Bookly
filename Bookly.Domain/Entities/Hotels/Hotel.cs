@@ -17,7 +17,8 @@ public class Hotel : BaseEntity
     public IReadOnlyCollection<HotelAmenity> Amenities => _hotelAmenities.AsReadOnly();
     private readonly List<HotelImage> _images = new();
     public IReadOnlyCollection<HotelImage> Images => _images.AsReadOnly();
-
+    private readonly List<HotelManager> _hotelManagers = new();
+    public IReadOnlyCollection<HotelManager> Managers => _hotelManagers.AsReadOnly();
     private Hotel() { }
 
     private Hotel(

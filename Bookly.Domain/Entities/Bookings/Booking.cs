@@ -1,4 +1,5 @@
 ﻿using Bookly.Domain.Entities.Base;
+using Bookly.Domain.Entities.Hotels;
 using Bookly.Domain.Enums;
 
 namespace Bookly.Domain.Entities.Bookings;
@@ -18,6 +19,7 @@ public class Booking : SoftDeletableEntity
     public DateTime? ExpiresAt { get; private set; }
     private readonly List<BookingRoom> _bookingRooms = new();
     public IReadOnlyCollection<BookingRoom> BookingRooms => _bookingRooms.AsReadOnly();
+    public Hotel Hotel { get; private set; } = default!;
     private Booking() { }
     public static Booking Create(
         Guid userId,

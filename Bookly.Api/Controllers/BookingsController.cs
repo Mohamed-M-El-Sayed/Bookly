@@ -1,4 +1,5 @@
 ﻿using Bookly.Application.Features.Bookings.Commands.CreateBooking;
+using Bookly.Application.Features.Bookings.Queries.GetBookingById;
 using Bookly.Application.Features.Bookings.Queries.GetHotelBookings;
 using Bookly.Application.Features.Bookings.Queries.GetMyBookings;
 using Bookly.Domain.Constants;
@@ -14,6 +15,19 @@ namespace Bookly.Api.Controllers
     public class BookingsController(IMediator mediator) : ApiControllerBase
     {
         /// <summary>
+        /// Retrieves the details of a specific booking.
+        /// </summary>
+        [HttpGet("{bookingId:int}")]
+        public async Task<IActionResult> GetBookingById(
+            int bookingId,
+            CancellationToken cancellationToken)
+        {
+            var query = new GetBookingByIdQuery(bookingId);
+            var result = await mediator.Send(query, cancellationToken);
+            return Respond(result);
+        }
+
+        /// <summary>
         /// Retrieves the current user's bookings.
         /// </summary>
         [HttpGet]
@@ -26,7 +40,7 @@ namespace Bookly.Api.Controllers
         /// <summary>
         /// Retrieves booking for specific hotel (Hotel manger only).
         /// </summary>
-        [HttpGet("{hotelId:int}")]
+        [HttpGet("hotel/{hotelId:int}")]
         [Authorize(Roles = Roles.Manager)]
         public async Task<IActionResult> GetHotelBookings([FromRoute] int hotelId, [FromQuery] GetHotelBookingsQuery query, CancellationToken cancellationToken)
         {
