@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -49,11 +48,6 @@ namespace Bookly.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bookings_HotelId",
-                table: "Bookings",
-                column: "HotelId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Review_BookingId",
                 table: "Review",
                 column: "BookingId",
@@ -68,29 +62,17 @@ namespace Bookly.Infrastructure.Migrations
                 name: "IX_Review_UserId",
                 table: "Review",
                 column: "UserId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Bookings_Hotels_HotelId",
-                table: "Bookings",
-                column: "HotelId",
-                principalTable: "Hotels",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Bookings_Hotels_HotelId",
-                table: "Bookings");
+
 
             migrationBuilder.DropTable(
                 name: "Review");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Bookings_HotelId",
-                table: "Bookings");
+
         }
     }
 }

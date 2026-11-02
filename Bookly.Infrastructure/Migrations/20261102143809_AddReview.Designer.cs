@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bookly.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261102140215_AddReview")]
+    [Migration("20261102143809_AddReview")]
     partial class AddReview
     {
         /// <inheritdoc />
