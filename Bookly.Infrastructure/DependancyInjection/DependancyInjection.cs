@@ -5,6 +5,7 @@ using Bookly.Application.Contracts.Services.BackgroundJobs;
 using Bookly.Application.Contracts.Services.Email;
 using Bookly.Application.Contracts.Services.Files;
 using Bookly.Application.Contracts.Services.Hotels;
+using Bookly.Application.Contracts.Services.Payments;
 using Bookly.Application.Contracts.Services.Security;
 using Bookly.Application.Contracts.Services.Users;
 using Bookly.Domain.Entities.Identity;
@@ -17,6 +18,7 @@ using Bookly.Infrastructure.Services.BackgroundJobs.Jobs;
 using Bookly.Infrastructure.Services.Email;
 using Bookly.Infrastructure.Services.Files;
 using Bookly.Infrastructure.Services.Hotels;
+using Bookly.Infrastructure.Services.Payments;
 using Bookly.Infrastructure.Services.Security;
 using Hangfire;
 using Microsoft.AspNetCore.Identity;
@@ -67,6 +69,8 @@ namespace Bookly.Infrastructure.DependancyInjection
             services.AddScoped<IAvailabilityInitializer, AvailabilityInitializer>();
             services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
             services.Configure<EmailOptions>(configuration.GetSection(EmailOptions.SectionName));
+            services.AddScoped<IPaymentService, StripePaymentService>();
+            services.Configure<StripeOptions>(configuration.GetSection(StripeOptions.SectionName));
         }
     }
 }
