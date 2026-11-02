@@ -17,4 +17,14 @@ public class Payment : SoftDeletableEntity
     public string? RefundTransactionId { get; private set; }
     public Booking Booking { get; private set; } = default!;
     private Payment() { }
+    public Payment(int bookingId, decimal amount)
+    {
+        BookingId = bookingId;
+        Amount = amount;
+        Status = PaymentStatus.Pending;
+    }
+    public void SetPaymentSessionId(string sessionId)
+    {
+        PaymentSessionId = sessionId;
+    }
 }
