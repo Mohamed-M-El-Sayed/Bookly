@@ -1,5 +1,6 @@
 using Bookly.Application.Features.Reviews.Commands.CreateReview;
 using Bookly.Application.Features.Reviews.Commands.UpdateReview;
+using Bookly.Application.Features.Reviews.Queries.GetReviewById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,5 +31,13 @@ public class ReviewsController(IMediator mediator) : ApiControllerBase
         var result = await mediator.Send(command, cancellationToken);
         return Respond(result);
     }
-
+    /// <summary>
+    /// Gets a review by its ID.
+    /// </summary>
+    [HttpGet("{reviewId:int}")]
+    public async Task<IActionResult> GetById(int reviewId, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(new GetReviewByIdQuery(reviewId), cancellationToken);
+        return Respond(result);
+    }
 }

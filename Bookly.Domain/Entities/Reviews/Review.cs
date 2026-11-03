@@ -10,10 +10,9 @@ namespace Bookly.Domain.Entities.Reviews
         public Guid UserId { get; private set; }
         public int HotelId { get; private set; }
         public int BookingId { get; private set; }
-
         public int Rating { get; private set; }
         public string? Comment { get; private set; }
-
+        public string ReviewerName => $"{User?.FirstName} {User?.LastName}" ?? "Unknown";
         public ApplicationUser User { get; private set; } = null!;
         public Hotel Hotel { get; private set; } = null!;
         public Booking Booking { get; private set; } = null!;
