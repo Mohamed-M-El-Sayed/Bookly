@@ -1,4 +1,5 @@
 using Bookly.Application.Features.Reviews.Commands.CreateReview;
+using Bookly.Application.Features.Reviews.Commands.UpdateReview;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,4 +20,15 @@ public class ReviewsController(IMediator mediator) : ApiControllerBase
         var result = await mediator.Send(command, cancellationToken);
         return Respond(result);
     }
+    /// <summary>
+    /// Updates an existing review.
+    /// </summary>
+    [HttpPost("{reviewId:int}")]
+    public async Task<IActionResult> Update([FromRoute] int reviewId, [FromBody] UpdateReviewCommand command, CancellationToken cancellationToken)
+    {
+        command.ReviewId = reviewId;
+        var result = await mediator.Send(command, cancellationToken);
+        return Respond(result);
+    }
+
 }

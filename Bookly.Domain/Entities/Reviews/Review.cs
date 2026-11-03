@@ -45,5 +45,16 @@ namespace Bookly.Domain.Entities.Reviews
 
             return new Review(userId, hotelId, bookingId, rating, comment?.Trim());
         }
+        public void Update(int rating, string? comment)
+        {
+            if (rating < 1 || rating > 5)
+                throw new ArgumentOutOfRangeException(nameof(rating), rating, "Rating must be between 1 and 5.");
+
+            if (string.IsNullOrWhiteSpace(comment))
+                throw new ArgumentException("Comment is required.");
+
+            Rating = rating;
+            Comment = comment?.Trim();
+        }
     }
 }

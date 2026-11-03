@@ -378,19 +378,22 @@
   <data name="Booking.RoomNotAvailable" xml:space="preserve">
     <value>الغرفة غير متاحة في التواريخ المحددة.</value>
   </data>
-	<data name="Review.BookingNotCompleted" xml:space="preserve">
+  <data name="Review.BookingNotCompleted" xml:space="preserve">
     <value>يجب إكمال الحجز قبل إرسال التقييم.</value>
-</data>
+  </data>
   <data name="Booking.NotFound" xml:space="preserve">
     <value>الحجز المطلوب غير موجود.</value>
   </data>
-	<data name="Validation.Review.InvalidBookingId" xml:space="preserve">
+  <data name="Validation.Review.InvalidBookingId" xml:space="preserve">
     <value>رقم الحجز غير صحيح.</value>
-</data>
-	<data name="Validation.Review.InvalidRating" xml:space="preserve">
+  </data>
+  <data name="Validation.Review.InvalidRating" xml:space="preserve">
     <value>التقييم يجب أن يكون بين 1 و5.</value>
-</data>
-	<data name="Validation.Review.InvalidComment" xml:space="preserve">
+  </data>
+  <data name="Validation.Review.InvalidComment" xml:space="preserve">
     <value>التعليق يجب ألا يتجاوز 1000 حرف.</value>
-</data>
+  </data>
+  <data name="Review.Forbidden" xml:space="preserve">
+    <value>لا تملك صلاحية تعديل هذا التقييم.</value>
+  </data>
 </root>
