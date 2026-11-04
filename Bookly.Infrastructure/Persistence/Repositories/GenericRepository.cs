@@ -46,17 +46,6 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
     {
         return SpecificationEvaluator<TEntity>.GenerateQuery(_dbSet, specification);
     }
-
-    public async Task<(IReadOnlyList<TEntity> Items, int TotalCount)> GetPagedAsync(ISpecification<TEntity> spec, CancellationToken cancellationToken = default)
-    {
-        var query = ApplaySpecification(spec);
-        var totalCount = await query.CountAsync();
-        var items = await query
-            .Skip(spec.Skip)
-            .Take(spec.Take)
-            .ToListAsync(cancellationToken);
-        return (items, totalCount);
-    }
     public async Task<int> CountAsync(ISpecification<TEntity> specification, CancellationToken cancellationToken = default)
     {
         var query = _dbSet.AsQueryable();
@@ -82,5 +71,10 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
     public void RemoveRange(IEnumerable<TEntity> entities)
     {
         _dbSet.RemoveRange(entities);
+    }
+
+    public IQueryable<TEntity> GetQueryable()
+    {
+        return _dbSet;
     }
 }

@@ -1,6 +1,8 @@
 using Bookly.Application.Features.Reviews.Commands.CreateReview;
+using Bookly.Application.Features.Reviews.Commands.DeleteReview;
 using Bookly.Application.Features.Reviews.Commands.UpdateReview;
 using Bookly.Application.Features.Reviews.Queries.GetHotelReviews;
+using Bookly.Application.Features.Reviews.Queries.GetHotelReviewSummary;
 using Bookly.Application.Features.Reviews.Queries.GetReviewById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -22,6 +24,19 @@ public class ReviewsController(IMediator mediator) : ApiControllerBase
         CancellationToken cancellationToken = default)
     {
         query.HotelId = hotelId;
+        var result = await mediator.Send(query, cancellationToken);
+        return Respond(result);
+    }
+    /// <summary>
+    /// Gets the review summary for a hotel.
+    /// </summary>
+    [HttpGet("hotels/{hotelId:int}/summary")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetReviewSummary(
+        int hotelId,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetHotelReviewSummaryQuery(hotelId);
         var result = await mediator.Send(query, cancellationToken);
         return Respond(result);
     }
@@ -52,5 +67,16 @@ public class ReviewsController(IMediator mediator) : ApiControllerBase
     {
         var result = await mediator.Send(new GetReviewByIdQuery(reviewId), cancellationToken);
         return Respond(result);
+    }
+    /// <summary>
+    /// Deletes a review owned by the current user.
+    /// Admins can delete any review.
+    /// </summary>
+    [HttpDelete("{reviewId:int}")]
+    public async Task<IActionResult> DeleteUserReview(int reviewId, CancellationToken cancellationToken)
+    {
+        var command = new DeleteReviewCommand(reviewId);
+        var result = await mediator.Send(command, cancellationToken);
+        return Respond(result, StatusCodes.Status204NoContent);
     }
 }

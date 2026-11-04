@@ -8,9 +8,11 @@ namespace Bookly.Infrastructure.Persistence.UnitOfWork
     {
         private readonly Dictionary<Type, object> _repositories = new();
         private readonly AppDbContext _appDbContext;
+        public IReviewRepository Reviews { get; }
         public UnitOfWork(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
+            Reviews = new ReviewRepository(_appDbContext);
         }
         public IGenericRepository<TEntity> Repository<TEntity>()
             where TEntity : class

@@ -11,7 +11,7 @@ public interface IGenericRepository<TEntity> where TEntity : class
     Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
     Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
     Task<int> CountAsync(ISpecification<TEntity> specification, CancellationToken cancellationToken = default);
-    Task<(IReadOnlyList<TEntity> Items, int TotalCount)> GetPagedAsync(ISpecification<TEntity> spec, CancellationToken cancellationToken = default);
+    IQueryable<TEntity> GetQueryable();
     Task AddAsync(TEntity entity, CancellationToken cancellationToken = default);
     void Update(TEntity entity);
     void Remove(TEntity entity);

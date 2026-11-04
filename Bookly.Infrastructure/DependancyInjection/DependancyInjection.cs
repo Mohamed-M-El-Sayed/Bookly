@@ -9,6 +9,7 @@ using Bookly.Application.Contracts.Services.Security;
 using Bookly.Application.Contracts.Services.Users;
 using Bookly.Domain.Entities.Identity;
 using Bookly.Infrastructure.Persistence.Context;
+using Bookly.Infrastructure.Persistence.Repositories;
 using Bookly.Infrastructure.Persistence.UnitOfWork;
 using Bookly.Infrastructure.Services.Authentication;
 using Bookly.Infrastructure.Services.Availability;
@@ -49,6 +50,7 @@ namespace Bookly.Infrastructure.DependancyInjection
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IFileService>(_ => new FileService(wwwRootPath));
             services.AddScoped<PasswordHistoryService>();
