@@ -396,4 +396,11 @@
   <data name="Review.Forbidden" xml:space="preserve">
     <value>لا تملك صلاحية تعديل هذا التقييم.</value>
   </data>
+	<data name="Validation.Common.InvalidPageNumber" xml:space="preserve">
+  <value>رقم الصفحة يجب أن يكون أكبر من صفر.</value>
+</data>
+
+	<data name="Validation.Common.InvalidPageSize" xml:space="preserve">
+  <value>حجم الصفحة يجب أن يكون بين 10 و50.</value>
+</data>
 </root>

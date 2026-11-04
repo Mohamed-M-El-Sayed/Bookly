@@ -1,5 +1,6 @@
 using Bookly.Application.Features.Reviews.Commands.CreateReview;
 using Bookly.Application.Features.Reviews.Commands.UpdateReview;
+using Bookly.Application.Features.Reviews.Queries.GetHotelReviews;
 using Bookly.Application.Features.Reviews.Queries.GetReviewById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -12,6 +13,18 @@ namespace Bookly.Api.Controllers;
 [ApiController]
 public class ReviewsController(IMediator mediator) : ApiControllerBase
 {
+    /// <summary>
+    /// Gets paginated reviews for a hotel.
+    /// </summary>
+    [HttpGet("{hotelId:int}/reviews")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetHotelReviews(int hotelId, [FromQuery] GetHotelReviewsQuery query,
+        CancellationToken cancellationToken = default)
+    {
+        query.HotelId = hotelId;
+        var result = await mediator.Send(query, cancellationToken);
+        return Respond(result);
+    }
     /// <summary>
     /// Creates a new review for a booking.
     /// </summary>
