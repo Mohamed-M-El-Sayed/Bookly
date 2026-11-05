@@ -19,4 +19,19 @@ public static class BookingErrors
       ErrorFactory.Conflict(
           "Booking.RoomNotAvailable",
           "The requested room is not available for the selected dates.");
+    public static Error AccessDenied() =>
+        ErrorFactory.Forbidden(
+            "Booking.AccessDenied",
+            "You are not allowed to access this booking.");
+    public static Error InvalidStatus() =>
+        ErrorFactory.Conflict(
+            "Booking.InvalidStatus",
+            "Booking status does not allow this operation.");
+    public static Error Expired() =>
+    ErrorFactory.Conflict(
+        "Booking.Expired",
+        "Booking has expired.");
+    public static Error InvalidBoardOption() =>
+    ErrorFactory.Validation("Booking.InvalidBoardOption",
+        "The selected board option is not available for this room type.");
 }

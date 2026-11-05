@@ -221,16 +221,22 @@ public class RoomType : BaseEntity
             day.TryRelease();
         return true;
     }
-    public decimal TotalPriceForStay(DateOnly checkIn, DateOnly checkOut)
+    public decimal TotalPriceForStay(DateOnly checkIn, DateOnly checkOut, int? boardOptionId)
     {
         if (checkOut <= checkIn)
             throw new ArgumentException("Check-out must be after check-in.");
+        var boardOption = boardOptionId.HasValue
+           ? BoardOptions.FirstOrDefault(x => x.Id == boardOptionId.Value)
+           : null;
+        if (boardOptionId.HasValue && boardOption is null)
+            throw new ArgumentException("Invalid board option.");
         decimal total = 0;
         for (var date = checkIn; date < checkOut; date = date.AddDays(1))
         {
             var seasonalPrice = _seasonalPrices.FirstOrDefault(
                 x => x.StartDate <= date && x.EndDate >= date);
             total += seasonalPrice?.PricePerNight ?? BasePricePerNight;
+            total += boardOption?.ExtraPricePerNight ?? 0;
         }
         return Math.Round(total, 2, MidpointRounding.AwayFromZero);
     }

@@ -51,8 +51,8 @@ public sealed class CreateBookingCommandValidator : AbstractValidator<CreateBook
             .NotEmpty()
             .WithErrorCode("Booking.PhoneNumberRequired")
             .WithMessage("Phone number is required.")
-            .MaximumLength(20)
-            .WithErrorCode("Booking.PhoneNumberTooLong")
-            .WithMessage("Phone number cannot exceed 20 characters.");
+            .Matches(@"^\+201[0125][0-9]{8}$")
+            .WithErrorCode("Booking.InvalidEgyptianPhoneNumber")
+            .WithMessage("Please enter a valid Egyptian phone number.");
     }
 }

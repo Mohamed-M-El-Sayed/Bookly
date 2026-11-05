@@ -1,6 +1,7 @@
 ﻿using Bookly.Domain.Entities.Base;
 using Bookly.Domain.Entities.Hotels;
 using Bookly.Domain.Enums;
+using Bookly.Domain.Exceptions;
 
 namespace Bookly.Domain.Entities.Bookings;
 
@@ -41,6 +42,14 @@ public class Booking : SoftDeletableEntity
             Status = BookingStatus.Pending,
             ExpiresAt = DateTime.UtcNow.Add(HoldDuration)
         };
+    }
+    public void Confirm()
+    {
+        if (Status != BookingStatus.Pending)
+            throw new DomainException("Only pending bookings can be confirmed.");
+        if (ExpiresAt <= DateTime.UtcNow)
+            throw new DomainException("Expired bookings cannot be confirmed.");
+        Status = BookingStatus.Confirmed;
     }
     private static string GenerateReference()
     {
