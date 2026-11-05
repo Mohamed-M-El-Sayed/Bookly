@@ -1,5 +1,4 @@
 ﻿using Bookly.Application.Common.Results;
-using Bookly.Application.Contracts.Services.Payments;
 using MediatR;
 
 namespace Bookly.Application.Features.Payments.Commands.CreateCheckoutSession;
