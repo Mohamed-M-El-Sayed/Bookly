@@ -25,16 +25,18 @@ public class CreateBookingCommandHandler(IUnitOfWork unitOfWork,
             return Result<CreateBookingResponse>.Failure(AuthErrors.Unauthorized());
         logger.LogInformation("Creating booking for user {UserId}", userId);
         var roomType = await unitOfWork.Repository<RoomType>().GetEntityWithSpecAsync(
-            new RoomTypeForBookingSpecification(request.RoomTypeId, request.CheckIn, request.CheckOut), cancellationToken);
+            new RoomTypeForBookingSpecification(request.RoomTypeId, request.CheckIn, request.CheckOut, request.BoardOptionId), cancellationToken);
         if (roomType is null)
             return Result<CreateBookingResponse>.Failure(RoomTypeErrors.NotFound());
+        if (request.BoardOptionId.HasValue && !roomType.BoardOptions.Any(b => b.Id == request.BoardOptionId.Value))
+            return Result<CreateBookingResponse>.Failure(BookingErrors.InvalidBoardOption());
         if (request.Guests > roomType.MaxOccupancy)
             return Result<CreateBookingResponse>.Failure(BookingErrors.ExceedsMaxOccupancy());
         if (!roomType.TryReserve(request.CheckIn, request.CheckOut))
             return Result<CreateBookingResponse>.Failure(BookingErrors.RoomNotAvailable());
         var nights =
             request.CheckOut.DayNumber - request.CheckIn.DayNumber;
-        var price = roomType.TotalPriceForStay(request.CheckIn, request.CheckOut);
+        var price = roomType.TotalPriceForStay(request.CheckIn, request.CheckOut, request.BoardOptionId);
         var booking = Booking.Create(
             userId.Value,
             roomType.HotelId,

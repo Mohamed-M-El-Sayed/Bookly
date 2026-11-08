@@ -31,7 +31,7 @@ public class ExpireBookingCommandHandler(IUnitOfWork unitOfWork,
         }
         var roomType = await unitOfWork.Repository<RoomType>()
             .GetEntityWithSpecAsync(
-                new RoomTypeForBookingSpecification(
+                new RoomTypeForExpirySpecification(
                     bookingRoom.RoomTypeId,
                     booking.CheckIn,
                     booking.CheckOut), cancellationToken);

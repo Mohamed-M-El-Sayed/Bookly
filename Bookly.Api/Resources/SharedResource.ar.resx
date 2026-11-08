@@ -384,6 +384,21 @@
   <data name="Booking.NotFound" xml:space="preserve">
     <value>الحجز المطلوب غير موجود.</value>
   </data>
+  <data name="Payment.CheckoutSessionCreationFailed" xml:space="preserve">
+    <value>فشل في إنشاء جلسة الدفع.</value>
+  </data>
+  <data name="Booking.AccessDenied" xml:space="preserve">
+    <value>غير مسموح لك بالوصول إلى هذا الحجز.</value>
+  </data>
+  <data name="Booking.InvalidStatus" xml:space="preserve">
+    <value>حالة الحجز لا تسمح بإتمام هذه العملية.</value>
+  </data>
+  <data name="Booking.Expired" xml:space="preserve">
+    <value>انتهت صلاحية الحجز.</value>
+  </data>
+  <data name="Booking.InvalidBoardOption" xml:space="preserve">
+    <value>خيار الإقامة المحدد غير متاح لنوع الغرفة المختار.</value>
+  </data>
   <data name="Validation.Review.InvalidBookingId" xml:space="preserve">
     <value>رقم الحجز غير صحيح.</value>
   </data>
