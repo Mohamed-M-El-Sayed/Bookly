@@ -1,4 +1,5 @@
 ﻿using Bookly.Domain.Entities.Base;
+using Bookly.Domain.Entities.Cancellation;
 using Bookly.Domain.Entities.Hotels;
 using Bookly.Domain.Entities.Payments;
 using Bookly.Domain.Enums;
@@ -25,6 +26,8 @@ public class Booking : SoftDeletableEntity
     private readonly List<Payment> _payments = [];
     public IReadOnlyCollection<Payment> Payments => _payments.AsReadOnly();
     public BookingCancellation? Cancellation { get; private set; }
+    private readonly List<BookingCancellationRule> _cancellationRules = [];
+    public IReadOnlyCollection<BookingCancellationRule> CancellationRules => _cancellationRules.AsReadOnly();
     private Booking() { }
     public static Booking Create(
         Guid userId,
