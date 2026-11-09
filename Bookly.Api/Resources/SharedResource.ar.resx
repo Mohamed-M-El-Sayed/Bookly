@@ -418,4 +418,19 @@
 	<data name="Validation.Common.InvalidPageSize" xml:space="preserve">
   <value>حجم الصفحة يجب أن يكون بين 10 و50.</value>
 </data>
+	<data name="validation.cancellationPolicy.hotelId.invalid" xml:space="preserve">
+  <value>يجب أن يكون معرّف الفندق أكبر من صفر.</value>
+</data>
+	<data name="validation.cancellationPolicy.rules.required" xml:space="preserve">
+  <value>يجب إضافة قاعدة إلغاء واحدة على الأقل.</value>
+</data>
+	<data name="validation.cancellationPolicy.daysBeforeCheckIn.invalid" xml:space="preserve">
+  <value>يجب أن يكون عدد الأيام قبل تسجيل الوصول صفرًا أو أكبر.</value>
+</data>
+	<data name="validation.cancellationPolicy.refundPercentage.invalid" xml:space="preserve">
+  <value>يجب أن تكون نسبة الاسترداد بين 0 و100.</value>
+</data>
+	<data name="validation.cancellationPolicy.rules.duplicateThreshold" xml:space="preserve">
+  <value>لا يُسمح بتكرار عدد الأيام قبل تسجيل الوصول داخل الطلب.</value>
+</data>
 </root>

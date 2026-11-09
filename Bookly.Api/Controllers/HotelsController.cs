@@ -1,10 +1,13 @@
+using Bookly.Application.Features.CancellationPolicies.Commands.CreateCancellationPolicy;
 using Bookly.Application.Features.Hotels.Commands.CreateHotel;
 using Bookly.Application.Features.Hotels.Commands.RemoveHotelAmenity;
 using Bookly.Application.Features.Hotels.Commands.SetHotelAmenities;
 using Bookly.Application.Features.Hotels.Commands.UpdateHotel;
 using Bookly.Application.Features.Hotels.Queries;
 using Bookly.Application.Features.Hotels.Queries.GetHotelAmenities;
+using Bookly.Domain.Constants;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookly.Api.Controllers;
@@ -69,6 +72,22 @@ public class HotelsController(IMediator mediator) : ApiControllerBase
         int hotelId, int amenityId, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new RemoveHotelAmenityCommand(hotelId, amenityId), cancellationToken);
+        return Respond(result);
+    }
+    /// <summary>
+    /// Creates a cancellation policy for a hotel or adds missing cancellation rules to its existing policy (Hotel Manager only).
+    /// </summary>
+    [HttpPost("{hotelId:int}/cancellation-policy")]
+    [Authorize(Roles = Roles.Manager)]
+    public async Task<IActionResult> CreateCancellationPolicy(int hotelId, [FromBody] IReadOnlyCollection<CancellationRuleRequest> rules,
+    CancellationToken cancellationToken)
+    {
+        var command = new CreateCancellationPolicyCommand()
+        {
+            HotelId = hotelId,
+            Rules = rules
+        };
+        var result = await mediator.Send(command, cancellationToken);
         return Respond(result);
     }
 }

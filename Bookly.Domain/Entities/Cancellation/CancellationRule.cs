@@ -9,6 +9,13 @@ public class CancellationRule : BaseEntity
     public decimal RefundPercentage { get; private set; }
     public CancellationPolicy CancellationPolicy { get; private set; } = null!;
     private CancellationRule() { }
-
-
+    private CancellationRule(int daysBeforeCheckIn, decimal refundPercentage)
+    {
+        DaysBeforeCheckIn = daysBeforeCheckIn;
+        RefundPercentage = refundPercentage;
+    }
+    public static CancellationRule Create(int daysBeforeCheckIn, decimal refundPercentage)
+    {
+        return new CancellationRule(daysBeforeCheckIn, refundPercentage);
+    }
 }
