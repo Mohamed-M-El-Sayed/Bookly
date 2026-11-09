@@ -433,4 +433,13 @@
 	<data name="validation.cancellationPolicy.rules.duplicateThreshold" xml:space="preserve">
   <value>لا يُسمح بتكرار عدد الأيام قبل تسجيل الوصول داخل الطلب.</value>
 </data>
+	<data name="cancellation.policy.notFound" xml:space="preserve">
+  <value>لم يتم العثور على سياسة الإلغاء.</value>
+</data>
+	<data name="cancellation.rule.notFound" xml:space="preserve">
+  <value>لم يتم العثور على قاعدة الإلغاء.</value>
+</data>
+	<data name="cancellation.rule.thresholdAlreadyExists" xml:space="preserve">
+  <value>توجد بالفعل قاعدة إلغاء بنفس عدد الأيام قبل تسجيل الوصول.</value>
+</data>
 </root>

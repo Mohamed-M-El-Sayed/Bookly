@@ -18,4 +18,15 @@ public class CancellationRule : BaseEntity
     {
         return new CancellationRule(daysBeforeCheckIn, refundPercentage);
     }
+    public void Update(int daysBeforeCheckIn, decimal refundPercentage)
+    {
+        if (daysBeforeCheckIn < 0)
+            throw new ArgumentException("Days before check-in cannot be negative.");
+
+        if (refundPercentage is < 0 or > 100)
+            throw new ArgumentException("Refund percentage must be between 0 and 100.");
+
+        DaysBeforeCheckIn = daysBeforeCheckIn;
+        RefundPercentage = refundPercentage;
+    }
 }

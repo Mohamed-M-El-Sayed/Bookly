@@ -1,4 +1,5 @@
 using Bookly.Application.Features.CancellationPolicies.Commands.CreateCancellationPolicy;
+using Bookly.Application.Features.CancellationPolicies.Commands.UpdateCancellationRule;
 using Bookly.Application.Features.Hotels.Commands.CreateHotel;
 using Bookly.Application.Features.Hotels.Commands.RemoveHotelAmenity;
 using Bookly.Application.Features.Hotels.Commands.SetHotelAmenities;
@@ -87,6 +88,19 @@ public class HotelsController(IMediator mediator) : ApiControllerBase
             HotelId = hotelId,
             Rules = rules
         };
+        var result = await mediator.Send(command, cancellationToken);
+        return Respond(result);
+    }
+    /// <summary>
+    /// Updates an existing cancellation rule for a hotel (Hotel Manager only).
+    /// </summary>
+    [HttpPut("{hotelId:int}/cancellation-policy/rules/{ruleId:int}")]
+    [Authorize(Roles = Roles.Manager)]
+    public async Task<IActionResult> UpdateCancellationRule(int hotelId, int ruleId, [FromBody] UpdateCancellationRuleCommand command,
+        CancellationToken cancellationToken)
+    {
+        command.HotelId = hotelId;
+        command.RuleId = ruleId;
         var result = await mediator.Send(command, cancellationToken);
         return Respond(result);
     }
