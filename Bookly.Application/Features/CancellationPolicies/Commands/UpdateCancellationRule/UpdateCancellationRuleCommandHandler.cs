@@ -25,7 +25,7 @@ public class UpdateCancellationRuleCommandHandler(
             .GetByIdAsync(request.RuleId, cancellationToken);
 
         if (rule is null)
-            return Result.Failure(CancellationErrors.RuleNotFound);
+            return Result.Failure(CancellationErrors.RuleNotFound());
 
         var belongsToHotel = await unitOfWork.Repository<CancellationRule>()
             .AnyAsync(x => x.Id == request.RuleId &&
@@ -33,7 +33,7 @@ public class UpdateCancellationRuleCommandHandler(
                 cancellationToken);
 
         if (!belongsToHotel)
-            return Result.Failure(CancellationErrors.RuleNotFound);
+            return Result.Failure(CancellationErrors.RuleNotFound());
 
         // Check whether another rule already uses the requested threshold.
         var thresholdExists = await unitOfWork.Repository<CancellationRule>()
@@ -44,7 +44,7 @@ public class UpdateCancellationRuleCommandHandler(
                 cancellationToken);
 
         if (thresholdExists)
-            return Result.Failure(CancellationErrors.ThresholdAlreadyExists);
+            return Result.Failure(CancellationErrors.ThresholdAlreadyExists());
         rule.Update(
             request.DaysBeforeCheckIn,
             request.RefundPercentage);

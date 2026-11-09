@@ -1,6 +1,7 @@
 using Bookly.Application.Features.CancellationPolicies.Commands.CreateCancellationPolicy;
 using Bookly.Application.Features.CancellationPolicies.Commands.UpdateCancellationRule;
 using Bookly.Application.Features.CancellationPolicies.Queries.GetCancellationRules;
+using Bookly.Application.Features.CancellationPolicies.Queries.GetCancellationRuleById;
 using Bookly.Application.Features.Hotels.Commands.CreateHotel;
 using Bookly.Application.Features.Hotels.Commands.RemoveHotelAmenity;
 using Bookly.Application.Features.Hotels.Commands.SetHotelAmenities;
@@ -84,6 +85,16 @@ public class HotelsController(IMediator mediator) : ApiControllerBase
     public async Task<IActionResult> GetCancellationRules(int hotelId, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new GetCancellationRulesQuery(hotelId), cancellationToken);
+        return Respond(result);
+    }
+
+    /// <summary>
+    /// Retrieves a specific cancellation rule by ID.
+    /// </summary>
+    [HttpGet("cancellation-policy/rules/{ruleId:int}")]
+    public async Task<IActionResult> GetCancellationRuleById(int ruleId, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(new GetCancellationRuleByIdQuery(ruleId), cancellationToken);
         return Respond(result);
     }
 
