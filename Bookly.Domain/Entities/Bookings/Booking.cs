@@ -24,6 +24,7 @@ public class Booking : SoftDeletableEntity
     public Hotel Hotel { get; private set; } = default!;
     private readonly List<Payment> _payments = [];
     public IReadOnlyCollection<Payment> Payments => _payments.AsReadOnly();
+    public BookingCancellation? Cancellation { get; private set; }
     private Booking() { }
     public static Booking Create(
         Guid userId,

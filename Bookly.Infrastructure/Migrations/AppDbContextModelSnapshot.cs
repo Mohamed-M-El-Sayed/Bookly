@@ -163,6 +163,50 @@ namespace Bookly.Infrastructure.Migrations
                     b.ToTable("Bookings");
                 });
 
+            modelBuilder.Entity("Bookly.Domain.Entities.Bookings.BookingCancellation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BookingId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("CancellationFee")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CancelledAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("RefundAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookingId")
+                        .IsUnique();
+
+                    b.ToTable("BookingCancellations", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_BookingCancellations_CancellationFee", "[CancellationFee] >= 0");
+
+                            t.HasCheckConstraint("CK_BookingCancellations_RefundAmount", "[RefundAmount] >= 0");
+                        });
+                });
+
             modelBuilder.Entity("Bookly.Domain.Entities.Bookings.BookingRoom", b =>
                 {
                     b.Property<int>("Id")
@@ -202,6 +246,62 @@ namespace Bookly.Infrastructure.Migrations
                     b.HasIndex("RoomTypeId");
 
                     b.ToTable("BookingRooms");
+                });
+
+            modelBuilder.Entity("Bookly.Domain.Entities.Cancellation.CancellationPolicy", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("HotelId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HotelId")
+                        .IsUnique();
+
+                    b.ToTable("CancellationPolicy");
+                });
+
+            modelBuilder.Entity("Bookly.Domain.Entities.Cancellation.CancellationRule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CancellationPolicyId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DaysBeforeCheckIn")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("RefundPercentage")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CancellationPolicyId", "DaysBeforeCheckIn")
+                        .IsUnique();
+
+                    b.ToTable("CancellationRules", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_CancellationRules_DaysBeforeCheckIn", "[DaysBeforeCheckIn] >= 0");
+
+                            t.HasCheckConstraint("CK_CancellationRules_RefundPercentage", "[RefundPercentage] >= 0 AND [RefundPercentage] <= 100");
+                        });
                 });
 
             modelBuilder.Entity("Bookly.Domain.Entities.Favorites.Favorite", b =>
@@ -500,6 +600,47 @@ namespace Bookly.Infrastructure.Migrations
                     b.HasIndex("BookingId");
 
                     b.ToTable("Payment");
+                });
+
+            modelBuilder.Entity("Bookly.Domain.Entities.Reviews.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BookingId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("HotelId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookingId")
+                        .IsUnique();
+
+                    b.HasIndex("HotelId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("Bookly.Domain.Entities.RoomTypes.BoardOption", b =>
@@ -847,6 +988,17 @@ namespace Bookly.Infrastructure.Migrations
                     b.Navigation("Hotel");
                 });
 
+            modelBuilder.Entity("Bookly.Domain.Entities.Bookings.BookingCancellation", b =>
+                {
+                    b.HasOne("Bookly.Domain.Entities.Bookings.Booking", "Booking")
+                        .WithOne("Cancellation")
+                        .HasForeignKey("Bookly.Domain.Entities.Bookings.BookingCancellation", "BookingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Booking");
+                });
+
             modelBuilder.Entity("Bookly.Domain.Entities.Bookings.BookingRoom", b =>
                 {
                     b.HasOne("Bookly.Domain.Entities.Bookings.Booking", null)
@@ -862,6 +1014,28 @@ namespace Bookly.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("RoomType");
+                });
+
+            modelBuilder.Entity("Bookly.Domain.Entities.Cancellation.CancellationPolicy", b =>
+                {
+                    b.HasOne("Bookly.Domain.Entities.Hotels.Hotel", "Hotel")
+                        .WithOne("CancellationPolicy")
+                        .HasForeignKey("Bookly.Domain.Entities.Cancellation.CancellationPolicy", "HotelId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Hotel");
+                });
+
+            modelBuilder.Entity("Bookly.Domain.Entities.Cancellation.CancellationRule", b =>
+                {
+                    b.HasOne("Bookly.Domain.Entities.Cancellation.CancellationPolicy", "CancellationPolicy")
+                        .WithMany("Rules")
+                        .HasForeignKey("CancellationPolicyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CancellationPolicy");
                 });
 
             modelBuilder.Entity("Bookly.Domain.Entities.Favorites.Favorite", b =>
@@ -1013,6 +1187,17 @@ namespace Bookly.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Bookly.Domain.Entities.Payments.Payment", b =>
+                {
+                    b.HasOne("Bookly.Domain.Entities.Bookings.Booking", "Booking")
+                        .WithMany("Payments")
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Booking");
+                });
+
             modelBuilder.Entity("Bookly.Domain.Entities.Reviews.Review", b =>
                 {
                     b.HasOne("Bookly.Domain.Entities.Bookings.Booking", "Booking")
@@ -1038,17 +1223,6 @@ namespace Bookly.Infrastructure.Migrations
                     b.Navigation("Hotel");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Bookly.Domain.Entities.Payments.Payment", b =>
-                {
-                    b.HasOne("Bookly.Domain.Entities.Bookings.Booking", "Booking")
-                        .WithMany("Payments")
-                        .HasForeignKey("BookingId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Booking");
                 });
 
             modelBuilder.Entity("Bookly.Domain.Entities.RoomTypes.BoardOption", b =>
@@ -1179,12 +1353,22 @@ namespace Bookly.Infrastructure.Migrations
                 {
                     b.Navigation("BookingRooms");
 
+                    b.Navigation("Cancellation");
+
                     b.Navigation("Payments");
+                });
+
+            modelBuilder.Entity("Bookly.Domain.Entities.Cancellation.CancellationPolicy", b =>
+                {
+                    b.Navigation("Rules");
                 });
 
             modelBuilder.Entity("Bookly.Domain.Entities.Hotels.Hotel", b =>
                 {
                     b.Navigation("Amenities");
+
+                    b.Navigation("CancellationPolicy")
+                        .IsRequired();
 
                     b.Navigation("Images");
 
