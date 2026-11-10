@@ -23,7 +23,9 @@ public class BookingCancellationConfiguration : IEntityTypeConfiguration<Booking
 
         builder.Property(bc => bc.RefundAmount)
             .HasPrecision(18, 2);
-
+        builder.Property(x => x.RefundStatus)
+            .HasConversion<string>()
+            .HasMaxLength(20);
         builder.HasOne(bc => bc.Booking)
             .WithOne(b => b.Cancellation)
             .HasForeignKey<BookingCancellation>(bc => bc.BookingId)
