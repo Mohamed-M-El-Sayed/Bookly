@@ -1,5 +1,6 @@
 ﻿using Bookly.Domain.Entities.Base;
 using Bookly.Domain.Enums;
+using Bookly.Domain.Exceptions;
 
 namespace Bookly.Domain.Entities.Bookings;
 
@@ -50,5 +51,18 @@ public class BookingCancellation : SoftDeletableEntity
             reason,
             refundAmount,
             cancellationFee);
+    }
+    public void MarkRefundAsFailed()
+    {
+        if (RefundStatus != RefundStatus.Pending)
+            throw new DomainException("Refund is not pending.");
+
+        RefundStatus = RefundStatus.Failed;
+    }
+    public void RetryRefund()
+    {
+        if (RefundStatus != RefundStatus.Failed)
+            throw new DomainException("Only failed refunds can be retried.");
+        RefundStatus = RefundStatus.Pending;
     }
 }

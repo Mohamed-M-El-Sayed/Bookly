@@ -62,6 +62,27 @@ public class Booking : SoftDeletableEntity
     {
         return $"BK-{Guid.NewGuid():N}"[..11].ToUpperInvariant();
     }
+    public void Cancel(DateTime cancelledAt)
+    {
+        if (Status != BookingStatus.Confirmed)
+            throw new DomainException("Only confirmed bookings can be cancelled.");
+        if (CheckIn <= DateOnly.FromDateTime(cancelledAt))
+            throw new DomainException("The cancellation deadline has passed.");
+        Status = BookingStatus.Cancelled;
+    }
+
+    public decimal CalculateRefundAmount(DateTime cancelledAt)
+    {
+        var daysBeforeCheckIn = (CheckIn.ToDateTime(TimeOnly.MinValue).Date - cancelledAt.Date).Days;
+        var applicableRule = CancellationRules
+        .Where(rule => daysBeforeCheckIn >= rule.DaysBeforeCheckIn)
+        .OrderByDescending(rule => rule.DaysBeforeCheckIn)
+        .FirstOrDefault();
+
+        var refundPercentage = applicableRule?.RefundPercentage ?? 0m;
+        return decimal.Round(TotalPrice * refundPercentage / 100m,
+            2, MidpointRounding.AwayFromZero);
+    }
     public void AddRoom(
     int roomTypeId,
     int? boardOptionId,

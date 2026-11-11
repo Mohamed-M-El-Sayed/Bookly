@@ -15,12 +15,15 @@ public class StripePaymentService : IPaymentService
     private readonly StripeOptions _options;
     private readonly ILogger<StripePaymentService> _logger;
     private readonly SessionService _sessionService;
+    private readonly RefundService refundService;
     public StripePaymentService(IOptions<StripeOptions> options, ILogger<StripePaymentService> logger)
     {
         _options = options.Value;
         _logger = logger;
         var stripeClient = new StripeClient(_options.SecretKey);
         _sessionService = new SessionService(stripeClient);
+        refundService = new RefundService(stripeClient);
+
     }
     public async Task<Result<CheckoutSessionResult>> CreateCheckoutSessionAsync(int bookingId, decimal amount, string currency,
         CancellationToken cancellationToken = default)
@@ -162,6 +165,43 @@ public class StripePaymentService : IPaymentService
 
             return Result<PaymentWebhookResult>.Failure(
                 PaymentErrors.InvalidWebhookSignature());
+        }
+    }
+    public async Task<Result> RefundPaymentAsync(string paymentIntentId, decimal amount, string idempotencyKey,
+        CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation(
+            "Initiating refund for PaymentIntent {PaymentIntentId}.",
+            paymentIntentId);
+        try
+        {
+            var options = new RefundCreateOptions
+            {
+                PaymentIntent = paymentIntentId,
+                Amount = (long)(amount * 100),
+            };
+            var requestOptions = new RequestOptions
+            {
+                IdempotencyKey = idempotencyKey
+            };
+            var refundService = new RefundService();
+            Refund refund = await refundService.CreateAsync(
+                options,
+                requestOptions,
+                cancellationToken: cancellationToken);
+            _logger.LogInformation(
+                "Refund {RefundId} created successfully for PaymentIntent {PaymentIntentId}.",
+                refund.Id,
+                paymentIntentId);
+            return Result.Success();
+        }
+        catch (StripeException ex)
+        {
+            _logger.LogError(
+                ex,
+                "Stripe error while creating refund for PaymentIntent {PaymentIntentId}.",
+                paymentIntentId);
+            return Result.Failure(ErrorFactory.Internal("Internal", "Failed to create refund."));
         }
     }
 }

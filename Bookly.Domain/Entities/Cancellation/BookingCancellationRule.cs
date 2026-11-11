@@ -11,5 +11,4 @@ public class BookingCancellationRule : BaseEntity
     public decimal RefundPercentage { get; private set; }
     public Booking Booking { get; private set; } = null!;
     private BookingCancellationRule() { }
-
 }

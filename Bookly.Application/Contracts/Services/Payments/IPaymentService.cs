@@ -9,5 +9,8 @@ public interface IPaymentService
     Task<Result<CheckoutSessionResult>> CreateCheckoutSessionAsync(int bookingId, decimal amount, string currency,
       CancellationToken cancellationToken = default);
     Result<PaymentWebhookResult> ParseWebhookEvent(string payload, string signature);
+    Task<Result> RefundPaymentAsync(string paymentIntentId, decimal amount, string idempotencyKey,
+    CancellationToken cancellationToken = default);
+
 }
 

@@ -411,35 +411,43 @@
   <data name="Review.Forbidden" xml:space="preserve">
     <value>لا تملك صلاحية تعديل هذا التقييم.</value>
   </data>
-	<data name="Validation.Common.InvalidPageNumber" xml:space="preserve">
-  <value>رقم الصفحة يجب أن يكون أكبر من صفر.</value>
-</data>
-
-	<data name="Validation.Common.InvalidPageSize" xml:space="preserve">
-  <value>حجم الصفحة يجب أن يكون بين 10 و50.</value>
-</data>
-	<data name="validation.cancellationPolicy.hotelId.invalid" xml:space="preserve">
-  <value>يجب أن يكون معرّف الفندق أكبر من صفر.</value>
-</data>
-	<data name="validation.cancellationPolicy.rules.required" xml:space="preserve">
-  <value>يجب إضافة قاعدة إلغاء واحدة على الأقل.</value>
-</data>
-	<data name="validation.cancellationPolicy.daysBeforeCheckIn.invalid" xml:space="preserve">
-  <value>يجب أن يكون عدد الأيام قبل تسجيل الوصول صفرًا أو أكبر.</value>
-</data>
-	<data name="validation.cancellationPolicy.refundPercentage.invalid" xml:space="preserve">
-  <value>يجب أن تكون نسبة الاسترداد بين 0 و100.</value>
-</data>
-	<data name="validation.cancellationPolicy.rules.duplicateThreshold" xml:space="preserve">
-  <value>لا يُسمح بتكرار عدد الأيام قبل تسجيل الوصول داخل الطلب.</value>
-</data>
-	<data name="cancellation.policy.notFound" xml:space="preserve">
-  <value>لم يتم العثور على سياسة الإلغاء.</value>
-</data>
-	<data name="cancellation.rule.notFound" xml:space="preserve">
-  <value>لم يتم العثور على قاعدة الإلغاء.</value>
-</data>
-	<data name="cancellation.rule.thresholdAlreadyExists" xml:space="preserve">
-  <value>توجد بالفعل قاعدة إلغاء بنفس عدد الأيام قبل تسجيل الوصول.</value>
-</data>
+  <data name="Validation.Common.InvalidPageNumber" xml:space="preserve">
+    <value>رقم الصفحة يجب أن يكون أكبر من صفر.</value>
+  </data>
+  <data name="Validation.Common.InvalidPageSize" xml:space="preserve">
+    <value>حجم الصفحة يجب أن يكون بين 10 و50.</value>
+  </data>
+  <data name="validation.cancellationPolicy.hotelId.invalid" xml:space="preserve">
+    <value>يجب أن يكون معرّف الفندق أكبر من صفر.</value>
+  </data>
+  <data name="validation.cancellationPolicy.rules.required" xml:space="preserve">
+    <value>يجب إضافة قاعدة إلغاء واحدة على الأقل.</value>
+  </data>
+  <data name="validation.cancellationPolicy.daysBeforeCheckIn.invalid" xml:space="preserve">
+    <value>يجب أن يكون عدد الأيام قبل تسجيل الوصول صفرًا أو أكبر.</value>
+  </data>
+  <data name="validation.cancellationPolicy.refundPercentage.invalid" xml:space="preserve">
+    <value>يجب أن تكون نسبة الاسترداد بين 0 و100.</value>
+  </data>
+  <data name="validation.cancellationPolicy.rules.duplicateThreshold" xml:space="preserve">
+    <value>لا يُسمح بتكرار عدد الأيام قبل تسجيل الوصول داخل الطلب.</value>
+  </data>
+  <data name="cancellation.policy.notFound" xml:space="preserve">
+    <value>لم يتم العثور على سياسة الإلغاء.</value>
+  </data>
+  <data name="cancellation.rule.notFound" xml:space="preserve">
+    <value>لم يتم العثور على قاعدة الإلغاء.</value>
+  </data>
+  <data name="cancellation.rule.thresholdAlreadyExists" xml:space="preserve">
+    <value>توجد بالفعل قاعدة إلغاء بنفس عدد الأيام قبل تسجيل الوصول.</value>
+  </data>
+  <data name="booking.cannotBeCancelled" xml:space="preserve">
+    <value>لا يمكن إلغاء هذا الحجز.</value>
+  </data>
+  <data name="Booking.CancellationAlreadyPending" xml:space="preserve">
+    <value>يوجد بالفعل طلب إلغاء قيد المعالجة لهذا الحجز.</value>
+  </data>
+  <data name="Booking.AlreadyCancelled" xml:space="preserve">
+    <value>تم إلغاء هذا الحجز بالفعل.</value>
+  </data>
 </root>
