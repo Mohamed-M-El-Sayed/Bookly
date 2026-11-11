@@ -2,6 +2,7 @@
 using Bookly.Application.Contracts.Services.Authentication;
 using Bookly.Application.Contracts.Services.Availability;
 using Bookly.Application.Contracts.Services.BackgroundJobs;
+using Bookly.Application.Contracts.Services.Caching;
 using Bookly.Application.Contracts.Services.Email;
 using Bookly.Application.Contracts.Services.Files;
 using Bookly.Application.Contracts.Services.Hotels;
@@ -16,6 +17,7 @@ using Bookly.Infrastructure.Services.Authentication;
 using Bookly.Infrastructure.Services.Availability;
 using Bookly.Infrastructure.Services.BackgroundJobs;
 using Bookly.Infrastructure.Services.BackgroundJobs.Jobs;
+using Bookly.Infrastructure.Services.Caching;
 using Bookly.Infrastructure.Services.Email;
 using Bookly.Infrastructure.Services.Files;
 using Bookly.Infrastructure.Services.Hotels;
@@ -73,6 +75,7 @@ namespace Bookly.Infrastructure.DependancyInjection
             services.Configure<EmailOptions>(configuration.GetSection(EmailOptions.SectionName));
             services.AddScoped<IPaymentService, StripePaymentService>();
             services.Configure<StripeOptions>(configuration.GetSection(StripeOptions.SectionName));
+            services.AddScoped<ICacheInvalidationService, CacheInvalidationService>();
         }
     }
 }

@@ -90,6 +90,14 @@ namespace Bookly.Api
             });
 
 
+            builder.Services.AddOutputCache();
+            builder.Services.AddStackExchangeRedisOutputCache(options =>
+            {
+                options.Configuration = builder.Configuration.GetConnectionString("Redis");
+                options.InstanceName = "Bookly:";
+            });
+
+
             builder.Services.AddLocalization();
 
             string[] supportedCultures = ["en", "ar"];
@@ -129,7 +137,7 @@ namespace Bookly.Api
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseOutputCache();
             app.MapControllers();
 
             app.Run();

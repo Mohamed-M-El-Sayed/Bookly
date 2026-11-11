@@ -6,6 +6,7 @@ using Bookly.Application.Features.Hotels.Queries;
 using Bookly.Application.Features.Hotels.Queries.GetHotelAmenities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace Bookly.Api.Controllers;
 
@@ -16,6 +17,7 @@ public class HotelsController(IMediator mediator) : ApiControllerBase
     /// <summary>
     /// Gets the active amenities assigned to a hotel.
     /// </summary>
+    [OutputCache(Duration = 300)]
     [HttpGet("{hotelId:int}/amenities")]
     public async Task<IActionResult> GetHotelAmenities([FromRoute] int hotelId, CancellationToken cancellationToken)
     {
