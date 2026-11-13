@@ -2,6 +2,7 @@
 using Bookly.Application.Features.RoomTypes.Commands.RemoveRoomType;
 using Bookly.Application.Features.RoomTypes.Commands.RemoveRoomTypeAmenity;
 using Bookly.Application.Features.RoomTypes.Commands.SetRoomTypesAmenities;
+using Bookly.Application.Features.RoomTypes.Queries.GetHotelRoomTypes;
 using Bookly.Application.Features.RoomTypes.Queries.GetRoomTypeAmenities;
 using Bookly.Application.Features.RoomTypes.Queries.GetRoomTypeById;
 using Bookly.Domain.Constants;
@@ -16,6 +17,19 @@ namespace Bookly.Api.Controllers;
 public class RoomTypesController(IMediator mediator) : ApiControllerBase
 {
 
+    /// <summary>
+    /// Gets all room types for a hotel.
+    /// </summary>
+    [HttpGet]
+    [Authorize(Roles = Roles.Manager)]
+    public async Task<IActionResult> GetHotelRoomTypes(
+        int hotelId,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(new GetHotelRoomTypesQuery(hotelId),
+            cancellationToken);
+        return Respond(result);
+    }
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int hotelId, int id)
     {
@@ -26,7 +40,6 @@ public class RoomTypesController(IMediator mediator) : ApiControllerBase
     /// Creates a new room type for the specified hotel.
     /// </summary>
     [HttpPost]
-    // user  
     public async Task<IActionResult> Create(int hotelId, [FromBody] CreateRoomTypeCommand command, CancellationToken cancellationToken)
     {
         command.HotelId = hotelId;

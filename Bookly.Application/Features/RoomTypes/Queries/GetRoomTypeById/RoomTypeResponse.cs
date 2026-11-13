@@ -1,6 +1,6 @@
 ﻿namespace Bookly.Application.Features.RoomTypes.Queries.GetRoomTypeById;
 
-public record GetRoomTypeByIdResponse(
+public record RoomTypeResponse(
     int Id,
     int HotelId,
     string NameEn,
