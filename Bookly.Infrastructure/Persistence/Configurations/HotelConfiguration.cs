@@ -32,6 +32,7 @@ public class HotelConfiguration : IEntityTypeConfiguration<Hotel>
                 .HasMaxLength(200)
                 .IsRequired();
         });
+        builder.HasQueryFilter(x => x.DeletedAt == null);
 
         builder.HasMany(x => x.RoomTypes)
         .WithOne(x => x.Hotel)

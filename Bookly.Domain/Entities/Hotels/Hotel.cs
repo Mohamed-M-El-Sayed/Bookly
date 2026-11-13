@@ -3,7 +3,7 @@ using Bookly.Domain.Entities.RoomTypes;
 
 namespace Bookly.Domain.Entities.Hotels;
 
-public class Hotel : BaseEntity
+public class Hotel : SoftDeletableEntity
 {
     public string Name { get; private set; } = null!;
     public string Description { get; private set; } = null!;
