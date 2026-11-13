@@ -423,4 +423,10 @@
   <data name="Hotel.ManagerNotAssigned" xml:space="preserve">
     <value>هذا المستخدم غير مُعيّن كمدير لهذا الفندق.</value>
   </data>
+  <data name="validation.pagination.availablepagesize.invalid" xml:space="preserve">
+    <value>يجب أن يكون حجم الصفحة بين 10 ,و 30.</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
 </root>

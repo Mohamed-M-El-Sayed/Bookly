@@ -2,6 +2,7 @@
 using Bookly.Application.Features.RoomTypes.Commands.RemoveRoomType;
 using Bookly.Application.Features.RoomTypes.Commands.RemoveRoomTypeAmenity;
 using Bookly.Application.Features.RoomTypes.Commands.SetRoomTypesAmenities;
+using Bookly.Application.Features.RoomTypes.Queries.GetAvailableHotelRoomTypes;
 using Bookly.Application.Features.RoomTypes.Queries.GetHotelRoomTypes;
 using Bookly.Application.Features.RoomTypes.Queries.GetRoomTypeAmenities;
 using Bookly.Application.Features.RoomTypes.Queries.GetRoomTypeById;
@@ -16,9 +17,19 @@ namespace Bookly.Api.Controllers;
 [ApiController]
 public class RoomTypesController(IMediator mediator) : ApiControllerBase
 {
+    /// <summary>
+    /// Gets available room types for a hotel.
+    /// </summary>
+    [HttpGet("available")]
+    public async Task<IActionResult> GetAvailableRoomTypes([FromRoute] int hotelId, [FromQuery] GetAvailableHotelRoomTypesQuery query, CancellationToken cancellationToken)
+    {
+        query.HotelId = hotelId;
+        var result = await mediator.Send(query, cancellationToken);
+        return Respond(result);
+    }
 
     /// <summary>
-    /// Gets all room types for a hotel.
+    /// Gets all room types for a hotel (Hotel manger only).
     /// </summary>
     [HttpGet]
     [Authorize(Roles = Roles.Manager)]

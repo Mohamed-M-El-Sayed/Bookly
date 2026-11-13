@@ -1,4 +1,6 @@
-﻿using Bookly.Application.Features.RoomTypes.Queries.GetRoomTypeAmenities;
+﻿using Bookly.Application.Common.Mappings;
+using Bookly.Application.Features.RoomTypes.Queries.GetAvailableHotelRoomTypes;
+using Bookly.Application.Features.RoomTypes.Queries.GetRoomTypeAmenities;
 using Bookly.Domain.Entities.RoomTypes;
 using Mapster;
 
@@ -17,6 +19,9 @@ public class RoomTypeMappingConfig : IRegister
                .Map(dest => dest.CategoryId, src => src.Amenity.Category.Id)
                .Map(dest => dest.CategoryNameEn, src => src.Amenity.Category.NameEn)
                .Map(dest => dest.CategoryNameAr, src => src.Amenity.Category.NameAr);
-
+        config.NewConfig<RoomTypeImage, RoomTypeImageResponse>()
+               .Map(dest => dest.Id, src => src.Id)
+               .Map(dest => dest.Url, src => src.Url.ToFullImageUrl())
+               .Map(dest => dest.IsPrimary, src => src.IsPrimary);
     }
 }
