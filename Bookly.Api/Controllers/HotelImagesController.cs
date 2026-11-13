@@ -1,17 +1,21 @@
 ﻿using Bookly.Application.Features.HotelImages.Commands.AddHotelImage;
 using Bookly.Application.Features.HotelImages.Queries.GetAllHotelImages;
+using Bookly.Application.Features.Images.Commands.DeleteHotelImage;
+using Bookly.Domain.Constants;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookly.Api.Controllers;
 
 [Route("api/hotels/{hotelId}/images")]
 [ApiController]
-public class ImagesController(IMediator mediator) : ApiControllerBase
+public class HotelImagesController(IMediator mediator) : ApiControllerBase
 {
     /// <summary>
     /// Adds a new image to the specified hotel.
     /// </summary>
+    [Authorize(Roles = Roles.Manager)]
     [HttpPost]
     public async Task<IActionResult> Create(int hotelId, [FromBody] AddHotelImageCommand command, CancellationToken cancellationToken)
     {
@@ -28,5 +32,19 @@ public class ImagesController(IMediator mediator) : ApiControllerBase
     {
         var result = await mediator.Send(new GetAllHotelImagesQuery(hotelId), cancellationToken);
         return Respond(result);
+    }
+    /// <summary>
+    /// Deletes a hotel image.
+    /// </summary>
+    [Authorize(Roles = Roles.Manager)]
+    [HttpDelete]
+    public async Task<IActionResult> DeleteHotelImage(
+        int hotelId,
+        int imageId,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(new DeleteHotelImageCommand(hotelId, imageId),
+            cancellationToken);
+        return Respond(result, StatusCodes.Status204NoContent);
     }
 }
