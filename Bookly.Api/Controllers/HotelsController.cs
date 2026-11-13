@@ -6,6 +6,7 @@ using Bookly.Application.Features.Hotels.Commands.RemoveHotelManager;
 using Bookly.Application.Features.Hotels.Commands.SetHotelAmenities;
 using Bookly.Application.Features.Hotels.Commands.UpdateHotel;
 using Bookly.Application.Features.Hotels.Queries.GetHotelAmenities;
+using Bookly.Application.Features.Hotels.Queries.GetHotelById;
 using Bookly.Application.Features.Hotels.Queries.SearchHotels;
 using Bookly.Domain.Constants;
 using MediatR;
@@ -18,6 +19,18 @@ namespace Bookly.Api.Controllers;
 [ApiController]
 public class HotelsController(IMediator mediator) : ApiControllerBase
 {
+
+    /// <summary>
+    /// Gets a hotel by its ID.
+    /// </summary>
+    [HttpGet("{hotelId:int}")]
+    public async Task<IActionResult> GetHotelById(int hotelId, CancellationToken cancellationToken)
+    {
+        var query = new GetHotelByIdQuery(hotelId);
+        var result = await mediator.Send(query, cancellationToken);
+        return Respond(result);
+    }
+
     /// <summary>
     /// Gets the active amenities assigned to a hotel.
     /// </summary>
