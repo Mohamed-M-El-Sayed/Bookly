@@ -2,8 +2,8 @@ using Bookly.Application.Features.Hotels.Commands.CreateHotel;
 using Bookly.Application.Features.Hotels.Commands.RemoveHotelAmenity;
 using Bookly.Application.Features.Hotels.Commands.SetHotelAmenities;
 using Bookly.Application.Features.Hotels.Commands.UpdateHotel;
-using Bookly.Application.Features.Hotels.Queries;
 using Bookly.Application.Features.Hotels.Queries.GetHotelAmenities;
+using Bookly.Application.Features.Hotels.Queries.SearchHotels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

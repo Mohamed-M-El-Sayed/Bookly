@@ -134,13 +134,11 @@ public class Hotel : BaseEntity
     public void AddImage(HotelImage image)
     {
         ArgumentNullException.ThrowIfNull(image);
-
         if (image.IsPrimary)
         {
             foreach (var existing in _images)
                 existing.UnsetPrimary();
         }
-
         _images.Add(image);
     }
 }

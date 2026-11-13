@@ -2,7 +2,7 @@
 using Bookly.Application.Common.Results;
 using MediatR;
 
-namespace Bookly.Application.Features.Hotels.Queries;
+namespace Bookly.Application.Features.Hotels.Queries.SearchHotels;
 
 public class SearchHotelsQuery : IRequest<Result<PagedResult<SearchHotelsResponse>>>
 {
