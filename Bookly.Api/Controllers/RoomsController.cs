@@ -2,6 +2,7 @@
 using Bookly.Application.Features.Rooms.Commands.CreateRoom;
 using Bookly.Application.Features.Rooms.Commands.DeactivateRoom;
 using Bookly.Application.Features.Rooms.Queries.GetRoomById;
+using Bookly.Application.Features.Rooms.Queries.GetRoomTypeRooms;
 using Bookly.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -23,7 +24,18 @@ public class RoomsController(IMediator mediator) : ApiControllerBase
         var result = await mediator.Send(new GetRoomByIdQuery(id, roomTypeId), cancellationToken);
         return Respond(result);
     }
-
+    /// <summary>
+    /// Gets all rooms belonging to a room type (Hotel manger only).
+    /// </summary>
+    [HttpGet]
+    public async Task<IActionResult> GetRoomTypeRooms(int roomTypeId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await mediator.Send(
+            new GetRoomTypeRoomsQuery(roomTypeId, pageNumber, pageSize),
+            cancellationToken);
+        return Respond(result);
+    }
     /// <summary>
     /// Creates a new room for the specified room type.
     /// </summary>
