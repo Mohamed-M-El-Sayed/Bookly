@@ -1,5 +1,5 @@
-﻿using Bookly.Application.Features.Hotels.HotelImages.Commands.AddHotelImage;
-using Bookly.Application.Features.Hotels.HotelImages.Queries.GetAllHotelImages;
+﻿using Bookly.Application.Features.HotelImages.Commands.AddHotelImage;
+using Bookly.Application.Features.HotelImages.Queries.GetAllHotelImages;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,7 +7,7 @@ namespace Bookly.Api.Controllers;
 
 [Route("api/hotels/{hotelId}/images")]
 [ApiController]
-public class HotelImagesController(IMediator mediator) : ApiControllerBase
+public class ImagesController(IMediator mediator) : ApiControllerBase
 {
     /// <summary>
     /// Adds a new image to the specified hotel.
