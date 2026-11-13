@@ -7,4 +7,6 @@ public static class RoomErrors
     public static Error CannotReduceInventory(DateOnly date) =>
         ErrorFactory.Conflict("availability.inventory.conflict",
             $"Cannot reduce room inventory because there are existing reservations on {date}");
+    public static Error NotFound() =>
+        ErrorFactory.NotFound("room.notfound", "Room not found");
 }
