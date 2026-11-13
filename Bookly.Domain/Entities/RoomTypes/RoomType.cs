@@ -223,6 +223,16 @@ public class RoomType : BaseEntity
             day.TryRelease();
         return true;
     }
+    public void AddImage(RoomTypeImage image)
+    {
+        ArgumentNullException.ThrowIfNull(image);
+        if (image.IsPrimary)
+        {
+            foreach (var existing in _images)
+                existing.UnsetPrimary();
+        }
+        _images.Add(image);
+    }
     public decimal TotalPriceForStay(DateOnly checkIn, DateOnly checkOut, int? boardOptionId)
     {
         if (checkOut <= checkIn)
