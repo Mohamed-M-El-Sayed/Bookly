@@ -30,6 +30,8 @@ public class RoomType : BaseEntity
     private readonly List<RoomAvailability> _roomAvailabilities = new();
     private readonly List<RoomTypeAmenity> _roomTypeAmenities = new();
     public IReadOnlyCollection<RoomTypeAmenity> Amenities => _roomTypeAmenities.AsReadOnly();
+    private readonly List<RoomTypeImage> _images = new();
+    public IReadOnlyCollection<RoomTypeImage> Images => _images.AsReadOnly();
     private RoomType()
     {
 
