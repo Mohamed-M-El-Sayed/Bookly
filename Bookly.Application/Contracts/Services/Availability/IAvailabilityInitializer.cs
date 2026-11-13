@@ -3,7 +3,5 @@
     public interface IAvailabilityInitializer
     {
         Task<int> EnsureWindowAsync(DateOnly today, CancellationToken cancellationToken);
-
-        Task<int> EnsureWindowForRoomTypeAsync(int roomTypeId, DateOnly today, CancellationToken cancellationToken);
     }
 }

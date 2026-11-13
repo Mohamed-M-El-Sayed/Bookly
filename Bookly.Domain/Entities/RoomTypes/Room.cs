@@ -14,6 +14,7 @@ public class Room : BaseEntity
     {
         RoomTypeId = roomTypeId;
         RoomNumber = roomNumber;
+        IsActive = true;
     }
     public static Room Create(
        int roomTypeId,

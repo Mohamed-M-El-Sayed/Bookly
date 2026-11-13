@@ -30,18 +30,6 @@ namespace Bookly.Infrastructure.Services.Availability
             }
             return created;
         }
-        public async Task<int> EnsureWindowForRoomTypeAsync(int roomTypeId, DateOnly today,
-            CancellationToken cancellationToken)
-        {
-            var roomTypeExists = await context.RoomTypes
-            .AnyAsync(x => x.Id == roomTypeId, cancellationToken);
-            if (!roomTypeExists)
-                return 0;
-            return await EnsureWindowAsync(
-            new[] { roomTypeId },
-            today,
-            cancellationToken);
-        }
         private async Task<int> EnsureWindowAsync(
         IReadOnlyCollection<int> roomTypeIds,
         DateOnly today,

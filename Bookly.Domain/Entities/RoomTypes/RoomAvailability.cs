@@ -37,5 +37,13 @@ public class RoomAvailability
         ReservedRooms--;
         return true;
     }
+    public bool TrySetTotalRooms(int totalRooms)
+    {
+        if (totalRooms < 0 || totalRooms < ReservedRooms)
+            return false;
+
+        TotalRooms = totalRooms;
+        return true;
+    }
 
 }
