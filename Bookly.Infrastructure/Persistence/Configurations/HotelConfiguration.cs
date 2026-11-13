@@ -41,5 +41,13 @@ public class HotelConfiguration : IEntityTypeConfiguration<Hotel>
         builder.Navigation(h => h.Amenities)
             .HasField("_hotelAmenities")
             .UsePropertyAccessMode(PropertyAccessMode.Field);
+        builder.HasMany(x => x.Managers)
+             .WithOne(x => x.Hotel)
+             .HasForeignKey(x => x.HotelId)
+             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.Managers)
+            .HasField("_hotelManagers")
+            .UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 }

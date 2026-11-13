@@ -18,7 +18,7 @@ public class Hotel : BaseEntity
     private readonly List<HotelImage> _images = new();
     public IReadOnlyCollection<HotelImage> Images => _images.AsReadOnly();
     private readonly List<HotelManager> _hotelManagers = new();
-    public IReadOnlyCollection<HotelManager> Managers => _hotelManagers.AsReadOnly();
+    public IReadOnlyCollection<HotelManager> Managers => _hotelManagers;
     private Hotel() { }
 
     private Hotel(
@@ -140,6 +140,10 @@ public class Hotel : BaseEntity
                 existing.UnsetPrimary();
         }
         _images.Add(image);
+    }
+    public void AddManager(Guid userId)
+    {
+        _hotelManagers.Add(new HotelManager(Id, userId));
     }
 }
 

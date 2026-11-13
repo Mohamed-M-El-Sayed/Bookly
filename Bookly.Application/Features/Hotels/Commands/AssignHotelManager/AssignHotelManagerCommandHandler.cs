@@ -37,7 +37,7 @@ public class AssignHotelManagerCommandHandler(IUnitOfWork unitOfWork,
                 request.UserId);
             return Result.Failure(HotelErrors.ManagerAlreadyAssigned());
         }
-        var hotelManager = new HotelManager(hotel.Id, request.UserId);
+        hotel.AddManager(request.UserId);
         await unitOfWork.SaveChangesAsync(cancellationToken);
         logger.LogInformation(
             "User {UserId} successfully assigned to hotel {HotelId}",

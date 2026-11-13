@@ -420,4 +420,7 @@
   <data name="Image.NotFound" xml:space="preserve">
     <value>الصورة غير موجودة.</value>
   </data>
+  <data name="Hotel.ManagerNotAssigned" xml:space="preserve">
+    <value>هذا المستخدم غير مُعيّن كمدير لهذا الفندق.</value>
+  </data>
 </root>
