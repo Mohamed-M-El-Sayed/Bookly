@@ -6,7 +6,7 @@ using Bookly.Domain.Exceptions;
 
 namespace Bookly.Domain.Entities.RoomTypes;
 
-public class RoomType : BaseEntity
+public class RoomType : SoftDeletableEntity
 {
     public int HotelId { get; private set; }
     public string NameEn { get; private set; } = null!;
