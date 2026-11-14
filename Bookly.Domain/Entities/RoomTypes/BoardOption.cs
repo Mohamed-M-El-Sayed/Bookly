@@ -3,7 +3,7 @@ using Bookly.Domain.Enums;
 
 namespace Bookly.Domain.Entities.RoomTypes
 {
-    public class BoardOption : BaseEntity
+    public class BoardOption : SoftDeletableEntity
     {
         public int RoomTypeId { get; private set; }
         public BoardType Type { get; private set; }

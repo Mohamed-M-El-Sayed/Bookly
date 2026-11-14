@@ -557,7 +557,11 @@ namespace Bookly.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<decimal>("ExtraPricePerNight")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("IsActive")
@@ -566,8 +570,10 @@ namespace Bookly.Infrastructure.Migrations
                     b.Property<int>("RoomTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -1139,11 +1145,13 @@ namespace Bookly.Infrastructure.Migrations
 
             modelBuilder.Entity("Bookly.Domain.Entities.RoomTypes.Room", b =>
                 {
-                    b.HasOne("Bookly.Domain.Entities.RoomTypes.RoomType", null)
+                    b.HasOne("Bookly.Domain.Entities.RoomTypes.RoomType", "RoomType")
                         .WithMany("Rooms")
                         .HasForeignKey("RoomTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("RoomType");
                 });
 
             modelBuilder.Entity("Bookly.Domain.Entities.RoomTypes.RoomAvailability", b =>
