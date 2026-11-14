@@ -1,4 +1,6 @@
-﻿using Bookly.Application.Features.BoardOptions.Commands.CreateBoardOption;
+﻿using Bookly.Application.Features.BoardOptions.Commands.ActivateBoardOption;
+using Bookly.Application.Features.BoardOptions.Commands.CreateBoardOption;
+using Bookly.Application.Features.BoardOptions.Commands.DeactivateBoardOption;
 using Bookly.Application.Features.BoardOptions.Commands.DeleteBoardOption;
 using Bookly.Application.Features.BoardOptions.Commands.UpdateBoardOption;
 using Bookly.Application.Features.BoardOptions.Queries.GetBoardOptionById;
@@ -45,6 +47,26 @@ public class BoardOptionsController(IMediator mediator) : ApiControllerBase
     {
         var result = await mediator.Send(new DeleteBoardOptionCommand(id, roomTypeId), cancellationToken);
         return Respond(result, StatusCodes.Status204NoContent);
+    }
+    /// <summary>
+    /// Deactivates a board option (Hotel manger only).
+    /// </summary>
+    [HttpPatch("{id:int}/deactivate")]
+    public async Task<IActionResult> DeactivateBoardOption(int id, int roomTypeId, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(new DeactivateBoardOptionCommand(id, roomTypeId),
+            cancellationToken);
+        return Respond(result);
+    }
+    /// <summary>
+    /// Deactivates a board option (Hotel mnager only).
+    /// </summary>
+    [HttpPatch("{id:int}/activate")]
+    public async Task<IActionResult> ActivateBoardOption(int id, int roomTypeId, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(new ActivateBoardOptionCommand(id, roomTypeId),
+            cancellationToken);
+        return Respond(result);
     }
     /// <summary>
     /// Gets a board option by ID (Hotel manger only).
