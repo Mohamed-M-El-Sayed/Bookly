@@ -172,6 +172,18 @@ public class RoomType : SoftDeletableEntity
 
         _boardOptions.Add(new BoardOption(Id, type, extraPricePerNight));
     }
+    public bool UpdateBoardOption(int boardOptionId, BoardType type, decimal extraPricePerNight)
+    {
+        var boardOption = _boardOptions.FirstOrDefault(b => b.Id == boardOptionId);
+        if (boardOption is null)
+            return false;
+
+        if (_boardOptions.Any(b => b.Id != boardOptionId && b.Type == type))
+            throw new DomainException($"Board option '{type}' already exists for this room type.");
+
+        boardOption.Update(type, extraPricePerNight);
+        return true;
+    }
     public void SetAmenities(IReadOnlyCollection<int> amenityIds)
     {
         var wanted = amenityIds.ToHashSet();

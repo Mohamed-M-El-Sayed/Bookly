@@ -23,6 +23,14 @@ namespace Bookly.Domain.Entities.RoomTypes
             ExtraPricePerNight = extraPricePerNight;
             IsActive = true;
         }
+        public void Update(BoardType type, decimal extraPricePerNight)
+        {
+            if (extraPricePerNight < 0)
+                throw new ArgumentOutOfRangeException(nameof(extraPricePerNight), "Extra price cannot be negative.");
+
+            Type = type;
+            ExtraPricePerNight = extraPricePerNight;
+        }
         public void Deactivate() => IsActive = false;
         public void Activate() => IsActive = true;
 
