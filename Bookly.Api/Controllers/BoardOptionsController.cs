@@ -1,4 +1,5 @@
 ﻿using Bookly.Application.Features.BoardOptions.Commands.CreateBoardOption;
+using Bookly.Application.Features.BoardOptions.Queries.GetBoardOptionById;
 using Bookly.Application.Features.BoardOptions.Queries.GetRoomTypeBoardOptions;
 using Bookly.Domain.Constants;
 using MediatR;
@@ -20,6 +21,16 @@ public class BoardOptionsController(IMediator mediator) : ApiControllerBase
     {
         command.RoomTypeId = roomTypeId;
         var result = await mediator.Send(command, cancellationToken);
+        return Respond(result);
+    }
+
+    /// <summary>
+    /// Gets a board option by ID (Hotel manger only).
+    /// </summary>
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetBoardOptionById(int roomTypeId, int id, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(new GetBoardOptionByIdQuery(id, roomTypeId), cancellationToken);
         return Respond(result);
     }
 
