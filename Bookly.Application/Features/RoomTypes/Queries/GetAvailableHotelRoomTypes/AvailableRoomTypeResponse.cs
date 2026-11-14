@@ -1,4 +1,6 @@
-﻿namespace Bookly.Application.Features.RoomTypes.Queries.GetAvailableHotelRoomTypes;
+﻿using Bookly.Application.Features.BoardOptions.Queries.GetRoomTypeBoardOptions;
+
+namespace Bookly.Application.Features.RoomTypes.Queries.GetAvailableHotelRoomTypes;
 
 public record AvailableRoomTypeResponse(
   int Id,
@@ -12,7 +14,8 @@ public record AvailableRoomTypeResponse(
   int MaxOccupancy,
   int BedCount,
   decimal Price,
-  IReadOnlyList<RoomTypeImageResponse> Images);
+  IReadOnlyList<RoomTypeImageResponse> Images,
+  IReadOnlyList<BoardOptionResponse> BoardOptions);
 
 public record RoomTypeImageResponse(
     int Id,

@@ -16,6 +16,7 @@ public class AvailableRoomTypesSpecification : BaseSpecification<RoomType>
               .Count() == checkOut.DayNumber - checkIn.DayNumber;
         AddInclude(rt => rt.SeasonalPrices);
         AddInclude(rt => rt.Images);
+        AddInclude(rt => rt.BoardOptions.Where(x => x.IsActive));
         ApplyPagination(pageIndex, pageSize);
     }
 }

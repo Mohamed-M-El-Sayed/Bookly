@@ -1,6 +1,7 @@
 ﻿using Bookly.Application.Common.Models;
 using Bookly.Application.Common.Results;
 using Bookly.Application.Contracts.Presistence;
+using Bookly.Application.Features.BoardOptions.Queries.GetRoomTypeBoardOptions;
 using Bookly.Application.Features.RoomTypes.Specifications;
 using Bookly.Domain.Entities.RoomTypes;
 using Mapster;
@@ -32,7 +33,8 @@ public class GetAvailableHotelRoomTypesQueryHandler(IUnitOfWork unitOfWork,
                  rt.MaxOccupancy,
                  rt.BedCount,
                  rt.TotalPriceForStay(request.CheckIn, request.CheckOut, null),
-                 rt.Images.Adapt<IReadOnlyList<RoomTypeImageResponse>>()
+                 rt.Images.Adapt<IReadOnlyList<RoomTypeImageResponse>>(),
+                 rt.BoardOptions.Adapt<IReadOnlyList<BoardOptionResponse>>()
                  )).ToList();
 
         return Result<PagedResult<AvailableRoomTypeResponse>>.Success(
