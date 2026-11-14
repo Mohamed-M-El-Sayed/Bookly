@@ -1,16 +1,19 @@
 ﻿using Bookly.Application.Features.BoardOptions.Commands.CreateBoardOption;
+using Bookly.Application.Features.BoardOptions.Queries.GetRoomTypeBoardOptions;
+using Bookly.Domain.Constants;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookly.Api.Controllers;
 
 [ApiController]
 [Route("api/room-types/{roomTypeId}/board-options")]
+[Authorize(Roles = Roles.Manager)]
 public class BoardOptionsController(IMediator mediator) : ApiControllerBase
 {
-    // admin 
     /// <summary>
-    /// Adds a new board option (e.g. breakfast, half board) to the specified room type.
+    /// Adds a new board option (e.g. breakfast, half board) to the specified room type (Hotel manager only).
     /// </summary>
     [HttpPost]
     public async Task<IActionResult> Create(int roomTypeId, [FromBody] CreateBoardOptionCommand command, CancellationToken cancellationToken)
@@ -20,6 +23,17 @@ public class BoardOptionsController(IMediator mediator) : ApiControllerBase
         return Respond(result);
     }
 
+    /// <summary>
+    /// Gets board options for a room type (Hotel manger only).
+    /// </summary>
+    [HttpGet]
+    public async Task<IActionResult> GetRoomTypeBoardOptions(int roomTypeId, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetRoomTypeBoardOptionsQuery(roomTypeId), cancellationToken);
+
+        return Respond(result);
+    }
 
 
 }
