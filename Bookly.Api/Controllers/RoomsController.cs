@@ -2,6 +2,7 @@
 using Bookly.Application.Features.Rooms.Commands.CreateRoom;
 using Bookly.Application.Features.Rooms.Commands.DeactivateRoom;
 using Bookly.Application.Features.Rooms.Commands.DeleteRoom;
+using Bookly.Application.Features.Rooms.Commands.UpdateRoom;
 using Bookly.Application.Features.Rooms.Queries.GetRoomById;
 using Bookly.Application.Features.Rooms.Queries.GetRoomTypeRooms;
 using Bookly.Domain.Constants;
@@ -48,13 +49,26 @@ public class RoomsController(IMediator mediator) : ApiControllerBase
         return Respond(result);
     }
     /// <summary>
+    /// Updates a room's number (Hotel manager only).
+    /// </summary>
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateRoom(int id, int roomTypeId, [FromBody] UpdateRoomCommand command,
+        CancellationToken cancellationToken)
+    {
+        command.Id = id;
+        command.RoomTypeId = roomTypeId;
+        var result = await mediator.Send(command, cancellationToken);
+        return Respond(result);
+    }
+
+    /// <summary>
     /// Deletes a room (Hotel manager only).
     /// </summary>
     [HttpDelete("{roomId:int}")]
     public async Task<IActionResult> DeleteRoom(int roomId, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new DeleteRoomCommand(roomId), cancellationToken);
-        return Respond(result, StatusCodes.Status204NoContent);
+        return Respond(result);
     }
     /// <summary>
     /// Activates a room (Hotel manager only).

@@ -31,6 +31,13 @@ public class Room : BaseEntity
             roomTypeId,
             roomNumber);
     }
+    public void Update(string roomNumber)
+    {
+        if (string.IsNullOrWhiteSpace(roomNumber))
+            throw new ArgumentException("Room number is required.");
+
+        RoomNumber = roomNumber;
+    }
     public void Activate() => IsActive = true;
     public void Deactivate() => IsActive = false;
 }

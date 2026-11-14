@@ -432,4 +432,7 @@
   <data name="BoardOption.NotFound" xml:space="preserve">
     <value>لم يتم العثور على خيار الوجبة.</value>
   </data>
+  <data name="Room.RoomNumberAlreadyExists" xml:space="preserve">
+    <value>يوجد بالفعل غرفة بهذا الرقم ضمن نوع الغرفة المحدد.</value>
+  </data>
 </root>

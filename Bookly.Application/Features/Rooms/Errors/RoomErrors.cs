@@ -9,4 +9,7 @@ public static class RoomErrors
             $"Cannot reduce room inventory because there are existing reservations on {date}");
     public static Error NotFound() =>
         ErrorFactory.NotFound("room.notfound", "Room not found");
+    public static Error RoomNumberAlreadyExists() =>
+        ErrorFactory.Conflict("Room.RoomNumberAlreadyExists",
+        "A room with this number already exists in this room type.");
 }
