@@ -1,4 +1,5 @@
 ﻿using Bookly.Application.Features.BoardOptions.Commands.CreateBoardOption;
+using Bookly.Application.Features.BoardOptions.Commands.DeleteBoardOption;
 using Bookly.Application.Features.BoardOptions.Commands.UpdateBoardOption;
 using Bookly.Application.Features.BoardOptions.Queries.GetBoardOptionById;
 using Bookly.Application.Features.BoardOptions.Queries.GetRoomTypeBoardOptions;
@@ -36,7 +37,15 @@ public class BoardOptionsController(IMediator mediator) : ApiControllerBase
         var result = await mediator.Send(command, cancellationToken);
         return Respond(result);
     }
-
+    /// <summary>
+    /// Deletes a board option (Hotel manger only).
+    /// </summary>
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteBoardOption(int roomTypeId, int id, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(new DeleteBoardOptionCommand(id, roomTypeId), cancellationToken);
+        return Respond(result, StatusCodes.Status204NoContent);
+    }
     /// <summary>
     /// Gets a board option by ID (Hotel manger only).
     /// </summary>
