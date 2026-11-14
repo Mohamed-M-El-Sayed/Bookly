@@ -165,6 +165,30 @@ public class RoomType : SoftDeletableEntity
 
         _seasonalPrices.Add(seasonalPrice);
     }
+    public void UpdateSeasonalPrice(SeasonalPrice seasonalPrice)
+    {
+        if (seasonalPrice is null)
+            throw new ArgumentNullException(nameof(seasonalPrice));
+
+        var existingPrice = _seasonalPrices
+            .FirstOrDefault(x => x.Id == seasonalPrice.Id);
+
+        if (existingPrice is null)
+            throw new DomainException("Seasonal price was not found.");
+
+        var hasOverlap = _seasonalPrices.Any(x =>
+            x.Id != seasonalPrice.Id &&
+            seasonalPrice.StartDate <= x.EndDate &&
+            seasonalPrice.EndDate >= x.StartDate);
+
+        if (hasOverlap)
+            throw new DomainException("Seasonal price dates overlap with an existing seasonal price.");
+
+        existingPrice.Update(seasonalPrice.Name,
+            seasonalPrice.StartDate,
+            seasonalPrice.EndDate,
+            seasonalPrice.PricePerNight);
+    }
     public void AddBoardOption(BoardType type, decimal extraPricePerNight)
     {
         if (_boardOptions.Any(b => b.Type == type))

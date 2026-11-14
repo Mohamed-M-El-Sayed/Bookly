@@ -435,4 +435,31 @@
   <data name="Room.RoomNumberAlreadyExists" xml:space="preserve">
     <value>يوجد بالفعل غرفة بهذا الرقم ضمن نوع الغرفة المحدد.</value>
   </data>
+  <data name="SeasonalPrice.NotFound" xml:space="preserve">
+    <value>غير</value>
+  </data>
+	<data name="Validation.SeasonalPrice.Id.Invalid" xml:space="preserve">
+  <value>معرّف السعر الموسمي غير صالح.</value>
+</data>
+	<data name="Validation.SeasonalPrice.RoomTypeId.Invalid" xml:space="preserve">
+  <value>معرّف نوع الغرفة غير صالح.</value>
+</data>
+	<data name="Validation.SeasonalPrice.Name.Required" xml:space="preserve">
+  <value>اسم السعر الموسمي مطلوب.</value>
+</data>
+	<data name="Validation.SeasonalPrice.Name.TooLong" xml:space="preserve">
+  <value>يجب ألا يزيد اسم السعر الموسمي عن 100 حرف.</value>
+</data>
+	<data name="Validation.SeasonalPrice.StartDate.Required" xml:space="preserve">
+  <value>تاريخ بداية الموسم مطلوب.</value>
+</data>
+	<data name="Validation.SeasonalPrice.EndDate.Required" xml:space="preserve">
+  <value>تاريخ نهاية الموسم مطلوب.</value>
+</data>
+	<data name="Validation.SeasonalPrice.EndDate.Invalid" xml:space="preserve">
+  <value>يجب أن يكون تاريخ النهاية بعد أو مساويًا لتاريخ البداية.</value>
+</data>
+	<data name="Validation.SeasonalPrice.PricePerNight.Invalid" xml:space="preserve">
+  <value>يجب أن يكون سعر الليلة أكبر من صفر.</value>
+</data>
 </root>

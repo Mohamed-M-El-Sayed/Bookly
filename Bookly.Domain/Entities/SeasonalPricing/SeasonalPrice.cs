@@ -1,6 +1,4 @@
 ﻿using Bookly.Domain.Entities.Base;
-using System.Net.Http.Headers;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Bookly.Domain.Entities.SeasonalPricing;
 
@@ -12,11 +10,7 @@ public class SeasonalPrice : BaseEntity
     public DateOnly EndDate { get; private set; }
     public decimal PricePerNight { get; private set; }
     private SeasonalPrice() { }
-    public SeasonalPrice(
-        int roomTypeId,
-        string name,
-        DateOnly startDate,
-        DateOnly endDate,
+    public SeasonalPrice(int roomTypeId, string name, DateOnly startDate, DateOnly endDate,
         decimal pricePerNight)
     {
         if (roomTypeId <= 0)
@@ -35,6 +29,23 @@ public class SeasonalPrice : BaseEntity
             throw new ArgumentOutOfRangeException(nameof(pricePerNight));
 
         RoomTypeId = roomTypeId;
+        Name = name;
+        StartDate = startDate;
+        EndDate = endDate;
+        PricePerNight = pricePerNight;
+    }
+    public void Update(string name, DateOnly startDate, DateOnly endDate, decimal pricePerNight)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Name is required.", nameof(name));
+
+        if (startDate > endDate)
+            throw new ArgumentException(
+                "Start date must be before or equal to end date.");
+
+        if (pricePerNight <= 0)
+            throw new ArgumentOutOfRangeException(nameof(pricePerNight));
+
         Name = name;
         StartDate = startDate;
         EndDate = endDate;
