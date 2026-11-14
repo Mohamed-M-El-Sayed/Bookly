@@ -1,6 +1,7 @@
-﻿using System.Net;
-using Bookly.Api.Responses;
+﻿using Bookly.Api.Responses;
+using Bookly.Domain.Exceptions;
 using FluentValidation;
+using System.Net;
 
 namespace Bookly.Api.Middlewares;
 
@@ -45,16 +46,16 @@ public class ErrorHandlingMiddleware(
                             e.ErrorMessage))),
 
             //// 409 - Domain business rule
-            //DomainException domainEx =>
-            //    new ApiResponse(
-            //        (int)HttpStatusCode.Conflict,
-            //        false,
-            //        new[]
-            //        {
-            //            new ApiError(
-            //                "DomainRule",
-            //                domainEx.Message)
-            //        }),
+            DomainException domainEx =>
+                 new ApiResponse(
+                     (int)HttpStatusCode.Conflict,
+                     false,
+                     new[]
+                     {
+                            new ApiError(
+                                "DomainRule",
+                                domainEx.Message)
+                     }),
 
             // 500 - Unexpected exception
             _ =>
@@ -63,9 +64,9 @@ public class ErrorHandlingMiddleware(
                     false,
                     new[]
                     {
-                        new ApiError(
-                            "InternalServerError",
-                            "An unexpected error occurred.")
+                            new ApiError(
+                                "InternalServerError",
+                                "An unexpected error occurred.")
                     })
         };
 

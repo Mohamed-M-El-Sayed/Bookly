@@ -2,26 +2,40 @@
 
 namespace Bookly.Application.Features.SeasonalPricing.Commands.CreateSeasonalPrice;
 
-public class CreateSeasonalPriceCommandValidator : AbstractValidator<CreateSeasonalPriceCommand>
+public class CreateSeasonalPriceCommandValidator
+    : AbstractValidator<CreateSeasonalPriceCommand>
 {
     public CreateSeasonalPriceCommandValidator()
     {
         RuleFor(x => x.RoomTypeId)
-           .GreaterThan(0).WithMessage("A valid room type id is required.");
+            .GreaterThan(0)
+            .WithErrorCode("Validation.SeasonalPrice.RoomTypeId.Invalid")
+            .WithMessage("A valid room type id is required.");
 
         RuleFor(x => x.Name)
-            .NotEmpty().WithMessage("Name is required.")
-            .MaximumLength(100).WithMessage("Name must not exceed 100 characters.");
+            .NotEmpty()
+            .WithErrorCode("Validation.SeasonalPrice.Name.Required")
+            .WithMessage("Name is required.")
+            .MaximumLength(100)
+            .WithErrorCode("Validation.SeasonalPrice.Name.TooLong")
+            .WithMessage("Name must not exceed 100 characters.");
 
         RuleFor(x => x.StartDate)
-            .NotEmpty().WithMessage("Start date is required.");
+            .NotEmpty()
+            .WithErrorCode("Validation.SeasonalPrice.StartDate.Required")
+            .WithMessage("Start date is required.");
 
         RuleFor(x => x.EndDate)
-            .NotEmpty().WithMessage("End date is required.")
+            .NotEmpty()
+            .WithErrorCode("Validation.SeasonalPrice.EndDate.Required")
+            .WithMessage("End date is required.")
             .GreaterThanOrEqualTo(x => x.StartDate)
-                .WithMessage("End date must be after or equal to start date.");
+            .WithErrorCode("Validation.SeasonalPrice.EndDate.Invalid")
+            .WithMessage("End date must be after or equal to start date.");
 
         RuleFor(x => x.PricePerNight)
-            .GreaterThan(0).WithMessage("Price per night must be greater than zero.");
+            .GreaterThan(0)
+            .WithErrorCode("Validation.SeasonalPrice.PricePerNight.Invalid")
+            .WithMessage("Price per night must be greater than zero.");
     }
 }
