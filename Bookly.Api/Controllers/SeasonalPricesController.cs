@@ -1,5 +1,6 @@
 ﻿using Bookly.Application.Features.SeasonalPricing.Commands.CreateSeasonalPrice;
 using Bookly.Application.Features.SeasonalPricing.Commands.UpdateSeasonalPrice;
+using Bookly.Application.Features.SeasonalPricing.Queries.GetSeasonalPriceById;
 using Bookly.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -13,6 +14,16 @@ namespace Bookly.Api.Controllers;
 public class SeasonalPricesController(IMediator mediator) : ApiControllerBase
 {
     /// <summary>
+    /// Gets a seasonal price by ID (Hotel manger only).
+    /// </summary>
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetSeasonalPriceById(int id, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(new GetSeasonalPriceByIdQuery(id), cancellationToken);
+        return Respond(result);
+    }
+
+    /// <summary>
     /// Creates a seasonal price for a room type (Hotel manger only).
     /// </summary>
     [HttpPost]
@@ -23,12 +34,6 @@ public class SeasonalPricesController(IMediator mediator) : ApiControllerBase
         return Respond(result, StatusCodes.Status201Created);
     }
 
-    public record CreateSeasonalPriceRequest(
-        int RoomTypeId,
-        string Name,
-        DateOnly StartDate,
-        DateOnly EndDate,
-        decimal PricePerNight);
     /// <summary>
     /// Updates a seasonal price (Hotel manager only).
     /// </summary>
@@ -42,5 +47,6 @@ public class SeasonalPricesController(IMediator mediator) : ApiControllerBase
         var result = await mediator.Send(command, cancellationToken);
         return Respond(result, StatusCodes.Status204NoContent);
     }
+
 
 }
