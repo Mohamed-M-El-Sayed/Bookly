@@ -17,6 +17,7 @@ public class Booking : SoftDeletableEntity
     public DateOnly CheckOut { get; private set; }
     public BookingStatus Status { get; private set; }
     public decimal TotalPrice => _bookingRooms.Sum(x => x.PriceAtBooking);
+    public string Email { get; private set; } = default!;
     public string PhoneNumber { get; private set; } = default!;
     public DateTime? ExpiresAt { get; private set; }
     private readonly List<BookingRoom> _bookingRooms = new();
@@ -31,6 +32,7 @@ public class Booking : SoftDeletableEntity
         DateOnly checkIn,
         DateOnly checkOut,
         string guestName,
+        string email,
         string phoneNumber)
     {
         return new Booking
@@ -42,6 +44,7 @@ public class Booking : SoftDeletableEntity
             CheckOut = checkOut,
             GuestName = guestName.Trim(),
             PhoneNumber = phoneNumber.Trim(),
+            Email = email.Trim(),
             Status = BookingStatus.Pending,
             ExpiresAt = DateTime.UtcNow.Add(HoldDuration)
         };

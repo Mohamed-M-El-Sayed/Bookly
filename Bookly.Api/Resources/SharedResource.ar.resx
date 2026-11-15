@@ -462,4 +462,13 @@
 	<data name="Validation.SeasonalPrice.PricePerNight.Invalid" xml:space="preserve">
   <value>يجب أن يكون سعر الليلة أكبر من صفر.</value>
 </data>
+	<data name="Booking.EmailRequired" xml:space="preserve">
+  <value>البريد الإلكتروني مطلوب.</value>
+</data>
+	<data name="Booking.InvalidEmail" xml:space="preserve">
+  <value>يرجى إدخال بريد إلكتروني صحيح.</value>
+</data>
+	<data name="Booking.EmailTooLong" xml:space="preserve">
+  <value>لا يمكن أن يتجاوز البريد الإلكتروني 256 حرفًا.</value>
+</data>
 </root>
