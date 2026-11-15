@@ -1,4 +1,5 @@
 ﻿using Bookly.Application.Features.SeasonalPricing.Commands.CreateSeasonalPrice;
+using Bookly.Application.Features.SeasonalPricing.Commands.DeleteSeasonalPrice;
 using Bookly.Application.Features.SeasonalPricing.Commands.UpdateSeasonalPrice;
 using Bookly.Application.Features.SeasonalPricing.Queries.GetSeasonalPriceById;
 using Bookly.Application.Features.SeasonalPricing.Queries.GetSeasonalPricesByRoomTypeId;
@@ -60,8 +61,18 @@ public class SeasonalPricesController(IMediator mediator) : ApiControllerBase
         command.RoomTypeId = roomTypeId;
         command.Id = id;
         var result = await mediator.Send(command, cancellationToken);
-        return Respond(result, StatusCodes.Status204NoContent);
+        return Respond(result);
     }
-
-
+    /// <summary>
+    /// Deletes a seasonal price (Hotel manger only).
+    /// </summary>
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteSeasonalPrice(
+        int id,
+        CancellationToken cancellationToken)
+    {
+        var command = new DeleteSeasonalPriceCommand(id);
+        var result = await mediator.Send(command, cancellationToken);
+        return Respond(result);
+    }
 }
