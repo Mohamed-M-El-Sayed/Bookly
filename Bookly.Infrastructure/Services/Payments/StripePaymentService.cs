@@ -15,14 +15,14 @@ public class StripePaymentService : IPaymentService
     private readonly StripeOptions _options;
     private readonly ILogger<StripePaymentService> _logger;
     private readonly SessionService _sessionService;
-    private readonly RefundService refundService;
+    private readonly RefundService _refundService;
     public StripePaymentService(IOptions<StripeOptions> options, ILogger<StripePaymentService> logger)
     {
         _options = options.Value;
         _logger = logger;
         var stripeClient = new StripeClient(_options.SecretKey);
         _sessionService = new SessionService(stripeClient);
-        refundService = new RefundService(stripeClient);
+        _refundService = new RefundService(stripeClient);
 
     }
     public async Task<Result<CheckoutSessionResult>> CreateCheckoutSessionAsync(int bookingId, decimal amount, string currency,
@@ -184,8 +184,7 @@ public class StripePaymentService : IPaymentService
             {
                 IdempotencyKey = idempotencyKey
             };
-            var refundService = new RefundService();
-            Refund refund = await refundService.CreateAsync(
+            Refund refund = await _refundService.CreateAsync(
                 options,
                 requestOptions,
                 cancellationToken: cancellationToken);
