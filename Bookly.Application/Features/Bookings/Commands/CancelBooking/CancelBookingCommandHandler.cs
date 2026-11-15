@@ -15,16 +15,14 @@ namespace Bookly.Application.Features.Bookings.Commands.CancelBooking;
 public class CancelBookingCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService,
     IPaymentService paymentService,
     ILogger<CancelBookingCommandHandler> logger)
-    : IRequestHandler<CancelBookingCommand, Result>
+    : IRequestHandler<CancelBookingCommand, Result<CancelBookingResponse>>
 {
-    public async Task<Result> Handle(
-        CancelBookingCommand request,
-        CancellationToken cancellationToken)
+    public async Task<Result<CancelBookingResponse>> Handle(CancelBookingCommand request, CancellationToken cancellationToken)
     {
         var userId = currentUserService.UserId;
 
         if (userId is null)
-            return Result.Failure(AuthErrors.Unauthorized());
+            return Result<CancelBookingResponse>.Failure(AuthErrors.Unauthorized());
         var booking = await unitOfWork.Repository<Booking>()
             .GetEntityWithSpecAsync(
                 new BookingForCancellationSpecification(
@@ -33,16 +31,16 @@ public class CancelBookingCommandHandler(IUnitOfWork unitOfWork, ICurrentUserSer
                 cancellationToken);
 
         if (booking is null)
-            return Result.Failure(BookingErrors.NotFound());
+            return Result<CancelBookingResponse>.Failure(BookingErrors.NotFound());
 
         if (booking.Status != BookingStatus.Confirmed)
-            return Result.Failure(BookingErrors.CannotBeCancelled());
+            return Result<CancelBookingResponse>.Failure(BookingErrors.CannotBeCancelled());
 
         var payment = booking.Payments
             .FirstOrDefault(p => p.Status == PaymentStatus.Paid);
 
         if (payment is null || string.IsNullOrWhiteSpace(payment.TransactionId))
-            return Result.Failure(BookingErrors.CannotBeCancelled());
+            return Result<CancelBookingResponse>.Failure(BookingErrors.CannotBeCancelled());
 
         var requestedAt = DateTime.UtcNow;
         var refundAmount = booking.CalculateRefundAmount(requestedAt);
@@ -53,10 +51,10 @@ public class CancelBookingCommandHandler(IUnitOfWork unitOfWork, ICurrentUserSer
         if (cancellation is not null)
         {
             if (cancellation.RefundStatus == RefundStatus.Pending)
-                return Result.Failure(BookingErrors.CancellationAlreadyPending());
+                return Result<CancelBookingResponse>.Failure(BookingErrors.CancellationAlreadyPending());
 
             if (cancellation.RefundStatus == RefundStatus.Succeeded)
-                return Result.Failure(BookingErrors.CannotBeCancelled());
+                return Result<CancelBookingResponse>.Failure(BookingErrors.CannotBeCancelled());
 
             cancellation.RetryRefund();
         }
@@ -79,7 +77,13 @@ public class CancelBookingCommandHandler(IUnitOfWork unitOfWork, ICurrentUserSer
             logger.LogInformation(
                 "Cancellation request for booking {BookingId} requires no refund.",
                 booking.Id);
-            return Result.Success();
+            return Result<CancelBookingResponse>.Success(
+                new CancelBookingResponse(
+                    booking.Id,
+                    booking.TotalPrice,
+                    cancellation.CancellationFee,
+                    cancellation.RefundAmount,
+                    cancellation.RefundStatus));
         }
         var refundResult = await paymentService.RefundPaymentAsync(
             payment.TransactionId,
@@ -96,12 +100,17 @@ public class CancelBookingCommandHandler(IUnitOfWork unitOfWork, ICurrentUserSer
                 "Refund request failed for booking {BookingId}.",
                 booking.Id);
 
-            return Result.Failure(refundResult.Error!);
+            return Result<CancelBookingResponse>.Failure(refundResult.Error!);
         }
         logger.LogInformation(
             "Refund request submitted for booking {BookingId}. RefundId: {RefundId}",
             booking.Id,
             refundResult.ToString());
-        return Result.Success();
+        return Result<CancelBookingResponse>.Success(new CancelBookingResponse(
+        booking.Id,
+        booking.TotalPrice,
+        cancellation.CancellationFee,
+        cancellation.RefundAmount,
+        cancellation.RefundStatus));
     }
 }
