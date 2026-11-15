@@ -1,5 +1,6 @@
 ﻿using Bookly.Application.Common.Results;
 using Bookly.Application.Contracts.Presistence;
+using Bookly.Application.Contracts.Services.BackgroundJobs;
 using Bookly.Application.Contracts.Services.Payments;
 using Bookly.Application.Features.Payments.Messages;
 using Bookly.Application.Features.Payments.Specifications;
@@ -12,6 +13,7 @@ namespace Bookly.Application.Features.Payments.Commands.HandlePaymentWebhook;
 
 public class HandlePaymentWebhookCommandHandler(IUnitOfWork unitOfWork,
     IPaymentService paymentService,
+    IBackgroundJobService backgroundJobService,
     ILogger<HandlePaymentWebhookCommandHandler> logger) : IRequestHandler<HandlePaymentWebhookCommand, Result>
 {
     public async Task<Result> Handle(HandlePaymentWebhookCommand request, CancellationToken cancellationToken)
@@ -34,7 +36,8 @@ public class HandlePaymentWebhookCommandHandler(IUnitOfWork unitOfWork,
                     return Result.Success();
                 payment.MarkAsPaid(webhook.TransactionId!);
                 payment.Booking.Confirm();
-
+                backgroundJobService.Enqueue<IBookingConfirmationEmailJob>(
+                    job => job.SendAsync(payment.BookingId, CancellationToken.None));
                 break;
 
             case PaymentEventType.PaymentFailed:

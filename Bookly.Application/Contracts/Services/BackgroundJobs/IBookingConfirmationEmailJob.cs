@@ -2,5 +2,6 @@
 
 public interface IBookingConfirmationEmailJob
 {
+    Task SendAsync(int bookingId, CancellationToken cancellationToken);
 
 }
