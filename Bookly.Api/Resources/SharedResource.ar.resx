@@ -396,4 +396,13 @@
   <data name="Booking.InvalidBoardOption" xml:space="preserve">
     <value>خيار الإقامة المحدد غير متاح لنوع الغرفة المختار.</value>
   </data>
+	<data name="Booking.EmailRequired" xml:space="preserve">
+  <value>البريد الإلكتروني مطلوب.</value>
+</data>
+	<data name="Booking.InvalidEmail" xml:space="preserve">
+  <value>يرجى إدخال بريد إلكتروني صحيح.</value>
+</data>
+	<data name="Booking.EmailTooLong" xml:space="preserve">
+  <value>لا يمكن أن يتجاوز البريد الإلكتروني 256 حرفًا.</value>
+</data>
 </root>

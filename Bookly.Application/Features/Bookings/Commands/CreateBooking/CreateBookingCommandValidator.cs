@@ -47,6 +47,17 @@ public sealed class CreateBookingCommandValidator : AbstractValidator<CreateBook
             .WithErrorCode("Booking.GuestNameTooLong")
             .WithMessage("Guest name cannot exceed 100 characters.");
 
+        RuleFor(x => x.Email)
+            .NotEmpty()
+            .WithErrorCode("Booking.EmailRequired")
+            .WithMessage("Email is required.")
+            .EmailAddress()
+            .WithErrorCode("Booking.InvalidEmail")
+            .WithMessage("Please enter a valid email address.")
+            .MaximumLength(256)
+            .WithErrorCode("Booking.EmailTooLong")
+            .WithMessage("Email cannot exceed 256 characters.");
+
         RuleFor(x => x.PhoneNumber)
             .NotEmpty()
             .WithErrorCode("Booking.PhoneNumberRequired")

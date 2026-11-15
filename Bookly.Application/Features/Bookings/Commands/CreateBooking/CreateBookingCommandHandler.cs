@@ -34,8 +34,7 @@ public class CreateBookingCommandHandler(IUnitOfWork unitOfWork,
             return Result<CreateBookingResponse>.Failure(BookingErrors.ExceedsMaxOccupancy());
         if (!roomType.TryReserve(request.CheckIn, request.CheckOut))
             return Result<CreateBookingResponse>.Failure(BookingErrors.RoomNotAvailable());
-        var nights =
-            request.CheckOut.DayNumber - request.CheckIn.DayNumber;
+        var nights = request.CheckOut.DayNumber - request.CheckIn.DayNumber;
         var price = roomType.TotalPriceForStay(request.CheckIn, request.CheckOut, request.BoardOptionId);
         var booking = Booking.Create(
             userId.Value,
@@ -43,6 +42,7 @@ public class CreateBookingCommandHandler(IUnitOfWork unitOfWork,
             request.CheckIn,
             request.CheckOut,
             request.GuestName,
+            request.Email,
             request.PhoneNumber);
         booking.AddRoom(request.RoomTypeId, null, request.Guests, price);
         await unitOfWork.Repository<Booking>().AddAsync(booking, cancellationToken);
