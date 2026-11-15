@@ -124,6 +124,10 @@ namespace Bookly.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("ExpiresAt")
                         .HasColumnType("datetime2");
 
@@ -154,6 +158,8 @@ namespace Bookly.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("HotelId");
 
                     b.HasIndex("Reference")
                         .IsUnique();
@@ -786,6 +792,17 @@ namespace Bookly.Infrastructure.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("Bookly.Domain.Entities.Bookings.Booking", b =>
+                {
+                    b.HasOne("Bookly.Domain.Entities.Hotels.Hotel", "Hotel")
+                        .WithMany()
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hotel");
+                });
+
             modelBuilder.Entity("Bookly.Domain.Entities.Bookings.BookingRoom", b =>
                 {
                     b.HasOne("Bookly.Domain.Entities.Bookings.Booking", null)
@@ -920,7 +937,7 @@ namespace Bookly.Infrastructure.Migrations
             modelBuilder.Entity("Bookly.Domain.Entities.Hotels.HotelManager", b =>
                 {
                     b.HasOne("Bookly.Domain.Entities.Hotels.Hotel", "Hotel")
-                        .WithMany()
+                        .WithMany("Managers")
                         .HasForeignKey("HotelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1086,6 +1103,8 @@ namespace Bookly.Infrastructure.Migrations
                     b.Navigation("Amenities");
 
                     b.Navigation("Images");
+
+                    b.Navigation("Managers");
 
                     b.Navigation("RoomTypes");
                 });
