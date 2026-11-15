@@ -23,10 +23,8 @@ public class GetSeasonalPriceByIdQueryHandler(IUnitOfWork unitOfWork,
 
         if (seasonalPrice is null)
         {
-            logger.LogWarning(
-                "Seasonal price {SeasonalPriceId} was not found",
-                request.Id);
 
+            logger.LogWarning("Seasonal price {SeasonalPriceId} was not found", request.Id);
             return Result<SeasonalPriceResponse>.Failure(
                 SeasonalPriceErrors.NotFound());
         }

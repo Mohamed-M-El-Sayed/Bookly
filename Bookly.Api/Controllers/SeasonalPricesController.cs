@@ -1,6 +1,7 @@
 ﻿using Bookly.Application.Features.SeasonalPricing.Commands.CreateSeasonalPrice;
 using Bookly.Application.Features.SeasonalPricing.Commands.UpdateSeasonalPrice;
 using Bookly.Application.Features.SeasonalPricing.Queries.GetSeasonalPriceById;
+using Bookly.Application.Features.SeasonalPricing.Queries.GetSeasonalPricesByRoomTypeId;
 using Bookly.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -13,6 +14,20 @@ namespace Bookly.Api.Controllers;
 [Authorize(Roles = Roles.Manager)]
 public class SeasonalPricesController(IMediator mediator) : ApiControllerBase
 {
+    /// <summary>
+    /// Gets paginated seasonal prices for a room type (Hotel manger only).
+    /// </summary>
+    [HttpGet]
+    public async Task<IActionResult> GetSeasonalPrices(int roomTypeId, [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 30, CancellationToken cancellationToken = default)
+    {
+        var query = new GetSeasonalPricesByRoomTypeIdQuery(
+            roomTypeId,
+            pageNumber,
+            pageSize);
+        var result = await mediator.Send(query, cancellationToken);
+        return Respond(result);
+    }
     /// <summary>
     /// Gets a seasonal price by ID (Hotel manger only).
     /// </summary>
