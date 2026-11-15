@@ -89,8 +89,16 @@ namespace Bookly.Api
                 });
             });
 
-
-            builder.Services.AddOutputCache();
+            builder.Services.AddOutputCache(options =>
+            {
+                options.AddPolicy(
+                    "HotelReviews",
+                    policy => policy
+                        .Cache()
+                        .Expire(TimeSpan.FromMinutes(5))
+                        .SetVaryByQuery("pageNumber", "pageSize"),
+                    excludeDefaultPolicy: true);
+            });
             builder.Services.AddStackExchangeRedisOutputCache(options =>
             {
                 options.Configuration = builder.Configuration.GetConnectionString("Redis");

@@ -2,5 +2,5 @@
 
 public interface ICacheInvalidationRequest
 {
-    IReadOnlyCollection<string> Tags { get; set; }
+    IReadOnlyCollection<string> Tags { get; }
 }
