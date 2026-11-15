@@ -36,4 +36,5 @@ public static class BookingErrors
     public static Error AlreadyCancelled() =>
          ErrorFactory.Conflict("Booking.AlreadyCancelled",
             "This booking has already been cancelled.");
+
 }

@@ -12,51 +12,96 @@ namespace Bookly.Application.Features.Payments.Commands.HandlePaymentWebhook;
 
 public class HandlePaymentWebhookCommandHandler(IUnitOfWork unitOfWork,
     IPaymentService paymentService,
-    ILogger<HandlePaymentWebhookCommandHandler> logger) : IRequestHandler<HandlePaymentWebhookCommand, Result>
+    ILogger<HandlePaymentWebhookCommandHandler> logger)
+    : IRequestHandler<HandlePaymentWebhookCommand, Result>
 {
     public async Task<Result> Handle(HandlePaymentWebhookCommand request, CancellationToken cancellationToken)
     {
         logger.LogInformation("Processing payment webhook.");
-        var webhookResult = paymentService.ParseWebhookEvent(request.Payload, request.Signature);
+
+        var webhookResult = paymentService.ParseWebhookEvent(
+            request.Payload,
+            request.Signature);
+
         if (!webhookResult.IsSuccess)
             return Result.Failure(webhookResult.Error!);
+
         var webhook = webhookResult.Value;
-        var payment = await unitOfWork.Repository<Payment>().GetEntityWithSpecAsync(
-            new PaymentBySessionOrTransactionSpecification(webhook.SessionId, webhook.TransactionId));
+
+        var payment = await unitOfWork.Repository<Payment>()
+            .GetEntityWithSpecAsync(
+                new PaymentBySessionOrTransactionSpecification(
+                    webhook.SessionId,
+                    webhook.TransactionId));
+
         if (payment is null)
             return Result.Failure(PaymentErrors.NotFound());
-        if (payment.Amount != webhook.Amount)
+
+
+        if (webhook.EventType != PaymentEventType.PaymentRefunded &&
+            payment.Amount != webhook.Amount)
+        {
             return Result.Failure(PaymentErrors.AmountMisMatch());
+        }
+
+        var booking = payment.Booking;
+
         switch (webhook.EventType)
         {
             case PaymentEventType.PaymentSucceeded:
+
                 if (payment.Status == PaymentStatus.Paid)
                     return Result.Success();
-                payment.MarkAsPaid(webhook.TransactionId!);
-                payment.Booking.Confirm();
 
+                payment.MarkAsPaid(webhook.TransactionId!);
+                booking.Confirm();
                 break;
 
             case PaymentEventType.PaymentFailed:
+
+                if (payment.Status == PaymentStatus.Failed)
+                    return Result.Success();
+
                 payment.MarkAsFailed();
-                var booking = payment.Booking;
-                var released = booking.BookingRooms.Single().RoomType.TryRelease(booking.CheckIn, booking.CheckOut);
+
+                var released = booking.BookingRooms
+                    .Single()
+                    .RoomType
+                    .TryRelease(booking.CheckIn, booking.CheckOut);
+
                 if (!released)
                 {
-                    logger.LogWarning(
-                        "Failed to release availability for Booking {BookingId}.",
+                    logger.LogWarning("Failed to release availability for Booking {BookingId}.",
                         booking.Id);
                 }
                 break;
 
             case PaymentEventType.PaymentRefunded:
-                // Handle refund in the next step.
+
+                if (payment.Status == PaymentStatus.Refunded)
+                    return Result.Success();
+
+                if (booking.Cancellation is null)
+                {
+                    logger.LogWarning("Refund received for Payment {PaymentId}, but Booking {BookingId} has no cancellation.",
+                        payment.Id,
+                        booking.Id);
+
+                    return Result.Failure(
+                        PaymentErrors.CancellationNotFound());
+                }
+                booking.Cancel();
+                payment.MarkAsRefunded(webhook.Amount, webhook.TransactionId!, DateTime.UtcNow);
+                booking.Cancellation.MarkRefundAsSucceeded();
                 break;
         }
+
         await unitOfWork.SaveChangesAsync(cancellationToken);
+
         logger.LogInformation("Payment webhook processed successfully. PaymentId: {PaymentId}, EventType: {EventType}",
-           payment.Id,
-           webhook.EventType);
+            payment.Id,
+            webhook.EventType);
+
         return Result.Success();
     }
 }

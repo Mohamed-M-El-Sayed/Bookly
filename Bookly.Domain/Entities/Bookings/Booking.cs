@@ -58,6 +58,14 @@ public class Booking : SoftDeletableEntity
             throw new DomainException("Expired bookings cannot be confirmed.");
         Status = BookingStatus.Confirmed;
     }
+    public void Cancel()
+    {
+        if (Status == BookingStatus.Cancelled)
+            return;
+        if (Status != BookingStatus.Confirmed)
+            throw new DomainException("Only confirmed bookings can be cancelled.");
+        Status = BookingStatus.Cancelled;
+    }
     private static string GenerateReference()
     {
         return $"BK-{Guid.NewGuid():N}"[..11].ToUpperInvariant();

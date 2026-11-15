@@ -13,6 +13,7 @@ public class PaymentBySessionOrTransactionSpecification : BaseSpecification<Paym
             (!string.IsNullOrEmpty(transactionId) &&
              p.TransactionId == transactionId);
         AddInclude(p => p.Booking.BookingRooms);
+        AddInclude(p => p.Booking.Cancellation!);
         AddInclude("Booking.BookingRooms.RoomType");
         // AddInclude("Booking.BookingRooms.RoomType.Availability");
     }

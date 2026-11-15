@@ -65,4 +65,12 @@ public class BookingCancellation : SoftDeletableEntity
             throw new DomainException("Only failed refunds can be retried.");
         RefundStatus = RefundStatus.Pending;
     }
+    public void MarkRefundAsSucceeded()
+    {
+        if (RefundStatus == RefundStatus.Succeeded)
+            return;
+        if (RefundStatus != RefundStatus.Pending)
+            throw new DomainException("Only pending refunds can be marked as succeeded.");
+        RefundStatus = RefundStatus.Succeeded;
+    }
 }
