@@ -49,6 +49,7 @@ public class CreateBookingCommandHandler(IUnitOfWork unitOfWork,
         await unitOfWork.SaveChangesAsync(cancellationToken);
         await bookingExpiryScheduler.ScheduleAsync(booking.Id, TimeSpan.FromMinutes(15), cancellationToken);
         return Result<CreateBookingResponse>.Success(new CreateBookingResponse(
+          booking.Id,
           booking.Reference,
           booking.Status,
           booking.CheckIn,
