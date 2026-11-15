@@ -114,4 +114,14 @@ public class Booking : SoftDeletableEntity
         Status = BookingStatus.Expired;
         return true;
     }
+    public void AddCancellationRules(IEnumerable<(int DaysBeforeCheckIn, decimal RefundPercentage)> rules)
+    {
+        foreach (var rule in rules)
+        {
+            _cancellationRules.Add(BookingCancellationRule.Create(
+                    Id,
+                    rule.DaysBeforeCheckIn,
+                    rule.RefundPercentage));
+        }
+    }
 }
