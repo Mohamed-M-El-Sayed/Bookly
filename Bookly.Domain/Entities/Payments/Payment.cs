@@ -50,4 +50,17 @@ public class Payment : SoftDeletableEntity
             throw new DomainException("Only pending payments can be marked as failed.");
         Status = PaymentStatus.Failed;
     }
+    public void MarkAsRefunded(decimal refundAmount, string refundTransactionId, DateTime refundedAt)
+    {
+        if (Status == PaymentStatus.Refunded)
+            return;
+        if (Status != PaymentStatus.Paid)
+            throw new DomainException("Only paid payments can be refunded.");
+        if (refundAmount <= 0 || refundAmount > Amount)
+            throw new DomainException("Invalid refund amount.");
+        RefundAmount = refundAmount;
+        RefundTransactionId = refundTransactionId;
+        RefundedAt = refundedAt;
+        Status = PaymentStatus.Refunded;
+    }
 }

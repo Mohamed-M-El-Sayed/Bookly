@@ -1,4 +1,5 @@
 ﻿using Bookly.Domain.Entities.Base;
+using Bookly.Domain.Entities.Cancellation;
 using Bookly.Domain.Entities.RoomTypes;
 
 namespace Bookly.Domain.Entities.Hotels;
@@ -19,6 +20,7 @@ public class Hotel : SoftDeletableEntity
     public IReadOnlyCollection<HotelImage> Images => _images.AsReadOnly();
     private readonly List<HotelManager> _hotelManagers = new();
     public IReadOnlyCollection<HotelManager> Managers => _hotelManagers;
+    public CancellationPolicy CancellationPolicy { get; private set; } = null!;
     private Hotel() { }
 
     private Hotel(

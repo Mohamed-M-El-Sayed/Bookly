@@ -1,4 +1,5 @@
 ﻿using Bookly.Domain.Entities.Base;
+using Bookly.Domain.Entities.Cancellation;
 using Bookly.Domain.Entities.Hotels;
 using Bookly.Domain.Entities.Payments;
 using Bookly.Domain.Enums;
@@ -25,6 +26,9 @@ public class Booking : SoftDeletableEntity
     public Hotel Hotel { get; private set; } = default!;
     private readonly List<Payment> _payments = [];
     public IReadOnlyCollection<Payment> Payments => _payments.AsReadOnly();
+    public BookingCancellation? Cancellation { get; private set; }
+    private readonly List<BookingCancellationRule> _cancellationRules = [];
+    public IReadOnlyCollection<BookingCancellationRule> CancellationRules => _cancellationRules.AsReadOnly();
     private Booking() { }
     public static Booking Create(
         Guid userId,
@@ -57,9 +61,38 @@ public class Booking : SoftDeletableEntity
             throw new DomainException("Expired bookings cannot be confirmed.");
         Status = BookingStatus.Confirmed;
     }
+    public void Cancel()
+    {
+        if (Status == BookingStatus.Cancelled)
+            return;
+        if (Status != BookingStatus.Confirmed)
+            throw new DomainException("Only confirmed bookings can be cancelled.");
+        Status = BookingStatus.Cancelled;
+    }
     private static string GenerateReference()
     {
         return $"BK-{Guid.NewGuid():N}"[..11].ToUpperInvariant();
+    }
+    public void Cancel(DateTime cancelledAt)
+    {
+        if (Status != BookingStatus.Confirmed)
+            throw new DomainException("Only confirmed bookings can be cancelled.");
+        if (CheckIn <= DateOnly.FromDateTime(cancelledAt))
+            throw new DomainException("The cancellation deadline has passed.");
+        Status = BookingStatus.Cancelled;
+    }
+
+    public decimal CalculateRefundAmount(DateTime cancelledAt)
+    {
+        var daysBeforeCheckIn = (CheckIn.ToDateTime(TimeOnly.MinValue).Date - cancelledAt.Date).Days;
+        var applicableRule = CancellationRules
+        .Where(rule => daysBeforeCheckIn >= rule.DaysBeforeCheckIn)
+        .OrderByDescending(rule => rule.DaysBeforeCheckIn)
+        .FirstOrDefault();
+
+        var refundPercentage = applicableRule?.RefundPercentage ?? 0m;
+        return decimal.Round(TotalPrice * refundPercentage / 100m,
+            2, MidpointRounding.AwayFromZero);
     }
     public void AddRoom(
     int roomTypeId,
@@ -83,5 +116,15 @@ public class Booking : SoftDeletableEntity
             return false;
         Status = BookingStatus.Expired;
         return true;
+    }
+    public void AddCancellationRules(IEnumerable<(int DaysBeforeCheckIn, decimal RefundPercentage)> rules)
+    {
+        foreach (var rule in rules)
+        {
+            _cancellationRules.Add(BookingCancellationRule.Create(
+                    Id,
+                    rule.DaysBeforeCheckIn,
+                    rule.RefundPercentage));
+        }
     }
 }
