@@ -2,6 +2,7 @@
 using Bookly.Application.Contracts.Presistence;
 using Bookly.Application.Contracts.Services.BackgroundJobs;
 using Bookly.Application.Contracts.Services.Payments;
+using Bookly.Application.Features.Bookings.Commands.ReleaseBookingAvailability;
 using Bookly.Application.Features.Payments.Messages;
 using Bookly.Application.Features.Payments.Specifications;
 using Bookly.Domain.Entities.Payments;
@@ -13,8 +14,9 @@ namespace Bookly.Application.Features.Payments.Commands.HandlePaymentWebhook;
 
 public class HandlePaymentWebhookCommandHandler(IUnitOfWork unitOfWork,
     IPaymentService paymentService,
-    IBackgroundJobService backgroundJobService,
-    ILogger<HandlePaymentWebhookCommandHandler> logger) : IRequestHandler<HandlePaymentWebhookCommand, Result>
+    IMediator mediator,
+    ILogger<HandlePaymentWebhookCommandHandler> logger,
+    IBackgroundJobService backgroundJobService) : IRequestHandler<HandlePaymentWebhookCommand, Result>
 {
     public async Task<Result> Handle(HandlePaymentWebhookCommand request, CancellationToken cancellationToken)
     {
@@ -65,17 +67,11 @@ public class HandlePaymentWebhookCommandHandler(IUnitOfWork unitOfWork,
                     return Result.Success();
 
                 payment.MarkAsFailed();
+                var releaseResult = await mediator.Send(new ReleaseBookingAvailabilityCommand(booking.Id), cancellationToken);
 
-                var released = booking.BookingRooms
-                    .Single()
-                    .RoomType
-                    .TryRelease(booking.CheckIn, booking.CheckOut);
+                if (releaseResult.IsFailure)
+                    return releaseResult;
 
-                if (!released)
-                {
-                    logger.LogWarning("Failed to release availability for Booking {BookingId}.",
-                        booking.Id);
-                }
                 break;
 
             case PaymentEventType.PaymentRefunded:
@@ -95,6 +91,10 @@ public class HandlePaymentWebhookCommandHandler(IUnitOfWork unitOfWork,
                 booking.Cancel();
                 payment.MarkAsRefunded(webhook.Amount, webhook.TransactionId!, DateTime.UtcNow);
                 booking.Cancellation.MarkRefundAsSucceeded();
+                releaseResult = await mediator.Send(new ReleaseBookingAvailabilityCommand(booking.Id), cancellationToken);
+
+                if (releaseResult.IsFailure)
+                    return releaseResult;
                 break;
         }
 
