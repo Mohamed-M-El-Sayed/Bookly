@@ -1,10 +1,11 @@
 ﻿using Bookly.Application.Common.Results;
+using Bookly.Application.Contracts.Services.Caching;
 using MediatR;
 using System.Text.Json.Serialization;
 
 namespace Bookly.Application.Features.SeasonalPricing.Commands.UpdateSeasonalPrice;
 
-public class UpdateSeasonalPriceCommand : IRequest<Result>
+public class UpdateSeasonalPriceCommand : IRequest<Result>, ICacheInvalidationRequest
 {
     [JsonIgnore]
     public int Id { get; set; }
@@ -14,6 +15,7 @@ public class UpdateSeasonalPriceCommand : IRequest<Result>
     public DateOnly StartDate { get; set; }
     public DateOnly EndDate { get; set; }
     public decimal PricePerNight { get; set; }
+    public IReadOnlyCollection<string> Tags => [CacheTags.HotelSearch];
 }
 
 

@@ -6,5 +6,5 @@ namespace Bookly.Application.Features.RoomTypes.Commands.RemoveRoomType;
 
 public record RemoveRoomTypeCommand(int RoomTypeId) : IRequest<Result>, ICacheInvalidationRequest
 {
-    public IReadOnlyCollection<string> Tags => [CacheTags.RoomTypeAmenities];
+    public IReadOnlyCollection<string> Tags => [CacheTags.HotelSearch];
 }
