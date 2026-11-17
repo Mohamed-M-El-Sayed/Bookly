@@ -1,17 +1,10 @@
-using Bookly.Application.Features.CancellationPolicies.Commands.CreateCancellationPolicy;
-using Bookly.Application.Features.CancellationPolicies.Commands.DeleteCancellationRule;
-using Bookly.Application.Features.CancellationPolicies.Commands.UpdateCancellationRule;
-using Bookly.Application.Features.CancellationPolicies.Queries.GetCancellationRules;
-using Bookly.Application.Features.CancellationPolicies.Queries.GetCancellationRuleById;
 using Bookly.Application.Features.Hotels.Commands.CreateHotel;
 using Bookly.Application.Features.Hotels.Commands.RemoveHotelAmenity;
 using Bookly.Application.Features.Hotels.Commands.SetHotelAmenities;
 using Bookly.Application.Features.Hotels.Commands.UpdateHotel;
 using Bookly.Application.Features.Hotels.Queries;
 using Bookly.Application.Features.Hotels.Queries.GetHotelAmenities;
-using Bookly.Domain.Constants;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookly.Api.Controllers;
@@ -79,69 +72,4 @@ public class HotelsController(IMediator mediator) : ApiControllerBase
         return Respond(result);
     }
 
-    /// <summary>
-    /// Retrieves all cancellation rules for a specific hotel.
-    /// </summary>
-    [HttpGet("{hotelId:int}/cancellation-policy/rules")]
-    public async Task<IActionResult> GetCancellationRules(int hotelId, CancellationToken cancellationToken)
-    {
-        var result = await mediator.Send(new GetCancellationRulesQuery(hotelId), cancellationToken);
-        return Respond(result);
-    }
-
-    /// <summary>
-    /// Retrieves a specific cancellation rule by ID.
-    /// </summary>
-    [HttpGet("cancellation-policy/rules/{ruleId:int}")]
-    public async Task<IActionResult> GetCancellationRuleById(int ruleId, CancellationToken cancellationToken)
-    {
-        var result = await mediator.Send(new GetCancellationRuleByIdQuery(ruleId), cancellationToken);
-        return Respond(result);
-    }
-
-    /// <summary>
-    /// Creates a cancellation policy for a hotel or adds missing cancellation rules to its existing policy (Hotel Manager only).
-    /// </summary>
-    [HttpPost("{hotelId:int}/cancellation-policy")]
-    [Authorize(Roles = Roles.Manager)]
-    public async Task<IActionResult> CreateCancellationPolicy(int hotelId, [FromBody] IReadOnlyCollection<CancellationRuleRequest> rules,
-    CancellationToken cancellationToken)
-    {
-        var command = new CreateCancellationPolicyCommand()
-        {
-            HotelId = hotelId,
-            Rules = rules
-        };
-        var result = await mediator.Send(command, cancellationToken);
-        return Respond(result);
-    }
-    /// <summary>
-    /// Updates an existing cancellation rule for a hotel (Hotel Manager only).
-    /// </summary>
-    [HttpPut("{hotelId:int}/cancellation-policy/rules/{ruleId:int}")]
-    [Authorize(Roles = Roles.Manager)]
-    public async Task<IActionResult> UpdateCancellationRule(int hotelId, int ruleId, [FromBody] UpdateCancellationRuleCommand command,
-        CancellationToken cancellationToken)
-    {
-        command.HotelId = hotelId;
-        command.RuleId = ruleId;
-        var result = await mediator.Send(command, cancellationToken);
-        return Respond(result);
-    }
-
-    /// <summary>
-    /// Deletes a cancellation rule from a hotel (Hotel Manager only).
-    /// </summary>
-    [HttpDelete("{hotelId:int}/cancellation-policy/rules/{ruleId:int}")]
-    [Authorize(Roles = Roles.Manager)]
-    public async Task<IActionResult> DeleteCancellationRule(int hotelId, int ruleId, CancellationToken cancellationToken)
-    {
-        var command = new DeleteCancellationRuleCommand
-        {
-            HotelId = hotelId,
-            RuleId = ruleId
-        };
-        var result = await mediator.Send(command, cancellationToken);
-        return Respond(result);
-    }
 }
