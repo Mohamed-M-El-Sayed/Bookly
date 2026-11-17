@@ -106,6 +106,10 @@ namespace Bookly.Api
                     "initialize-room-availability",
                     job => job.ExecuteAsync(CancellationToken.None),
                     Cron.Daily());
+                backgroundJobService.AddOrUpdate<AvailabilityCleanupJob>(
+                      "cleanup-old-room-availability",
+                      job => job.ExecuteAsync(CancellationToken.None),
+                      Cron.Daily());
             }
 
             // Localization: first in the pipeline, so everything after it sees the request's culture
