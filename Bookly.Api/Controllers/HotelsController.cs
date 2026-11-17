@@ -35,7 +35,7 @@ public class HotelsController(IMediator mediator) : ApiControllerBase
     /// <summary>
     /// Gets the active amenities assigned to a hotel.
     /// </summary>
-    [OutputCache(Duration = 300)]
+    [OutputCache(PolicyName = "HotelAmenities")]
     [HttpGet("{hotelId:int}/amenities")]
     public async Task<IActionResult> GetHotelAmenities([FromRoute] int hotelId, CancellationToken cancellationToken)
     {

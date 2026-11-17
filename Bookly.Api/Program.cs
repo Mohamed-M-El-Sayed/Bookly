@@ -116,6 +116,14 @@ namespace Bookly.Api
                         .Expire(TimeSpan.FromMinutes(5))
                         .Tag(CacheTags.HotelReviews),
                     excludeDefaultPolicy: true);
+
+                options.AddPolicy(
+                    "HotelAmenities",
+                    policy => policy
+                        .AddPolicy<AuthenticatedCachePolicy>()
+                        .Expire(TimeSpan.FromMinutes(30))
+                        .Tag(CacheTags.HotelAmenities),
+                    excludeDefaultPolicy: true);
             });
             builder.Services.AddStackExchangeRedisOutputCache(options =>
             {
