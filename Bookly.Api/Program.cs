@@ -1,5 +1,7 @@
+using Bookly.Api.Caching.Policies;
 using Bookly.Api.Middlewares;
 using Bookly.Application.Contracts.Services.BackgroundJobs;
+using Bookly.Application.Contracts.Services.Caching;
 using Bookly.Application.DependancyInjection;
 using Bookly.Infrastructure.DependancyInjection;
 using Bookly.Infrastructure.Services.Authentication;
@@ -88,15 +90,31 @@ namespace Bookly.Api
                     }
                 });
             });
+            //builder.Services.AddOutputCache(options =>
+            //{
+            //    // Same payload for all authenticated callers (reference/catalog data)
+            //    options.AddPolicy("AuthShared", b => b
+            //        .AddPolicy<AuthenticatedCachePolicy>()
+            //        .Expire(TimeSpan.FromMinutes(5))
+            //        .Tag("catalog"),
+            //        excludeDefaultPolicy: true);
 
+            //    // Payload depends on the caller
+            //    options.AddPolicy("AuthPerUser", b => b
+            //        .AddPolicy<AuthenticatedCachePolicy>()
+            //        .VaryByValue(ctx => new KeyValuePair<string, string>(
+            //            "uid", ctx.User.FindFirst("sub")?.Value ?? "anon"))
+            //        .Expire(TimeSpan.FromMinutes(1)),
+            //        excludeDefaultPolicy: true);
+            //});
             builder.Services.AddOutputCache(options =>
             {
                 options.AddPolicy(
-                    "HotelReviews",
+                    "Reviews",
                     policy => policy
-                        .Cache()
+                        .AddPolicy<AuthenticatedCachePolicy>()
                         .Expire(TimeSpan.FromMinutes(5))
-                        .SetVaryByQuery("pageNumber", "pageSize"),
+                        .Tag(CacheTags.HotelReviews),
                     excludeDefaultPolicy: true);
             });
             builder.Services.AddStackExchangeRedisOutputCache(options =>

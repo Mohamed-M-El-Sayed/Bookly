@@ -21,7 +21,7 @@ public class ReviewsController(IMediator mediator) : ApiControllerBase
     /// </summary>
     [HttpGet("{hotelId:int}/reviews")]
     [AllowAnonymous]
-    [OutputCache(PolicyName = "HotelReviews")]
+    [OutputCache(PolicyName = "Reviews")]
     public async Task<IActionResult> GetHotelReviews(int hotelId, [FromQuery] GetHotelReviewsQuery query,
         CancellationToken cancellationToken = default)
     {
@@ -33,6 +33,7 @@ public class ReviewsController(IMediator mediator) : ApiControllerBase
     /// Gets the review summary for a hotel.
     /// </summary>
     [HttpGet("hotels/{hotelId:int}/summary")]
+    [OutputCache(PolicyName = "Reviews")]
     [AllowAnonymous]
     public async Task<IActionResult> GetReviewSummary(
         int hotelId,
