@@ -16,5 +16,5 @@ public class UpdateAmenityCommand : IRequest<Result>, ICacheInvalidationRequest
     public string? Icon { get; set; }
     public AmenityScope Scope { get; set; }
 
-    public IReadOnlyCollection<string> Tags => [CacheTags.HotelAmenities];
+    public IReadOnlyCollection<string> Tags => [CacheTags.HotelAmenities, CacheTags.RoomTypeAmenities];
 }

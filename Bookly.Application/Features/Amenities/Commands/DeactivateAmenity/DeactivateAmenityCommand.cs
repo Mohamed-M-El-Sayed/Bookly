@@ -6,5 +6,5 @@ namespace Bookly.Application.Features.Amenities.Commands.DeactivateAmenity;
 
 public record DeactivateAmenityCommand(int Id) : IRequest<Result>, ICacheInvalidationRequest
 {
-    public IReadOnlyCollection<string> Tags => [CacheTags.HotelAmenities];
+    public IReadOnlyCollection<string> Tags => [CacheTags.HotelAmenities, CacheTags.RoomTypeAmenities];
 }

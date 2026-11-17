@@ -10,6 +10,6 @@ public class RemoveHotelAmenityCommand(int hotelId, int amenityId) : IRequest<Re
     [JsonIgnore]
     public int HotelId { get; } = hotelId;
     public int AmenityId { get; } = amenityId;
+    public IReadOnlyCollection<string> Tags { get; set; } = [CacheTags.HotelAmenities];
 
-    public IReadOnlyList<string> Tags { get; set; } = [CacheTags.HotelAmenities];
 }

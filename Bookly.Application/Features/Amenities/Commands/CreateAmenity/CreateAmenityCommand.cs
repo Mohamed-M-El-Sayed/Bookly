@@ -13,5 +13,5 @@ public record CreateAmenityCommand(
     AmenityScope Scope
 ) : IRequest<Result<CreateAmenityResponse>>, ICacheInvalidationRequest
 {
-    public IReadOnlyCollection<string> Tags => [CacheTags.HotelAmenities];
+    public IReadOnlyCollection<string> Tags => [CacheTags.HotelAmenities, CacheTags.RoomTypeAmenities];
 }
