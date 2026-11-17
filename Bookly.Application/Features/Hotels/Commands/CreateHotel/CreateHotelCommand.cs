@@ -18,3 +18,4 @@ public class CreateHotelCommand : IRequest<Result<CreateHotelResponse>>, ICacheI
     public string Email { get; set; } = null!;
     public string? Website { get; set; }
     public IReadOnlyCollection<string> Tags => [CacheTags.HotelSearch];
+}
