@@ -16,5 +16,6 @@ public class RoomTypeForBookingSpecification : BaseSpecification<RoomType>
             AddInclude(r => r.BoardOptions.Where(
                 b => b.Id == boardOptionId.Value));
         }
+        AddInclude("Hotel.CancellationPolicy.Rules");
     }
 }

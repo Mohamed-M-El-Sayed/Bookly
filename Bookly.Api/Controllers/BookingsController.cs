@@ -1,4 +1,5 @@
-﻿using Bookly.Application.Features.Bookings.Commands.CreateBooking;
+﻿using Bookly.Application.Features.Bookings.Commands.CancelBooking;
+using Bookly.Application.Features.Bookings.Commands.CreateBooking;
 using Bookly.Application.Features.Bookings.Queries.GetBookingById;
 using Bookly.Application.Features.Bookings.Queries.GetHotelBookings;
 using Bookly.Application.Features.Bookings.Queries.GetMyBookings;
@@ -56,6 +57,17 @@ namespace Bookly.Api.Controllers
         {
             var result = await mediator.Send(command, cancellationToken);
             return Respond(result);
+        }
+        /// <summary>
+        /// Requests cancellation of a booking.
+        /// </summary>
+        [HttpPost("{bookingId:int}/cancel")]
+        public async Task<IActionResult> CancelBooking(int bookingId, [FromBody] CancelBookingCommand command,
+            CancellationToken cancellationToken)
+        {
+            command.BookingId = bookingId;
+            var result = await mediator.Send(command, cancellationToken);
+            return Respond(result, StatusCodes.Status202Accepted);
         }
 
     }

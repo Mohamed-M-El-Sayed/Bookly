@@ -1,10 +1,16 @@
+using Bookly.Application.Features.Hotels.Commands.AssignHotelManager;
 using Bookly.Application.Features.Hotels.Commands.CreateHotel;
+using Bookly.Application.Features.Hotels.Commands.RemoveHotel;
 using Bookly.Application.Features.Hotels.Commands.RemoveHotelAmenity;
+using Bookly.Application.Features.Hotels.Commands.RemoveHotelManager;
 using Bookly.Application.Features.Hotels.Commands.SetHotelAmenities;
 using Bookly.Application.Features.Hotels.Commands.UpdateHotel;
-using Bookly.Application.Features.Hotels.Queries;
 using Bookly.Application.Features.Hotels.Queries.GetHotelAmenities;
+using Bookly.Application.Features.Hotels.Queries.GetHotelById;
+using Bookly.Application.Features.Hotels.Queries.SearchHotels;
+using Bookly.Domain.Constants;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 
@@ -14,6 +20,18 @@ namespace Bookly.Api.Controllers;
 [ApiController]
 public class HotelsController(IMediator mediator) : ApiControllerBase
 {
+
+    /// <summary>
+    /// Gets a hotel by its ID.
+    /// </summary>
+    [HttpGet("{hotelId:int}")]
+    public async Task<IActionResult> GetHotelById(int hotelId, CancellationToken cancellationToken)
+    {
+        var query = new GetHotelByIdQuery(hotelId);
+        var result = await mediator.Send(query, cancellationToken);
+        return Respond(result);
+    }
+
     /// <summary>
     /// Gets the active amenities assigned to a hotel.
     /// </summary>
@@ -45,6 +63,17 @@ public class HotelsController(IMediator mediator) : ApiControllerBase
         return Respond(result);
     }
     /// <summary>
+    /// Deletes a hotel (Admin only).
+    /// </summary>
+    [HttpDelete("{hotelId:int}")]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<IActionResult> RemoveHotel(int hotelId, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(new RemoveHotelCommand(hotelId),
+            cancellationToken);
+        return Respond(result);
+    }
+    /// <summary>
     /// Searches for hotels based on the provided criteria.
     /// </summary>
     [HttpGet("search")]
@@ -72,5 +101,27 @@ public class HotelsController(IMediator mediator) : ApiControllerBase
     {
         var result = await mediator.Send(new RemoveHotelAmenityCommand(hotelId, amenityId), cancellationToken);
         return Respond(result);
+    }
+    /// <summary>
+    /// Assigns a user as a manager of a hotel (Admin only).
+    /// </summary>
+    [HttpPost("managers/{userId:guid}")]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<IActionResult> AssignManager(int hotelId, Guid userId, CancellationToken cancellationToken)
+    {
+        var command = new AssignHotelManagerCommand(hotelId, userId);
+        var result = await mediator.Send(command, cancellationToken);
+        return Respond(result, StatusCodes.Status204NoContent);
+    }
+    /// <summary>
+    /// Removes a manager from a hotel (Admin only).
+    /// </summary>
+    [HttpDelete("managers/{userId:guid}")]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<IActionResult> RemoveManager(int hotelId, Guid userId, CancellationToken cancellationToken)
+    {
+        var command = new RemoveHotelManagerCommand(hotelId, userId);
+        var result = await mediator.Send(command, cancellationToken);
+        return Respond(result, StatusCodes.Status204NoContent);
     }
 }

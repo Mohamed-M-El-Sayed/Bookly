@@ -73,8 +73,14 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         _dbSet.RemoveRange(entities);
     }
 
-    public IQueryable<TEntity> GetQueryable()
+    public IQueryable<TEntity> GetQueryable(ISpecification<TEntity>? specification = null)
     {
-        return _dbSet;
+        return specification is null
+            ? _dbSet
+            : ApplaySpecification(specification);
+    }
+    public Task<List<T>> ToListAsync<T>(IQueryable<T> query, CancellationToken cancellationToken = default)
+    {
+        return query.ToListAsync(cancellationToken);
     }
 }

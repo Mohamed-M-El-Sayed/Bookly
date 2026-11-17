@@ -3,7 +3,7 @@ using Bookly.Domain.Enums;
 
 namespace Bookly.Domain.Entities.RoomTypes
 {
-    public class BoardOption : BaseEntity
+    public class BoardOption : SoftDeletableEntity
     {
         public int RoomTypeId { get; private set; }
         public BoardType Type { get; private set; }
@@ -22,6 +22,14 @@ namespace Bookly.Domain.Entities.RoomTypes
             Type = type;
             ExtraPricePerNight = extraPricePerNight;
             IsActive = true;
+        }
+        public void Update(BoardType type, decimal extraPricePerNight)
+        {
+            if (extraPricePerNight < 0)
+                throw new ArgumentOutOfRangeException(nameof(extraPricePerNight), "Extra price cannot be negative.");
+
+            Type = type;
+            ExtraPricePerNight = extraPricePerNight;
         }
         public void Deactivate() => IsActive = false;
         public void Activate() => IsActive = true;

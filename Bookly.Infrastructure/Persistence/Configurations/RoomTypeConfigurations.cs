@@ -8,8 +8,12 @@ namespace Bookly.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<RoomType> builder)
         {
+            builder.HasQueryFilter(x => x.DeletedAt == null);
             builder.Property(r => r.BasePricePerNight)
                 .HasPrecision(18, 2)
+                .IsRequired();
+            builder.Property(x => x.SizeSqm)
+                .HasPrecision(5, 2)
                 .IsRequired();
             builder.Navigation(h => h.Amenities)
               .HasField("_roomTypeAmenities")

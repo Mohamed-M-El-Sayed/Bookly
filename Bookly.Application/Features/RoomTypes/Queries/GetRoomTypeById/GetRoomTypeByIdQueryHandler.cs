@@ -6,14 +6,14 @@ using Mapster;
 using MediatR;
 namespace Bookly.Application.Features.RoomTypes.Queries.GetRoomTypeById;
 
-public class GetRoomTypeByIdQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetRoomTypeByIdQuery, Result<GetRoomTypeByIdResponse>>
+public class GetRoomTypeByIdQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetRoomTypeByIdQuery, Result<RoomTypeResponse>>
 {
-    public async Task<Result<GetRoomTypeByIdResponse>> Handle(GetRoomTypeByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<RoomTypeResponse>> Handle(GetRoomTypeByIdQuery request, CancellationToken cancellationToken)
     {
         var roomType = await unitOfWork.Repository<RoomType>().GetByIdAsync(request.Id, cancellationToken);
         if (roomType is null)
-            return Result<GetRoomTypeByIdResponse>.Failure(RoomTypeErrors.NotFound());
-        var response = roomType.Adapt<GetRoomTypeByIdResponse>();
-        return Result<GetRoomTypeByIdResponse>.Success(response);
+            return Result<RoomTypeResponse>.Failure(RoomTypeErrors.NotFound());
+        var response = roomType.Adapt<RoomTypeResponse>();
+        return Result<RoomTypeResponse>.Success(response);
     }
 }

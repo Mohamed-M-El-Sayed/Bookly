@@ -18,4 +18,7 @@ public static class PaymentErrors
     public static Error AmountMisMatch() =>
         ErrorFactory.Validation("Payment.AmountMisMatch",
         "The payment amount does not match the expected amount.");
+    public static Error CancellationNotFound() =>
+        ErrorFactory.NotFound("Payment.CancellationNotFound",
+    "Booking cancellation was not found.");
 }

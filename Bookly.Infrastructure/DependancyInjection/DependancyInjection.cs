@@ -76,6 +76,8 @@ namespace Bookly.Infrastructure.DependancyInjection
             services.AddScoped<IPaymentService, StripePaymentService>();
             services.Configure<StripeOptions>(configuration.GetSection(StripeOptions.SectionName));
             services.AddScoped<ICacheInvalidationService, CacheInvalidationService>();
+            services.AddScoped<IRoomAvailabilityService, RoomAvailabilityService>();
+            services.AddScoped<IBookingConfirmationEmailJob, BookingConfirmationEmailJob>();
         }
     }
 }

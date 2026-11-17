@@ -1,9 +1,10 @@
 ﻿using Bookly.Domain.Entities.Base;
+using Bookly.Domain.Entities.Cancellation;
 using Bookly.Domain.Entities.RoomTypes;
 
 namespace Bookly.Domain.Entities.Hotels;
 
-public class Hotel : BaseEntity
+public class Hotel : SoftDeletableEntity
 {
     public string Name { get; private set; } = null!;
     public string Description { get; private set; } = null!;
@@ -18,7 +19,8 @@ public class Hotel : BaseEntity
     private readonly List<HotelImage> _images = new();
     public IReadOnlyCollection<HotelImage> Images => _images.AsReadOnly();
     private readonly List<HotelManager> _hotelManagers = new();
-    public IReadOnlyCollection<HotelManager> Managers => _hotelManagers.AsReadOnly();
+    public IReadOnlyCollection<HotelManager> Managers => _hotelManagers;
+    public CancellationPolicy CancellationPolicy { get; private set; } = null!;
     private Hotel() { }
 
     private Hotel(
@@ -134,14 +136,16 @@ public class Hotel : BaseEntity
     public void AddImage(HotelImage image)
     {
         ArgumentNullException.ThrowIfNull(image);
-
         if (image.IsPrimary)
         {
             foreach (var existing in _images)
                 existing.UnsetPrimary();
         }
-
         _images.Add(image);
+    }
+    public void AddManager(Guid userId)
+    {
+        _hotelManagers.Add(new HotelManager(Id, userId));
     }
 }
 

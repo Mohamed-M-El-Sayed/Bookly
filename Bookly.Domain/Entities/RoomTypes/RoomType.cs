@@ -6,7 +6,7 @@ using Bookly.Domain.Exceptions;
 
 namespace Bookly.Domain.Entities.RoomTypes;
 
-public class RoomType : BaseEntity
+public class RoomType : SoftDeletableEntity
 {
     public int HotelId { get; private set; }
     public string NameEn { get; private set; } = null!;
@@ -30,6 +30,8 @@ public class RoomType : BaseEntity
     private readonly List<RoomAvailability> _roomAvailabilities = new();
     private readonly List<RoomTypeAmenity> _roomTypeAmenities = new();
     public IReadOnlyCollection<RoomTypeAmenity> Amenities => _roomTypeAmenities.AsReadOnly();
+    private readonly List<RoomTypeImage> _images = new();
+    public IReadOnlyCollection<RoomTypeImage> Images => _images.AsReadOnly();
     private RoomType()
     {
 
@@ -163,12 +165,48 @@ public class RoomType : BaseEntity
 
         _seasonalPrices.Add(seasonalPrice);
     }
+    public void UpdateSeasonalPrice(SeasonalPrice seasonalPrice)
+    {
+        if (seasonalPrice is null)
+            throw new ArgumentNullException(nameof(seasonalPrice));
+
+        var existingPrice = _seasonalPrices
+            .FirstOrDefault(x => x.Id == seasonalPrice.Id);
+
+        if (existingPrice is null)
+            throw new DomainException("Seasonal price was not found.");
+
+        var hasOverlap = _seasonalPrices.Any(x =>
+            x.Id != seasonalPrice.Id &&
+            seasonalPrice.StartDate <= x.EndDate &&
+            seasonalPrice.EndDate >= x.StartDate);
+
+        if (hasOverlap)
+            throw new DomainException("Seasonal price dates overlap with an existing seasonal price.");
+
+        existingPrice.Update(seasonalPrice.Name,
+            seasonalPrice.StartDate,
+            seasonalPrice.EndDate,
+            seasonalPrice.PricePerNight);
+    }
     public void AddBoardOption(BoardType type, decimal extraPricePerNight)
     {
         if (_boardOptions.Any(b => b.Type == type))
             throw new DomainException($"Board option '{type}' already exists for this room type.");
 
         _boardOptions.Add(new BoardOption(Id, type, extraPricePerNight));
+    }
+    public bool UpdateBoardOption(int boardOptionId, BoardType type, decimal extraPricePerNight)
+    {
+        var boardOption = _boardOptions.FirstOrDefault(b => b.Id == boardOptionId);
+        if (boardOption is null)
+            return false;
+
+        if (_boardOptions.Any(b => b.Id != boardOptionId && b.Type == type))
+            throw new DomainException($"Board option '{type}' already exists for this room type.");
+
+        boardOption.Update(type, extraPricePerNight);
+        return true;
     }
     public void SetAmenities(IReadOnlyCollection<int> amenityIds)
     {
@@ -220,6 +258,16 @@ public class RoomType : BaseEntity
         foreach (var day in availability)
             day.TryRelease();
         return true;
+    }
+    public void AddImage(RoomTypeImage image)
+    {
+        ArgumentNullException.ThrowIfNull(image);
+        if (image.IsPrimary)
+        {
+            foreach (var existing in _images)
+                existing.UnsetPrimary();
+        }
+        _images.Add(image);
     }
     public decimal TotalPriceForStay(DateOnly checkIn, DateOnly checkOut, int? boardOptionId)
     {

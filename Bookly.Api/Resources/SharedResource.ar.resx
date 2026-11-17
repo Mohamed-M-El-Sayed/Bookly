@@ -411,11 +411,64 @@
   <data name="Review.Forbidden" xml:space="preserve">
     <value>لا تملك صلاحية تعديل هذا التقييم.</value>
   </data>
-	<data name="Validation.Common.InvalidPageNumber" xml:space="preserve">
-  <value>رقم الصفحة يجب أن يكون أكبر من صفر.</value>
+  <data name="Validation.Common.InvalidPageNumber" xml:space="preserve">
+    <value>رقم الصفحة يجب أن يكون أكبر من صفر.</value>
+  </data>
+  <data name="Validation.Common.InvalidPageSize" xml:space="preserve">
+    <value>حجم الصفحة يجب أن يكون بين 10 و50.</value>
+  </data>
+  <data name="Image.NotFound" xml:space="preserve">
+    <value>الصورة غير موجودة.</value>
+  </data>
+  <data name="Hotel.ManagerNotAssigned" xml:space="preserve">
+    <value>هذا المستخدم غير مُعيّن كمدير لهذا الفندق.</value>
+  </data>
+  <data name="validation.pagination.availablepagesize.invalid" xml:space="preserve">
+    <value>يجب أن يكون حجم الصفحة بين 10 ,و 30.</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="BoardOption.NotFound" xml:space="preserve">
+    <value>لم يتم العثور على خيار الوجبة.</value>
+  </data>
+  <data name="Room.RoomNumberAlreadyExists" xml:space="preserve">
+    <value>يوجد بالفعل غرفة بهذا الرقم ضمن نوع الغرفة المحدد.</value>
+  </data>
+  <data name="SeasonalPrice.NotFound" xml:space="preserve">
+    <value>غير</value>
+  </data>
+	<data name="Validation.SeasonalPrice.Id.Invalid" xml:space="preserve">
+  <value>معرّف السعر الموسمي غير صالح.</value>
 </data>
-
-	<data name="Validation.Common.InvalidPageSize" xml:space="preserve">
-  <value>حجم الصفحة يجب أن يكون بين 10 و50.</value>
+	<data name="Validation.SeasonalPrice.RoomTypeId.Invalid" xml:space="preserve">
+  <value>معرّف نوع الغرفة غير صالح.</value>
+</data>
+	<data name="Validation.SeasonalPrice.Name.Required" xml:space="preserve">
+  <value>اسم السعر الموسمي مطلوب.</value>
+</data>
+	<data name="Validation.SeasonalPrice.Name.TooLong" xml:space="preserve">
+  <value>يجب ألا يزيد اسم السعر الموسمي عن 100 حرف.</value>
+</data>
+	<data name="Validation.SeasonalPrice.StartDate.Required" xml:space="preserve">
+  <value>تاريخ بداية الموسم مطلوب.</value>
+</data>
+	<data name="Validation.SeasonalPrice.EndDate.Required" xml:space="preserve">
+  <value>تاريخ نهاية الموسم مطلوب.</value>
+</data>
+	<data name="Validation.SeasonalPrice.EndDate.Invalid" xml:space="preserve">
+  <value>يجب أن يكون تاريخ النهاية بعد أو مساويًا لتاريخ البداية.</value>
+</data>
+	<data name="Validation.SeasonalPrice.PricePerNight.Invalid" xml:space="preserve">
+  <value>يجب أن يكون سعر الليلة أكبر من صفر.</value>
+</data>
+	<data name="Booking.EmailRequired" xml:space="preserve">
+  <value>البريد الإلكتروني مطلوب.</value>
+</data>
+	<data name="Booking.InvalidEmail" xml:space="preserve">
+  <value>يرجى إدخال بريد إلكتروني صحيح.</value>
+</data>
+	<data name="Booking.EmailTooLong" xml:space="preserve">
+  <value>لا يمكن أن يتجاوز البريد الإلكتروني 256 حرفًا.</value>
 </data>
 </root>
