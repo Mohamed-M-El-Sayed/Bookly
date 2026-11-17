@@ -16,6 +16,7 @@ public static class DependencyInjection
         {
             cfg.RegisterServicesFromAssemblies(applicationAssembly);
             cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+            cfg.AddOpenBehavior(typeof(CacheInvalidationBehavior<,>));
         });
         services.AddValidatorsFromAssembly(applicationAssembly);
         TypeAdapterConfig.GlobalSettings.Scan(applicationAssembly);

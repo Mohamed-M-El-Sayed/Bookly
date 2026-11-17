@@ -1,9 +1,10 @@
 using Bookly.Application.Common.Results;
+using Bookly.Application.Contracts.Services.Caching;
 using MediatR;
 
 namespace Bookly.Application.Features.Hotels.Commands.UpdateHotel;
 
-public class UpdateHotelCommand : IRequest<Result<UpdateHotelResponse>>
+public class UpdateHotelCommand : IRequest<Result<UpdateHotelResponse>>, ICacheInvalidationRequest
 {
     public int Id { get; set; }
     public string Name { get; set; } = null!;
@@ -17,4 +18,6 @@ public class UpdateHotelCommand : IRequest<Result<UpdateHotelResponse>>
     public string Phone { get; set; } = null!;
     public string Email { get; set; } = null!;
     public string? Website { get; set; }
+    public IReadOnlyCollection<string> Tags => [CacheTags.HotelSearch];
+
 }

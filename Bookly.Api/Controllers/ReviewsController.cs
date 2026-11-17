@@ -7,6 +7,7 @@ using Bookly.Application.Features.Reviews.Queries.GetReviewById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace Bookly.Api.Controllers;
 
@@ -20,6 +21,7 @@ public class ReviewsController(IMediator mediator) : ApiControllerBase
     /// </summary>
     [HttpGet("{hotelId:int}/reviews")]
     [AllowAnonymous]
+    [OutputCache(PolicyName = "Reviews")]
     public async Task<IActionResult> GetHotelReviews(int hotelId, [FromQuery] GetHotelReviewsQuery query,
         CancellationToken cancellationToken = default)
     {
@@ -31,6 +33,7 @@ public class ReviewsController(IMediator mediator) : ApiControllerBase
     /// Gets the review summary for a hotel.
     /// </summary>
     [HttpGet("hotels/{hotelId:int}/summary")]
+    [OutputCache(PolicyName = "Reviews")]
     [AllowAnonymous]
     public async Task<IActionResult> GetReviewSummary(
         int hotelId,

@@ -1,3 +1,4 @@
+using Bookly.Api.DependencyInjection;
 using Bookly.Api.Middlewares;
 using Bookly.Application.Contracts.Services.BackgroundJobs;
 using Bookly.Application.DependancyInjection;
@@ -88,7 +89,8 @@ namespace Bookly.Api
                     }
                 });
             });
-
+            builder.Services.AddOutputCaching();
+            builder.Services.AddRedisOutputCache(builder.Configuration);
 
             builder.Services.AddLocalization();
 
@@ -129,7 +131,7 @@ namespace Bookly.Api
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseOutputCache();
             app.MapControllers();
 
             app.Run();

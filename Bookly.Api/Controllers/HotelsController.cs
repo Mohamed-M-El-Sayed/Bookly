@@ -12,6 +12,7 @@ using Bookly.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace Bookly.Api.Controllers;
 
@@ -34,6 +35,7 @@ public class HotelsController(IMediator mediator) : ApiControllerBase
     /// <summary>
     /// Gets the active amenities assigned to a hotel.
     /// </summary>
+    [OutputCache(PolicyName = "HotelAmenities")]
     [HttpGet("{hotelId:int}/amenities")]
     public async Task<IActionResult> GetHotelAmenities([FromRoute] int hotelId, CancellationToken cancellationToken)
     {
@@ -75,6 +77,7 @@ public class HotelsController(IMediator mediator) : ApiControllerBase
     /// Searches for hotels based on the provided criteria.
     /// </summary>
     [HttpGet("search")]
+    [OutputCache(PolicyName = "HotelSearch")]
     public async Task<IActionResult> Search([FromQuery] SearchHotelsQuery query, CancellationToken cancellationToken = default)
     {
         var result = await mediator.Send(query, cancellationToken);

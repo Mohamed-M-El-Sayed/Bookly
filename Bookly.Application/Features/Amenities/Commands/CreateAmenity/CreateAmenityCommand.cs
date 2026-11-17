@@ -1,4 +1,5 @@
 ﻿using Bookly.Application.Common.Results;
+using Bookly.Application.Contracts.Services.Caching;
 using Bookly.Domain.Enums;
 using MediatR;
 
@@ -10,4 +11,7 @@ public record CreateAmenityCommand(
     int AmenityCategoryId,
     string? Icon,
     AmenityScope Scope
-) : IRequest<Result<CreateAmenityResponse>>;
+) : IRequest<Result<CreateAmenityResponse>>, ICacheInvalidationRequest
+{
+    public IReadOnlyCollection<string> Tags => [CacheTags.HotelAmenities, CacheTags.RoomTypeAmenities];
+}

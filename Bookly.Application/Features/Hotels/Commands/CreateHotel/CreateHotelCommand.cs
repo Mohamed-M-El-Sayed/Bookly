@@ -1,9 +1,10 @@
 using Bookly.Application.Common.Results;
+using Bookly.Application.Contracts.Services.Caching;
 using MediatR;
 
 namespace Bookly.Application.Features.Hotels.Commands.CreateHotel;
 
-public class CreateHotelCommand : IRequest<Result<CreateHotelResponse>>
+public class CreateHotelCommand : IRequest<Result<CreateHotelResponse>>, ICacheInvalidationRequest
 {
     public string Name { get; set; } = null!;
     public string Description { get; set; } = null!;
@@ -16,4 +17,5 @@ public class CreateHotelCommand : IRequest<Result<CreateHotelResponse>>
     public string Phone { get; set; } = null!;
     public string Email { get; set; } = null!;
     public string? Website { get; set; }
+    public IReadOnlyCollection<string> Tags => [CacheTags.HotelSearch];
 }

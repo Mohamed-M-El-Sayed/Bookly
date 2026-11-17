@@ -1,9 +1,10 @@
 ﻿using Bookly.Application.Common.Results;
+using Bookly.Application.Contracts.Services.Caching;
 using MediatR;
 
 namespace Bookly.Application.Features.RoomTypes.Commands.CreateRoomType;
 
-public class CreateRoomTypeCommand : IRequest<Result<CreateRoomTypeResponse>>
+public class CreateRoomTypeCommand : IRequest<Result<CreateRoomTypeResponse>>, ICacheInvalidationRequest
 {
     public int HotelId { get; set; }
     public string Name { get; set; } = null!;
@@ -16,4 +17,5 @@ public class CreateRoomTypeCommand : IRequest<Result<CreateRoomTypeResponse>>
     public string ViewAr { get; set; } = null!;
     public int BedCount { get; set; }
     public decimal SizeSqm { get; set; }
+    public IReadOnlyCollection<string> Tags => [CacheTags.HotelSearch];
 }

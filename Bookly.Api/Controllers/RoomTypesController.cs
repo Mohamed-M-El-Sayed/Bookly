@@ -10,6 +10,7 @@ using Bookly.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace Bookly.Api.Controllers;
 
@@ -93,6 +94,7 @@ public class RoomTypesController(IMediator mediator) : ApiControllerBase
     /// Gets the amenities assigned to a room type.
     /// </summary>
     [HttpGet("{roomTypeId:int}/amenities")]
+    [OutputCache(PolicyName = "RoomTypeAmenities")]
     public async Task<IActionResult> GetAmenities(
         int roomTypeId,
         CancellationToken cancellationToken)
