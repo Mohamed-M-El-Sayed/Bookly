@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bookly.Api.Controllers;
 
-[Authorize(Roles = $"{Roles.Admin},{Roles.HotelManager}")]
+[Authorize(Roles = $"{Roles.Admin},{Roles.Manager}")]
 [Route("api/[controller]")]
 [ApiController]
 public class UploadController(IFileService fileService) : ApiControllerBase
