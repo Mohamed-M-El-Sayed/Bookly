@@ -3,6 +3,7 @@
 namespace Bookly.Application.Features.Bookings.Commands.CreateBooking;
 
 public record CreateBookingResponse(
+    int Id,
     string BookingReference,
     BookingStatus Status,
     DateOnly CheckIn,
