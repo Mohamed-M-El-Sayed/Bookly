@@ -20,6 +20,7 @@ public class AmenityCategoriesController(IMediator mediator) : ApiControllerBase
     /// Gets amenity categories.
     /// </summary>
     [HttpGet]
+    [Authorize(Roles = $"{Roles.Admin},{Roles.Manager}")]
     public async Task<IActionResult> GetCategories(CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new GetAmenityCategoriesQuery(), cancellationToken);
