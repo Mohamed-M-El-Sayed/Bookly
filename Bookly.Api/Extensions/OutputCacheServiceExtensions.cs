@@ -1,7 +1,7 @@
 ﻿using Bookly.Api.Caching.Policies;
 using Bookly.Application.Contracts.Services.Caching;
 
-namespace Bookly.Api.DependencyInjection;
+namespace Bookly.Api.Extensions;
 
 public static class OutputCacheServiceExtensions
 {

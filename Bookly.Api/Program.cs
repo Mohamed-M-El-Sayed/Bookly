@@ -1,4 +1,3 @@
-using Bookly.Api.DependencyInjection;
 using Bookly.Api.Extensions;
 using Bookly.Api.Middlewares;
 using Bookly.Application.Contracts.Services.BackgroundJobs;
