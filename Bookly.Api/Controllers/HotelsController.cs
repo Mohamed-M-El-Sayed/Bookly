@@ -46,6 +46,7 @@ public class HotelsController(IMediator mediator) : ApiControllerBase
     /// Creates a new hotel.
     /// </summary>
     [HttpPost]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> Create([FromBody] CreateHotelCommand command, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(command, cancellationToken);
@@ -87,6 +88,7 @@ public class HotelsController(IMediator mediator) : ApiControllerBase
     ///  Sets the amenities for a hotel (Hotel Manager only).
     /// </summary>
     [HttpPost("{id:int}/amenities")]
+    [Authorize(Roles = Roles.Manager)]
     public async Task<IActionResult> SetHotelAmenities(int id, [FromBody] SetHotelAmenitiesCommand command, CancellationToken cancellationToken)
     {
         command.HotelId = id;

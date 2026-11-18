@@ -1,12 +1,13 @@
 ﻿using Bookly.Api.Extensions;
 using Bookly.Application.Common.Results;
 using Bookly.Application.Contracts.Services.Files;
+using Bookly.Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookly.Api.Controllers;
 
-[Authorize]
+[Authorize(Roles = $"{Roles.Admin},{Roles.HotelManager}")]
 [Route("api/[controller]")]
 [ApiController]
 public class UploadController(IFileService fileService) : ApiControllerBase

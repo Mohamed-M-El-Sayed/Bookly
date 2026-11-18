@@ -49,9 +49,10 @@ public class RoomTypesController(IMediator mediator) : ApiControllerBase
         return Respond(result);
     }
     /// <summary>
-    /// Creates a new room type for the specified hotel.
+    /// Creates a new room type for the specified hotel (Hotel Manager only).
     /// </summary>
     [HttpPost]
+    [Authorize(Roles = Roles.Manager)]
     public async Task<IActionResult> Create(int hotelId, [FromBody] CreateRoomTypeCommand command, CancellationToken cancellationToken)
     {
         command.HotelId = hotelId;
@@ -74,6 +75,7 @@ public class RoomTypesController(IMediator mediator) : ApiControllerBase
     /// Sets the amenities for a room types (Hotel Manager only).
     /// </summary>
     [HttpPost("{id:int}/amenities")]
+    [Authorize(Roles = Roles.Manager)]
     public async Task<IActionResult> SetRoomTypeAmenities([FromRoute] int id, [FromBody] SetRoomTypesAmenitiesCommand command, CancellationToken cancellationToken)
     {
         command.RoomTypeId = id;
@@ -84,6 +86,7 @@ public class RoomTypesController(IMediator mediator) : ApiControllerBase
     /// Removes one amenity from a room type (Hotel manager only).
     /// </summary>
     [HttpDelete("{id:int}/amenities/{amenityId:int}")]
+    [Authorize(Roles = Roles.Manager)]
     public async Task<IActionResult> RemoveAmenity(
         int id, int amenityId, CancellationToken cancellationToken)
     {

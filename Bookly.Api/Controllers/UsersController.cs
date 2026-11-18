@@ -1,12 +1,15 @@
 ﻿using Bookly.Application.Features.Users.Commands.AssignRole;
 using Bookly.Application.Features.Users.Commands.UnAssignRole;
+using Bookly.Domain.Constants;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookly.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = Roles.Admin)]
 public class UsersController(IMediator mediator) : ApiControllerBase
 {
     /// <summary>

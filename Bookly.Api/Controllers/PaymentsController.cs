@@ -15,6 +15,7 @@ namespace Bookly.Api.Controllers
         /// Creates a checkout session for a booking.
         /// </summary>
         [HttpPost("checkout")]
+        [Authorize]
         public async Task<IActionResult> CreateCheckoutSession([FromBody] CreateCheckoutSessionCommand command)
         {
             var result = await mediator.Send(command);
