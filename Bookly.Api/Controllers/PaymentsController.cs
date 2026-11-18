@@ -3,6 +3,7 @@ using Bookly.Application.Features.Payments.Commands.HandlePaymentWebhook;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Bookly.Api.Controllers
 {
@@ -24,6 +25,7 @@ namespace Bookly.Api.Controllers
         /// </summary>
         [AllowAnonymous]
         [HttpPost("webhook")]
+        [DisableRateLimiting]
         public async Task<IActionResult> HandleWebhook(CancellationToken cancellationToken)
         {
             using var reader = new StreamReader(Request.Body);

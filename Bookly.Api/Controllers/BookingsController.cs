@@ -7,6 +7,7 @@ using Bookly.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Bookly.Api.Controllers
 {
@@ -53,6 +54,7 @@ namespace Bookly.Api.Controllers
         /// Creates a new booking.
         /// </summary>
         [HttpPost]
+        [EnableRateLimiting("booking")]
         public async Task<IActionResult> Create([FromBody] CreateBookingCommand command, CancellationToken cancellationToken)
         {
             var result = await mediator.Send(command, cancellationToken);

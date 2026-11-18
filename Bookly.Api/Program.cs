@@ -1,4 +1,5 @@
 using Bookly.Api.DependencyInjection;
+using Bookly.Api.Extensions;
 using Bookly.Api.Middlewares;
 using Bookly.Application.Contracts.Services.BackgroundJobs;
 using Bookly.Application.DependancyInjection;
@@ -91,7 +92,7 @@ namespace Bookly.Api
             });
             builder.Services.AddOutputCaching();
             builder.Services.AddRedisOutputCache(builder.Configuration);
-
+            builder.Services.AddRateLimiting();
             builder.Services.AddLocalization();
 
             string[] supportedCultures = ["en", "ar"];
@@ -132,7 +133,7 @@ namespace Bookly.Api
             }
 
             app.UseHttpsRedirection();
-
+            app.UseRateLimiter();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseOutputCache();
