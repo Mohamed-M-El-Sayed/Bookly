@@ -1,4 +1,5 @@
 using Bookly.Api.Extensions;
+using Bookly.Api.Filters;
 using Bookly.Api.Middlewares;
 using Bookly.Application.Contracts.Services.BackgroundJobs;
 using Bookly.Application.Contracts.Services.Seeding;
@@ -139,6 +140,13 @@ namespace Bookly.Api
             app.UseRateLimiter();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                Authorization = new[]
+                {
+                    new HangfireDashboardAuthorizationFilter()
+                }
+            });
             app.UseOutputCache();
             app.MapControllers();
 
