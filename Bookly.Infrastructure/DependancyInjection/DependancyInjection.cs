@@ -8,6 +8,7 @@ using Bookly.Application.Contracts.Services.Files;
 using Bookly.Application.Contracts.Services.Hotels;
 using Bookly.Application.Contracts.Services.Payments;
 using Bookly.Application.Contracts.Services.Security;
+using Bookly.Application.Contracts.Services.Seeding;
 using Bookly.Application.Contracts.Services.Users;
 using Bookly.Domain.Entities.Identity;
 using Bookly.Infrastructure.Persistence.Context;
@@ -23,6 +24,8 @@ using Bookly.Infrastructure.Services.Files;
 using Bookly.Infrastructure.Services.Hotels;
 using Bookly.Infrastructure.Services.Payments;
 using Bookly.Infrastructure.Services.Security;
+using Bookly.Infrastructure.Services.Seeding;
+using Bookly.Infrastructure.Services.Seeding.Seeders;
 using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -79,6 +82,13 @@ namespace Bookly.Infrastructure.DependancyInjection
             services.AddScoped<IRoomAvailabilityService, RoomAvailabilityService>();
             services.AddScoped<IBookingConfirmationEmailJob, BookingConfirmationEmailJob>();
             services.AddScoped<IAvailabilityCleanupService, AvailabilityCleanupService>();
+            services.AddScoped<IDataSeeder, DatabaseSeeder>();
+            services.AddScoped<RoleSeeder>();
+            services.AddScoped<AdminUserSeeder>();
+            services.AddScoped<CategorySeeder>();
+            services.AddScoped<AmenitySeeder>();
+            services.AddScoped<HotelSeeder>();
+            services.AddScoped<RoomTypeSeeder>();
         }
     }
 }

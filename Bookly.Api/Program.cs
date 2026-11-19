@@ -1,6 +1,7 @@
 using Bookly.Api.Extensions;
 using Bookly.Api.Middlewares;
 using Bookly.Application.Contracts.Services.BackgroundJobs;
+using Bookly.Application.Contracts.Services.Seeding;
 using Bookly.Application.DependancyInjection;
 using Bookly.Infrastructure.DependancyInjection;
 using Bookly.Infrastructure.Services.Authentication;
@@ -15,7 +16,7 @@ namespace Bookly.Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -99,6 +100,9 @@ namespace Bookly.Api
             var app = builder.Build();
             using (var scope = app.Services.CreateScope())
             {
+                var seeder = scope.ServiceProvider.GetRequiredService<IDataSeeder>();
+                await seeder.SeedAsync();
+
                 var backgroundJobService =
                     scope.ServiceProvider.GetRequiredService<IBackgroundJobService>();
 
