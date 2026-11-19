@@ -9,9 +9,9 @@ using Bookly.Infrastructure.Services.BackgroundJobs.Jobs;
 using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Reflection;
 using System.Text.Json.Serialization;
-
 namespace Bookly.Api
 {
     public class Program
@@ -19,7 +19,6 @@ namespace Bookly.Api
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
             // Add services to the container.
             builder.Services.AddApplicaiton(builder.Configuration);
             builder.Services.AddInfrastructure(builder.Configuration, builder.Environment.WebRootPath);
@@ -90,6 +89,8 @@ namespace Bookly.Api
                     }
                 });
             });
+            builder.Host.UseSerilog((context, loggerConfiguration) =>
+                loggerConfiguration.ReadFrom.Configuration(context.Configuration));
             builder.Services.AddOutputCaching();
             builder.Services.AddRedisOutputCache(builder.Configuration);
             builder.Services.AddRateLimiting();
@@ -115,7 +116,6 @@ namespace Bookly.Api
                       job => job.ExecuteAsync(CancellationToken.None),
                       Cron.Daily());
             }
-
             // Localization: first in the pipeline, so everything after it sees the request's culture
             app.UseRequestLocalization(options =>
             {
