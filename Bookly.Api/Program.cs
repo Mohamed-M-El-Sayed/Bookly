@@ -22,7 +22,9 @@ namespace Bookly.Api
             var builder = WebApplication.CreateBuilder(args);
             // Add services to the container.
             builder.Services.AddApplicaiton(builder.Configuration);
-            builder.Services.AddInfrastructure(builder.Configuration, builder.Environment.WebRootPath);
+            var webRootPath = builder.Environment.WebRootPath
+                ?? Path.Combine(builder.Environment.ContentRootPath, "wwwroot");
+            builder.Services.AddInfrastructure(builder.Configuration, webRootPath);
             builder.Services.AddTransient<ErrorHandlingMiddleware>();
 
             builder.Services.AddControllers().AddJsonOptions(options =>
