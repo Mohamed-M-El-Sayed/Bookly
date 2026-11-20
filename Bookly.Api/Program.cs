@@ -129,13 +129,8 @@ namespace Bookly.Api
 
             app.UseHangfireDashboard();
             app.UseMiddleware<ErrorHandlingMiddleware>();
-
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
+            app.UseSwagger();
+            app.UseSwaggerUI();
             app.UseHttpsRedirection();
             app.UseRateLimiter();
             app.UseAuthentication();
