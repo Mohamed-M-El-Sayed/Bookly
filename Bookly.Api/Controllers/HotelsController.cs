@@ -78,6 +78,9 @@ public class HotelsController(IMediator mediator) : ApiControllerBase
     /// Searches for hotels based on the provided criteria.
     /// Use "Egypt" as the location to test the search functionality.
     /// </summary>
+    /// <remarks>
+    /// Enter the date in MM-dd-yyyy format (e.g., 11-25-2026).
+    /// </remarks>
     [HttpGet("search")]
     [OutputCache(PolicyName = "HotelSearch")]
     public async Task<IActionResult> Search([FromQuery] SearchHotelsQuery query, CancellationToken cancellationToken = default)
