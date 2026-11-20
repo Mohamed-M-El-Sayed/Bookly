@@ -76,6 +76,7 @@ public class HotelsController(IMediator mediator) : ApiControllerBase
     }
     /// <summary>
     /// Searches for hotels based on the provided criteria.
+    /// Use "Egypt" as the location to test the search functionality.
     /// </summary>
     [HttpGet("search")]
     [OutputCache(PolicyName = "HotelSearch")]
