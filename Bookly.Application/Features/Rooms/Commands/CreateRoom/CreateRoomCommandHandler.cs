@@ -1,6 +1,7 @@
 using Bookly.Application.Common.Results;
 using Bookly.Application.Contracts.Presistence;
 using Bookly.Application.Contracts.Services.Availability;
+using Bookly.Application.Contracts.Services.Hotels;
 using Bookly.Application.Features.RoomTypes.Errors;
 using Bookly.Domain.Entities.RoomTypes;
 using MediatR;
@@ -8,6 +9,7 @@ using MediatR;
 namespace Bookly.Application.Features.Rooms.Commands.CreateRoom;
 
 public class CreateRoomCommandHandler(IUnitOfWork unitOfWork,
+    IHotelAccessService hotelAccessService,
     IRoomAvailabilityService roomAvailabilityService) : IRequestHandler<CreateRoomCommand, Result<CreateRoomResponse>>
 {
     public async Task<Result<CreateRoomResponse>> Handle(CreateRoomCommand request, CancellationToken cancellationToken)
@@ -15,6 +17,12 @@ public class CreateRoomCommandHandler(IUnitOfWork unitOfWork,
         var roomType = await unitOfWork.Repository<RoomType>().GetByIdAsync(request.RoomTypeId, cancellationToken);
         if (roomType is null)
             return Result<CreateRoomResponse>.Failure(RoomTypeErrors.NotFound());
+
+        var accessResult = await hotelAccessService.EnsureCurrentUserManagesAsync(roomType.HotelId, cancellationToken);
+        if (accessResult.IsFailure)
+        {
+            return Result<CreateRoomResponse>.Failure(accessResult.Error!);
+        }
 
         var room = Room.Create(request.RoomTypeId, request.RoomNumber);
 
