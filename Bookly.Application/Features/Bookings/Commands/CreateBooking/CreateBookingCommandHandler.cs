@@ -45,9 +45,12 @@ public class CreateBookingCommandHandler(IUnitOfWork unitOfWork,
             request.Email,
             request.PhoneNumber);
         booking.AddRoom(request.RoomTypeId, null, request.Guests, price);
-        booking.AddCancellationRules(roomType.Hotel.CancellationPolicy.Rules.Select(r =>
-                (r.DaysBeforeCheckIn, r.RefundPercentage)));
-
+        var cancellationPolicy = roomType.Hotel.CancellationPolicy;
+        if (cancellationPolicy is not null)
+        {
+            booking.AddCancellationRules(cancellationPolicy.Rules.Select(r =>
+                    (r.DaysBeforeCheckIn, r.RefundPercentage)));
+        }
         await unitOfWork.Repository<Booking>().AddAsync(booking, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
         await bookingExpiryScheduler.ScheduleAsync(booking.Id, TimeSpan.FromMinutes(15), cancellationToken);
