@@ -1,53 +1,68 @@
-# Bookly – Hotel Booking Backend API
-[**Swagger API Documentation**](https://YOUR-DEPLOYED-DOMAIN/swagger)
+# 🏨 Bookly – Hotel Booking Backend API
+
+[**📘 Swagger API Documentation**](http://bookly-api.runasp.net/swagger/index.html)
 
 Bookly is a hotel booking backend API built with **ASP.NET Core**. It provides hotel management and booking functionality, allowing guests to search for hotels, make reservations, and manage their bookings while hotel managers manage their properties.
 
-## Features
+---
 
-- **Authentication & Authorization**
-  - ASP.NET Core Identity.
-  - JWT authentication with refresh tokens.
-  - Role-based access control (Admin, Hotel Manager, Customer).
-  - Email confirmation and password reset.
+## ✨ Features
 
-- **Hotel Management**
-  - Create and manage hotels.
-  - Manage room types, amenities, and hotel information.
-  - Hotel manager access control.
+###  Authentication & Authorization
+- ASP.NET Core Identity.
+- JWT authentication with refresh tokens.
+- Role-based access control (Admin, Hotel Manager, Customer).
+- Email confirmation and password reset.
+- Compromised password detection using Have I Been Pwned (HIBP).
 
-- **Hotel Search**
-  - Search hotels by location and availability.
-  - Filter by price and occupancy.
-  - Support for date-based availability and pricing.
+###  Hotel Management
+- Create and manage hotels.
+- Manage room types, amenities, and hotel information.
+- Hotel manager access control.
 
-- **Booking Management**
-  - Create and manage bookings.
-  - Booking availability validation.
-  - Automatic expiration of pending bookings using background jobs.
+###  Hotel Search
+- Search hotels by location and availability.
+- Filter by occupancy.
+- Return minimum available price for each hotel.
 
-- **Payments**
-  - Stripe Checkout integration.
-  - Payment processing through Stripe webhooks.
+###  Booking Management
+- Create and manage bookings.
+- Booking availability validation.
+- Automatic expiration of pending bookings using background jobs.
 
-- **Reviews & Favorites**
-  - Guests can review hotels based on their bookings.
-  - Add and remove favorite hotels.
+###  Cancellation Management
+- Configurable hotel cancellation policies.
+- Multiple cancellation rules based on days before check-in.
+- Automatic refund percentage calculation based on cancellation rules.
 
-- **Caching**
-  - Redis-backed ASP.NET Core Output Caching.
-  - Cache policies for hotel search, amenities, and reviews.
-  - Cache invalidation using tags.
+###  Payments
+- Stripe Checkout integration.
+- Payment processing through Stripe webhooks.
 
-- **Background Processing**
-  - Hangfire for background and scheduled jobs.
+###  Reviews & Favorites
+- Guests can review hotels based on their bookings.
+- Add and remove favorite hotels.
 
-- **API Security**
-  - Global Sliding Window rate limiting.
-  - Fixed Window rate limiting for authentication endpoints.
-  - Token Bucket rate limiting for booking endpoints.
+###  Caching
+- Redis-backed ASP.NET Core Output Caching.
+- Cache policies for hotel search, amenities, and reviews.
+- Cache invalidation using tags.
 
-## Technologies
+###  Background Processing
+- Hangfire for background and scheduled jobs.
+
+###  Logging & Monitoring
+- Structured logging using Serilog.
+- Centralized log management and monitoring using Seq.
+
+###  API Security
+- Global Sliding Window rate limiting.
+- Fixed Window rate limiting for authentication endpoints.
+- Token Bucket rate limiting for booking endpoints.
+
+---
+
+## 🛠️ Technologies
 
 | Category | Technologies |
 |---|---|
@@ -60,9 +75,16 @@ Bookly is a hotel booking backend API built with **ASP.NET Core**. It provides h
 | Background Jobs | Hangfire |
 | API Documentation | Swagger / OpenAPI |
 | Design Patterns | Repository, Unit of Work, Specification, Result Pattern |
+| Logging & Monitoring | Serilog, Seq |
 
-## Architecture
+---
+
+## 🏗️ Architecture
+
 Bookly follows **Clean Architecture** and **Vertical Slice Architecture** to maintain separation of concerns and organize features around business functionality.
+
+### 📂 Project Structure
+
 ```text
 Bookly/
 │
@@ -91,7 +113,8 @@ Bookly/
 │
 └── Bookly.sln
 ```
-### Architectural Approach
+
+### 🧩 Architectural Approach
 
 - **Clean Architecture:** Keeps business logic independent of infrastructure.
 - **CQRS:** Separates commands and queries using MediatR.
@@ -100,25 +123,28 @@ Bookly/
 - **Result Pattern:** Handles application operation outcomes consistently.
 - **Pipeline Behaviors:** Centralizes validation and cache invalidation.
 
-## Getting Started
+---
 
-### Prerequisites
+## 🚀 Getting Started
+
+### 📋 Prerequisites
 
 Make sure you have installed:
 
 - .NET SDK compatible with the project.
 - SQL Server.
 - Redis.
+- Seq server (for centralized logging).
 - Stripe account for payment integration.
 
-### 1. Clone the repository
+### 1️⃣ Clone the Repository
 
 ```bash
 git clone https://github.com/Mohamed-M-El-Sayed/Bookly.git
 cd Bookly
 ```
 
-### 2. Configure application settings
+### 2️⃣ Configure Application Settings
 
 Configure the required settings using User Secrets or environment variables.
 
@@ -138,15 +164,25 @@ Example configuration:
   "Stripe": {
     "SecretKey": "YOUR_STRIPE_SECRET_KEY",
     "WebhookSecret": "YOUR_STRIPE_WEBHOOK_SECRET"
+  },
+  "Serilog": {
+    "WriteTo": [
+      {
+        "Name": "Seq",
+        "Args": {
+          "serverUrl": "YOUR_SEQ_SERVER_URL"
+        }
+      }
+    ]
   }
 }
 ```
 
 You may also need to configure email and other external service settings.
 
-**Never commit real credentials, API keys, or connection strings to source control.**
+**⚠️ Important:** Never commit real credentials, API keys, or connection strings to source control.
 
-### 3. Apply database migrations
+### 3️⃣ Apply Database Migrations
 
 Run the EF Core migrations using the appropriate project and startup project:
 
@@ -154,13 +190,13 @@ Run the EF Core migrations using the appropriate project and startup project:
 dotnet ef database update --project Bookly.Infrastructure --startup-project Bookly.Api
 ```
 
-### 4. Run the API
+### 4️⃣ Run the API
 
 ```bash
 dotnet run --project Bookly.Api
 ```
 
-### 5. Explore the API
+### 5️⃣ Explore the API
 
 Once the application is running, open Swagger:
 
@@ -170,7 +206,9 @@ https://localhost:7271/swagger
 
 The exact URL may differ depending on your launch settings.
 
-## External Services
+---
+
+## 🔌 External Services
 
 | Service | Purpose |
 |---|---|
@@ -179,3 +217,6 @@ The exact URL may differ depending on your launch settings.
 | Stripe | Payment processing |
 | Hangfire | Background job processing |
 | SMTP | Email notifications |
+| Seq | Centralized structured logging and monitoring |
+
+---
